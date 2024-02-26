@@ -55,7 +55,7 @@ class WidgetRepository extends Repository
         return $this->findBy([], $orderBy);
     }
 
-    public function findBy(array $criteria, array $orderBy=[], int $limit=-1, int $offset=0): WidgetCollection
+    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): WidgetCollection
     {
         return $this->createQueryBuilder('s')
             ->setCriteria($criteria)

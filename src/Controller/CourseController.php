@@ -68,25 +68,6 @@ class CourseController extends UtilitiesController
         return $this->getRender(TemplateConstant::TPL_LIBRARY_SUBPANEL, $attributes);
     }
 
-    // TODO : Méthode vraiment utile ou juste un copié collé inutile de Skill ?
-    public function getLi(int $score=-1): string
-    {
-        $classe = 'dropdown-item ajaxAction';
-        $href   = '/profile/?action=addcourse&amp;courseId='.$this->course->getField(FieldConstant::ID);
-        $attributes = [
-            /*
-            'data-speclevel'    => $this->skill->getField(FieldConstant::SPECLEVEL),
-            'data-skillid'      => $this->skill->getField(FieldConstant::ID),
-            'data-parentid'     => $this->skill->getField(FieldConstant::SKILLID),
-            'data-score'        => $score,
-            'data-trigger'      => 'click',
-            'data-ajax'         => 'skillCreation',
-            */
-        ];
-        $label = $this->course->getField(FieldConstant::NAME);
-        return HtmlUtils::getLi(HtmlUtils::getLink($label, $href, $classe, $attributes));
-    }
-
     public function addBodyRow(TableUtils &$table, array $arrParams=[]): void
     {
         $id = $this->course->getField(FieldConstant::ID);
@@ -262,12 +243,6 @@ class CourseController extends UtilitiesController
             } elseif ($l2=='ST') {
                 // TODO
                 $strPrequisite .= 'Stage '.substr($ref, 2).$strCmp;
-            } elseif (strpos($ref, '::')!==false) {
-                // TODO
-                $strPrequisite .= $ref.$strCmp;
-            } elseif (strpos($ref, '??')!==false) {
-                // TODO
-                $strPrequisite .= $ref.$strCmp;
             } elseif (strpos($ref, ':')!==false) {
                 list($skillId, $value) = explode(':', $ref);
                 $skill = $this->sRepository->find($skillId);

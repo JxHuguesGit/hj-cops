@@ -19,53 +19,63 @@ class ProfileController extends UtilitiesController
         $this->title = LabelConstant::LBL_PROFILE;
     }
 
+    private function addSkill(): void
+    {
+        // Pour le cas où on ajoute une compétence.
+        $repository = new PlayerSkillRepository(new PlayerSkillCollection());
+        $sRepository = new SkillRepository(new SkillCollection());
+        // On doit ajouter la compétence $this->arrParams['skillId'] au personnage courant.
+        // TODO : Envisager de pouvoir ajouter à n'importe quel personnage ?
+        $attributes = [
+            FieldConstant::PLAYERID=>$this->player->getField(FieldConstant::ID),
+            FieldConstant::SKILLID=>$this->arrParams[FieldConstant::SKILLID],
+        ];
+        $playerSkill = $repository->findOneBy($attributes);
+
+        if ($playerSkill==null) {
+            // On récupère le Skill de skillId
+            $skill = $sRepository->find($this->arrParams[FieldConstant::SKILLID]);
+            if ($skill->getField(FieldConstant::SKILLID)==0) {
+                // Si skillId vaut 0 alors score vaut 9
+                $score = 9;
+            } else {
+                // Sinon on récupère le Skill de skillId
+                $skillParent = $sRepository->find($skill->getField(FieldConstant::SKILLID));
+                // score vaut specLevel du Skill de skillId
+                $score = $skillParent->getField(FieldConstant::SPECLEVEL);
+            }
+            $attributes[FieldConstant::SCORE] = $score;
+            $playerSkill = new PlayerSkill($attributes);
+            $repository->insert($playerSkill);
+        }
+    }
+
+    private function improveSkill(): void
+    {
+        // Pour le cas où on améliore une compétence.
+        $repository = new PlayerSkillRepository(new PlayerSkillCollection());
+        // On doit améliorer la compétence $this->arrParams['skillId'] au personnage courant.
+        $attributes = [
+            FieldConstant::PLAYERID=>$this->player->getField(FieldConstant::ID),
+            FieldConstant::SKILLID=>$this->arrParams[FieldConstant::SKILLID],
+        ];
+        $playerSkill = $repository->findOneBy($attributes);
+        if ($playerSkill!=null) {
+            // TODO : faudrait vérifier que la compétence peut bien être améliorée.
+            $score = $playerSkill->getField(FieldConstant::SCORE);
+            $playerSkill->setField(FieldConstant::SCORE, $score-1);
+            $repository->update($playerSkill);
+        }
+    }
+
     public function getContentPage(string $msgProcessError): string
     {
         if (isset($this->arrParams[ConstantConstant::CST_ACTION])) {
             // Pour le cas où une action est en cours.
             if ($this->arrParams[ConstantConstant::CST_ACTION]=='addskill') {
-                // Pour le cas où on ajoute une compétence.
-                $repository = new PlayerSkillRepository(new PlayerSkillCollection());
-                $sRepository = new SkillRepository(new SkillCollection());
-                // On doit ajouter la compétence $this->arrParams['skillId'] au personnage courant.
-                // TODO : Envisager de pouvoir ajouter à n'importe quel personnage ?
-                $attributes = [
-                    FieldConstant::PLAYERID=>$this->player->getField(FieldConstant::ID),
-                    FieldConstant::SKILLID=>$this->arrParams[FieldConstant::SKILLID],
-                ];
-                $playerSkill = $repository->findOneBy($attributes);
-
-                if ($playerSkill==null) {
-                    // On récupère le Skill de skillId
-                    $skill = $sRepository->find($this->arrParams[FieldConstant::SKILLID]);
-                    if ($skill->getField(FieldConstant::SKILLID)==0) {
-                        // Si skillId vaut 0 alors score vaut 9
-                        $score = 9;
-                    } else {
-                        // Sinon on récupère le Skill de skillId
-                        $skillParent = $sRepository->find($skill->getField(FieldConstant::SKILLID));
-                        // score vaut specLevel du Skill de skillId
-                        $score = $skillParent->getField(FieldConstant::SPECLEVEL);
-                    }
-                    $attributes[FieldConstant::SCORE] = $score;
-                    $playerSkill = new PlayerSkill($attributes);
-                    $repository->insert($playerSkill);
-                }
+                $this->addSkill();
             } elseif ($this->arrParams[ConstantConstant::CST_ACTION]=='improveskill') {
-                // Pour le cas où on améliore une compétence.
-                $repository = new PlayerSkillRepository(new PlayerSkillCollection());
-                // On doit améliorer la compétence $this->arrParams['skillId'] au personnage courant.
-                $attributes = [
-                    FieldConstant::PLAYERID=>$this->player->getField(FieldConstant::ID),
-                    FieldConstant::SKILLID=>$this->arrParams[FieldConstant::SKILLID],
-                ];
-                $playerSkill = $repository->findOneBy($attributes);
-                if ($playerSkill!=null) {
-                    // TODO : faudrait vérifier que la compétence peut bien être améliorée.
-                    $score = $playerSkill->getField(FieldConstant::SCORE);
-                    $playerSkill->setField(FieldConstant::SCORE, $score-1);
-                    $repository->update($playerSkill);
-                }
+                $this->improveSkill();
             } else {
                 // Gérer le cas où la valeur dans acton n'est pas une attendue.
             }
@@ -84,8 +94,8 @@ class ProfileController extends UtilitiesController
         // Récupération des compétences du personnage courant.
         $arrIds = [];
         $repository = new PlayerSkillRepository(new PlayerSkillCollection());
-        //$playerSkills = $repository->findBy([FieldConstant::PLAYERID=>$this->player->getField(FieldConstant::ID)]);
-        $playerSkills = $repository->findByAndOrdered([FieldConstant::PLAYERID=>$this->player->getField(FieldConstant::ID)]);
+        $attributes = [FieldConstant::PLAYERID=>$this->player->getField(FieldConstant::ID)];
+        $playerSkills = $repository->findByAndOrdered($attributes);
         $strLiSkillsCol1 = '';
         $strLiSkillsCol2 = '';
         $nbSkills = $playerSkills->length()+2;
@@ -110,38 +120,7 @@ class ProfileController extends UtilitiesController
         $skills = $repository->findBy([], [FieldConstant::NAME=>'asc']);
         $strLiSkills = '';
         $strLisSpecs = '';
-        while ($skills->valid()) {
-            $skill = $skills->current();
-            if (!in_array($skill->getField(FieldConstant::ID), $arrIds)) {
-                if ($skill->getField(FieldConstant::SKILLID)==0) {
-                    // Récupération des compétences sans parent.
-                    $strLiSkills .= $skill->getController()->getLi();
-                } else {
-                    // Récupération des compétences avec parent.
-                    $strLisSpecs .= $skill->getController()->getLi();
-                }
-            } else {
-                $playerSkills->rewind();
-                while ($playerSkills->valid()) {
-                    $playerSkill = $playerSkills->current();
-                    $score = $playerSkill->getField(FieldConstant::SCORE);
-                    if (
-                        $playerSkill->getField(FieldConstant::SKILLID)==$skill->getField(FieldConstant::ID) &&
-                        $score==$skill->getField(FieldConstant::SPECLEVEL)+1
-                    ) {
-                        if ($skill->getField(FieldConstant::SKILLID)==0) {
-                            // Récupération des compétences sans parent.
-                            $strLiSkills .= $skill->getController()->getLi($score);
-                        } else {
-                            // Récupération des compétences avec parent.
-                            $strLisSpecs .= $skill->getController()->getLi($score);
-                        }
-                    }
-                    $playerSkills->next();
-                }
-            }
-            $skills->next();
-        }
+        $this->dispatchSkills($strLiSkills, $strLisSpecs, $skills, $arrIds, $playerSkills);
         /////////////////////////////////////////////
 
         $attributes = [
@@ -153,6 +132,47 @@ class ProfileController extends UtilitiesController
         //                                    <li><a class="dropdown-item" href="#">Action</a></li>
 
         return $this->getRender(TemplateConstant::TPL_PROFILE_SKILL_CARD, $attributes);
+    }
+
+    private function dispatchSkills(
+        string &$strLiSkills,
+        string &$strLisSpecs,
+        array $skills,
+        array $arrIds,
+        PlayerSkillCollection $playerSkills
+    ): void
+    {
+        while ($skills->valid()) {
+            $skill = $skills->current();
+            if (!in_array($skill->getField(FieldConstant::ID), $arrIds)) {
+                $this->assignSkill($strLiSkills, $strLisSpecs, $skill);
+            } else {
+                $playerSkills->rewind();
+                while ($playerSkills->valid()) {
+                    $playerSkill = $playerSkills->current();
+                    $score = $playerSkill->getField(FieldConstant::SCORE);
+                    if (
+                        $playerSkill->getField(FieldConstant::SKILLID)==$skill->getField(FieldConstant::ID) &&
+                        $score==$skill->getField(FieldConstant::SPECLEVEL)+1
+                    ) {
+                        $this->assignSkill($strLiSkills, $strLisSpecs, $skill, $score);
+                    }
+                    $playerSkills->next();
+                }
+            }
+            $skills->next();
+        }
+    }
+
+    private function assignSkill(string &$strLiSkills, string &$strLisSpecs, Skill $skill, int $score=-1): void
+    {
+        if ($skill->getField(FieldConstant::SKILLID)==0) {
+            // Récupération des compétences sans parent.
+            $strLiSkills .= $skill->getController()->getLi($score);
+        } else {
+            // Récupération des compétences avec parent.
+            $strLisSpecs .= $skill->getController()->getLi($score);
+        }
     }
 
     public function getCaracteristiquesCard(): string

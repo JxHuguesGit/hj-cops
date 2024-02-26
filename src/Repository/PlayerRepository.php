@@ -54,7 +54,7 @@ class PlayerRepository extends Repository
         return $this->findBy([], $orderBy);
     }
 
-    public function findBy(array $criteria, array $orderBy=[], int $limit=-1, int $offset=0): PlayerCollection
+    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): PlayerCollection
     {
         return $this->createQueryBuilder('p')
             ->setCriteria($criteria)

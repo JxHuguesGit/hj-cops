@@ -54,7 +54,7 @@ class PlayerWidgetRepository extends Repository
         return $this->findBy([], $orderBy);
     }
 
-    public function findBy(array $criteria, array $orderBy=[], int $limit=-1, int $offset=0): PlayerWidgetCollection
+    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): PlayerWidgetCollection
     {
         return $this->createQueryBuilder('pw')
             ->setCriteria($criteria)

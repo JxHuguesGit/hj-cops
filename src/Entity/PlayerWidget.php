@@ -26,9 +26,9 @@ class PlayerWidget extends Entity
     //////////////////////////////////////////////////
     // CONSTRUCT
     //////////////////////////////////////////////////
-    public function __contruct(array $attributes=[])
+    public function __construct(array $attributes=[])
     {
-        parent::__contruct($attributes);
+        parent::__construct($attributes);
         $this->initRepositories();
     }
 

@@ -49,7 +49,7 @@ class MailFolderRepository extends Repository
         return $this->findBy([], $orderBy);
     }
 
-    public function findBy(array $criteria, array $orderBy=[], int $limit=-1, int $offset=0): MailFolderCollection
+    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): MailFolderCollection
     {
         return $this->createQueryBuilder('s')
             ->setCriteria($criteria)

@@ -55,7 +55,7 @@ class SkillRepository extends Repository
         return $this->findBy([], $orderBy);
     }
 
-    public function findBy(array $criteria, array $orderBy=[], int $limit=-1, int $offset=0): SkillCollection
+    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): SkillCollection
     {
         return $this->createQueryBuilder('s')
             ->setCriteria($criteria)
