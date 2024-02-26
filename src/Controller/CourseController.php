@@ -231,6 +231,7 @@ class CourseController extends UtilitiesController
             $ref = array_shift($arrRefs);
             $l2 = substr($ref, 0, 2);
             if ($ref=='N1') {
+                // Le test est pour le cas d'un N1x2. Mais je ne vois pas comment on rentre ici dans ce cas...
                 $strPrequisite .= 'Niveau 1'.(substr($ref, 2)=='' ? '' : ' '.substr($ref, 2)).$strCmp;
             } elseif ($ref=='N2') {
                 $strPrequisite .= 'Niveau 2'.$strCmp;

@@ -124,10 +124,14 @@ class ProfileController extends UtilitiesController
         /////////////////////////////////////////////
 
         $attributes = [
-            $strLiSkillsCol1,// Liste des compétences du personnage courant, colonne n°1
-            $strLiSkillsCol2,// Liste des compétences du personnage courant, colonne n°2
-            $strLiSkills,// Liste des compétences sans parent que le personnage n'a pas encore et qui sont disponibles.
-            $strLisSpecs,// Liste des spécialisations de compétences à 9+ que le personnage n'a pas encore et qui sont disponibles.
+            // Liste des compétences du personnage courant, colonne n°1
+            $strLiSkillsCol1,
+            // Liste des compétences du personnage courant, colonne n°2
+            $strLiSkillsCol2,
+            // Liste des compétences sans parent que le personnage n'a pas encore et qui sont disponibles.
+            $strLiSkills,
+            // Liste des spécialisations de compétences à 9+ que le personnage n'a pas encore et qui sont disponibles.
+            $strLisSpecs,
         ];
         //                                    <li><a class="dropdown-item" href="#">Action</a></li>
 
