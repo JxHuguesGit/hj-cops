@@ -154,7 +154,7 @@ class Repository
         if (isset($this->params['limit'])) {
             array_push($args, $this->params['limit']);
         }
-        $query = vsprintf($this->query, $args);
+        $query = $wpdb->prepare($this->query, $args);
         $rows  = $wpdb->get_results($query);
 
         while (!empty($rows)) {

@@ -193,7 +193,7 @@ class CourseController extends UtilitiesController
     private function getStrPrequisite(string $str): string
     {
         $this->sRepository = new SkillRepository(new SkillCollection());
-
+        $this->arrAdAn = ['AN'=>'Ancienneté', 'AD'=>'Adrénaline'];
         $this->arrCaracs = [
             'CA'=>'Carrure',
             'CH'=>'Charme',
@@ -205,7 +205,7 @@ class CourseController extends UtilitiesController
         ];
 
         $prerequisite = $str;
-        $strPrequisite = "$prerequisite\n";
+        $strPrequisite = '';
         $arr = explode ('/', $prerequisite);
         while (!empty($arr)) {
             $ref = array_shift($arr);
@@ -230,17 +230,14 @@ class CourseController extends UtilitiesController
         while (!empty($arrRefs)) {
             $ref = array_shift($arrRefs);
             $l2 = substr($ref, 0, 2);
-            if ($ref=='N1') {
-                // Le test est pour le cas d'un N1x2. Mais je ne vois pas comment on rentre ici dans ce cas...
+            if ($l2=='N1') {
                 $strPrequisite .= 'Niveau 1'.(substr($ref, 2)=='' ? '' : ' '.substr($ref, 2)).$strCmp;
-            } elseif ($ref=='N2') {
+            } elseif ($l2=='N2') {
                 $strPrequisite .= 'Niveau 2'.$strCmp;
             } elseif (in_array($l2, ['CA', 'CH', 'CO', 'ED', 'PE', 'RE', 'SA'])) {
                 $strPrequisite .= $this->arrCaracs[$l2].' '.substr($ref, 2).$strCmp;
-            } elseif ($l2=='AN') {
-                $strPrequisite .= substr($ref, 2).' point d\'Ancienneté'.$strCmp;
-            } elseif ($l2=='AD') {
-                $strPrequisite .= substr($ref, 2).' point d\'Adrénaline'.$strCmp;
+            } elseif (in_array($l2, ['AN', 'AD'])) {
+                $strPrequisite .= substr($ref, 2).' point d\''.$this->arrAdAn[$l2].$strCmp;
             } elseif ($l2=='ST') {
                 // TODO
                 $strPrequisite .= 'Stage '.substr($ref, 2).$strCmp;
