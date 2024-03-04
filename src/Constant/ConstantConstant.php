@@ -10,6 +10,7 @@ interface ConstantConstant
     public const CST_CHECKED            = 'checked';
     public const CST_CLASS              = 'class';
     public const CST_CONFIRMMDP         = 'confirmMdp';
+    public const CST_COPSDATE           = 'copsDate';
     public const CST_COURSES            = 'courses';
     public const CST_CURPAGE            = 'curpage';
     public const CST_DISABLED           = 'disabled';
@@ -19,12 +20,17 @@ interface ConstantConstant
     public const CST_FORMNAME           = 'formName';
     public const CST_HOME               = 'home';
     public const CST_HREF               = 'href';
+    public const CST_ICON               = 'icon';
     public const CST_ID                 = 'id';
+    public const CST_ID_GUEST           = 64;
     public const CST_INBOX              = 'inbox';
+    public const CST_LABEL              = 'label';
     public const CST_LIBRARY            = 'library';
     public const CST_LOGOUT             = 'logout';
+    public const CST_MENU               = 'menu';
     public const CST_NAME               = 'name';
     public const CST_NEWMDP             = 'newMdp';
+    public const CST_NOTIFICATION       = 'notification';
     public const CST_OLDMDP             = 'oldMdp';
     public const CST_ONGLET             = 'onglet';
     public const CST_ORDER              = 'order';
@@ -32,9 +38,11 @@ interface ConstantConstant
     public const CST_PAGE               = 'page';
     public const CST_PLAYERAID          = 'playerAid';
     public const CST_PROFILE            = 'profile';
+    public const CST_READ               = 'read';
     public const CST_READONLY           = 'readonly';
     public const CST_SETTINGS           = 'settings';
     public const CST_SENT               = 'sent';
+    public const CST_SLUG               = 'slug';
     public const CST_SPAM               = 'spam';
     public const CST_SKILLS             = 'skills';
     public const CST_STYLE              = 'style';

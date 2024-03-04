@@ -32,8 +32,8 @@ class MailDataRepository extends Repository
     public function find($id): ?MailData
     {
         $this->collection->empty();
-        return $this->createQueryBuilder('s')
-            ->setCriteria(['s.id'=>$id])
+        return $this->createQueryBuilder()
+            ->setCriteria(['id'=>$id])
             ->getQuery()
             ->getOneOrNullResult();
     }
@@ -66,4 +66,18 @@ class MailDataRepository extends Repository
             ->getQuery()
             ->execQuery();
     }
+
+    public function findByAndOrdered(array $criteria=[], array $orderBy=[]): MailDataCollection
+    {
+        $this->field = MailData::getFields();
+        $this->baseQuery  = "SELECT cmd.`".implode('`, cmd.`', $this->field)."` ";
+        $this->baseQuery .= "FROM ".$this->table." AS cmd ";
+        $this->baseQuery .= "LEFT JOIN `copsMail` AS cm ON cmd.mailId = cm.id ";
+
+        return $this->setCriteria($criteria)
+            ->orderBy(['sentDate'=>'desc'])
+            ->getQuery()
+            ->getResult();
+    }
+
 }

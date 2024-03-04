@@ -57,9 +57,9 @@ class HtmlUtils
         return static::getBalise('div', $content, $extraAttributes);
     }
 
-    public static function getIcon(string $icon): string
+    public static function getIcon(string $icon, string $prefix='solid'): string
     {
-        $strClass = 'fa-solid fa-'.$icon;
+        $strClass = 'fa-'.$prefix.' fa-'.$icon;
         return static::getBalise('i', '', [ConstantConstant::CST_CLASS=>$strClass]);
     }
 

@@ -22,6 +22,14 @@ $(document).ready(function() {
         ajaxActionChange($(this));
     });
 
+    if ($('.mailbox-controls').length!=0) {
+        enableMailboxControls();
+        // Action sur les checkboxes individuelles
+        $('.mailbox-messages input[type=\'checkbox\']').click(function() {
+            enableMailboxControls();
+        });
+    }
+
     //////////////////////////////////////////////////////////////////////////////
     // Fin Nouvelle implémentation 27/01/2024
     //////////////////////////////////////////////////////////////////////////////
@@ -30,45 +38,10 @@ $(document).ready(function() {
 
   // Interface Inbox
   // On s'appuie sur la présence du block "mailbox-controls"
-  if ($('.mailbox-controls').length!=0) {
-    enableMailboxControls();
+{
 
-    // Action sur la checkbox globale
-    $('.checkbox-toggle').click(function () {
-      let clicks = $(this).data('clicks')
-      if (clicks) {
-        //Uncheck all checkboxes
-        $('.mailbox-messages input[type=\'checkbox\']').prop('checked', false)
-        $('.checkbox-toggle .fa-solid.fa-check-square').removeClass('fa-check-square').addClass('fa-square')
-      } else {
-        //Check all checkboxes
-        $('.mailbox-messages input[type=\'checkbox\']').prop('checked', true)
-        $('.checkbox-toggle .fa-solid.fa-square').removeClass('fa-square').addClass('fa-check-square')
-      }
-      enableMailboxControls();
-      $(this).data('clicks', !clicks)
-    })
-
-    // Action sur les checkboxes individuelles
-    $('.mailbox-messages input[type=\'checkbox\']').click(function() {
-      enableMailboxControls();
-    });
 
     // Pas d'actions individuelles pour le moment
-
-    // Action sur le trash global
-    $('.mailbox-controls button[data-action=\'trash\']').click(function() {
-      if (!$(this).hasClass('disabled')) {
-        let title = "Confirmation de la suppression";
-        let get = [];
-        location.search.replace('?', '').split('&').forEach(function(val) { let split = val.split("=", 2); get[split[0]] = split[1]; });
-        let folder = get['subOnglet'];
-        let message = "Les messages sélectionnés seront"+(folder=="trash" ? " définitivement" : "")+" supprimés.";
-        let ids = $(".mailbox-messages input:checkbox:checked").map(function(){ return $(this).val(); }).get().join();
-        let hrefConfirm = "/admin?onglet=inbox"+(folder!=undefined ? "&subOnglet="+get['subOnglet'] : "")+"&trash=1&ids="+ids;
-        openConfirmModal(title, message, hrefConfirm);
-      }
-    });
 
     // Action sur le reply global
     // Action sur le transfert global
@@ -195,39 +168,8 @@ function stretchColspanEvents() {
     });
 }
 
-function openConfirmModal(title, message, hrefConfirm) {
-  $('#modal-confirm').addClass('show').show().unbind().click(function() {
-    closeModal('#modal-confirm');
-  });
-  $('#modal-confirm .modal-title').html(title);
-  $('#modal-confirm .modal-body p').html(message);
-  $('#modal-confirm .modal-footer a').attr('href', hrefConfirm);
-  $('#modal-confirm button[data-dismiss="modal"]').unbind().click(function() {
-    closeModal('#modal-confirm');
-  });
 
-}
 
-function closeModal(id) {
-  $(id).removeClass('show').hide();
-}
-
-function enableMailboxControls() {
-  let checkeds = $('.mailbox-messages input[type=\'checkbox\']:checked').length;
-  if (checkeds>1) {
-    $('.mailbox-controls .fa-trash-alt').parent().removeClass('disabled');
-    $('.mailbox-controls .fa-reply').parent().addClass('disabled');
-    $('.mailbox-controls .fa-share').parent().addClass('disabled');
-  } else if (checkeds==1) {
-    $('.mailbox-controls .fa-trash-alt').parent().removeClass('disabled');
-    $('.mailbox-controls .fa-reply').parent().removeClass('disabled');
-    $('.mailbox-controls .fa-share').parent().removeClass('disabled');
-  } else {
-    $('.mailbox-controls .fa-trash-alt').parent().addClass('disabled');
-    $('.mailbox-controls .fa-reply').parent().addClass('disabled');
-    $('.mailbox-controls .fa-share').parent().addClass('disabled');
-  }
-}
 
 
 function ajaxActionChange(obj) {
@@ -498,6 +440,15 @@ function ajaxActionClick(obj, e) {
 	let actions = obj.data('ajax').split(',');
 	for (let oneAction of actions) {
 	    switch (oneAction) {
+            case 'selectAll' :
+                selectAll(obj);
+                break;
+            case 'refresh' :
+                window.location.reload();
+                break;
+            case 'trash' :
+                confirmTrash(obj);
+                break;
             /*
 			case 'csvExport' :
 				csvExport(obj);
@@ -508,6 +459,75 @@ function ajaxActionClick(obj, e) {
                 break;
 		}
 	}
+}
+
+function confirmTrash(obj) {
+    if (!obj.hasClass('disabled')) {
+        let title = "Confirmation de la suppression";
+        let get = [];
+        location.search.replace('?', '').split('&').forEach(function(val) { let split = val.split("=", 2); get[split[0]] = split[1]; });
+        let locationHref = location.href;
+        let folder = locationHref.substring(locationHref.lastIndexOf('/')+1);
+        if (folder=='') {
+            locationHref = locationHref.substring(0, locationHref.length-1);
+            folder = locationHref.substring(locationHref.lastIndexOf('/')+1);
+        }
+        console.log(folder);
+        let message = "Les messages sélectionnés seront"+(folder=="trash" ? " définitivement" : "")+" supprimés.";
+        let ids = $(".mailbox-messages input:checked").map(function(){ return $(this).val(); }).get().join();
+        let hrefConfirm = "/"+folder+"/?action=trash&ids="+ids;
+        openConfirmModal(title, message, hrefConfirm);
+    }
+}
+
+function openConfirmModal(title, message, hrefConfirm) {
+    $('#modal-confirm').addClass('show').show().unbind().click(function() {
+        closeModal('#modal-confirm');
+    });
+    $('#modal-confirm .modal-title').html(title);
+    $('#modal-confirm .modal-body p').html(message);
+    $('#modal-confirm .modal-footer a').attr('href', hrefConfirm);
+    $('#modal-confirm button[data-dismiss="modal"]').unbind().click(function() {
+        closeModal('#modal-confirm');
+    });
+  
+}
+
+function closeModal(id) {
+    $(id).removeClass('show').hide();
+}
+  
+  
+function selectAll(obj) {
+    // On est en train de cliquer sur un bouton de sélection globale.
+    let blnChecked = obj.find('i').hasClass('fa-square-check');
+    if (blnChecked) {
+        // on va décocher tout ce qu'il y a à décocher
+        $('.ajaxAction[data-ajax="selectAll"] i').removeClass('fa-square-check').addClass('fa-square');
+        $('.mailbox-messages input[type=\'checkbox\']').prop('checked', false);
+    } else {
+        // on va cocher tout ce qu'il y a à cocher
+        $('.ajaxAction[data-ajax="selectAll"] i').removeClass('fa-square').addClass('fa-square-check');
+        $('.mailbox-messages input[type=\'checkbox\']').prop('checked', true);
+    }
+    enableMailboxControls();
+}
+
+function enableMailboxControls() {
+    let checkeds = $('.mailbox-messages input[type=\'checkbox\']:checked').length;
+    if (checkeds>1) {
+      $('.mailbox-controls .fa-trash-alt').parent().removeClass('disabled');
+      $('.mailbox-controls .fa-reply').parent().addClass('disabled');
+      $('.mailbox-controls .fa-share').parent().addClass('disabled');
+    } else if (checkeds==1) {
+      $('.mailbox-controls .fa-trash-alt').parent().removeClass('disabled');
+      $('.mailbox-controls .fa-reply').parent().removeClass('disabled');
+      $('.mailbox-controls .fa-share').parent().removeClass('disabled');
+    } else {
+      $('.mailbox-controls .fa-trash-alt').parent().addClass('disabled');
+      $('.mailbox-controls .fa-reply').parent().addClass('disabled');
+      $('.mailbox-controls .fa-share').parent().addClass('disabled');
+    }
 }
 
 function skillCreation(obj, e) {

@@ -33,7 +33,7 @@ class MailPlayerRepository extends Repository
     {
         $this->collection->empty();
         return $this->createQueryBuilder('s')
-            ->setCriteria(['s.id'=>$id])
+            ->setCriteria(['id'=>$id])
             ->getQuery()
             ->getOneOrNullResult();
     }

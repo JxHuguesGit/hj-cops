@@ -63,4 +63,14 @@ class Mail extends Entity
     {
         return new MailController($this);
     }
+
+    public function getContent(): string
+    {
+        return str_replace("\r\n", '<br>', $this->content);
+    }
+
+    public function getExcerpt(): string
+    {
+        return mb_substr($this->getContent(), 0, 30);
+    }
 }

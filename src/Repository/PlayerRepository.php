@@ -38,7 +38,7 @@ class PlayerRepository extends Repository
     public function find($id): ?Player
     {
         return $this->createQueryBuilder('p')
-            ->setCriteria(['p.id'=>$id])
+            ->setCriteria(['id'=>$id])
             ->getQuery()
             ->getOneOrNullResult();
     }

@@ -3,6 +3,7 @@ namespace src\Controller;
 
 use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
+use src\Utils\SessionUtils;
 
 class HomeController extends UtilitiesController
 {
@@ -44,5 +45,13 @@ class HomeController extends UtilitiesController
             }
             return $this->getRender(TemplateConstant::TPL_DASHBOARD_PANEL, $attributes);
         }
+    }
+
+    public function getAdminContentPage(): string
+    {
+        $uri = SessionUtils::fromServer('REQUEST_URI');
+        $arrUri = explode('/', $uri);
+
+        return 'wip';
     }
 }

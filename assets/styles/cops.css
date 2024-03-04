@@ -57,6 +57,17 @@ section.carousel { min-height: 80%;}
 /* ----------------------------------------------------- */
 
 /* ----------------------------------------------------- */
+/* --  Raccourcis dans le Header                      -- */
+/* ----------------------------------------------------- */
+#avia-menu-center > li { float: left; display: block; position: relative;}
+#avia-menu-center > li > button {color: rgba(255, 255, 255, .75); border: 1px solid #4b545c; font-size: 16px; margin-right: 15px; padding: 2px 6px; border-radius: 4px; display: block; width: 50px; text-align: center;}
+#avia-menu-center > li > button:hover, #avia-menu-center > li > button:focus { border: 1px solid #b6b6b6; border-color: #b6b6b6; color: #b6b6b6;}
+#avia-menu-center .dropdown-toggle::after {display: none;}
+.notify-row .badge {position: absolute; right: 5px; top: -10px; z-index: 100; border-radius: 10px; padding: 3px 7px;}
+/* ----------------------------------------------------- */
+/* ----------------------------------------------------- */
+
+/* ----------------------------------------------------- */
 /* --  Gestion icône météo sur le dashboard           -- */
 /* ----------------------------------------------------- */
 .wicon { background-position: 50%; background-repeat: no-repeat; height: 40px; width: 40px; background-size: 40px; display: block; margin: auto;}
@@ -210,6 +221,7 @@ section.carousel { min-height: 80%;}
 .border-bottom-gray-dark { border-bottom:.25rem solid #343a40; }
 .border-outline-gray-dark { border-left:.25rem solid #343a40; }
 .btn-outline-gray-dark:hover { color: #fff; background-color: #343a40; border-color: #343a40;}
+.text-gray-dark { color: #343a40;}
 
 .bg-gray { background-color: #adb5bd;}
 .border-left-gray { border-left:.25rem solid #adb5bd; }
@@ -220,10 +232,58 @@ section.carousel { min-height: 80%;}
 .bg-gold, .btn-gold { background-color: gold !important;}
 .bg-silver, .btn-silver { background-color: silver !important;}
 .bg-bronze, .btn-bronze { background-color: #cd7f32 !important;}
-  
 /* ----------------------------------------------------- */
 /* ----------------------------------------------------- */
 
+/* ----------------------------------------------------- */
+/* --   Boite de messagerie                           -- */
+/* ----------------------------------------------------- */
+.mailbox-controls {padding: 5px;}
+.mailbox-controls button {border-color: #ddd; background-color: #f8f9fa;}
+.mailbox-controls button:hover {background-color: #e9ecef;}
+.mailbox-controls.with-border {
+    border-bottom: 1px solid rgba(0,0,0,.125);
+  }
+.mailbox-read .card-title {
+    float: left;
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin: 0;
+  }
+  .card-header > .card-tools {
+    float: right;
+    margin-right: -.625rem;
+  }
+  .btn-tool {
+    background-color: transparent;
+    color: #adb5bd;
+    font-size: .875rem;
+    margin: -.75rem 0;
+    padding: .25rem .5rem;
+  }
+.mailbox-read-info {border-bottom: 1px solid rgba(0,0,0,.125); padding: 10px; }
+.mailbox-read-info h5 {
+    margin: 0;
+    padding: 5px 0 0;
+  }
+  .mailbox-read-time {
+    color: #999;
+    font-size: 13px;
+  }
+  .mailbox-read-message {
+    padding: 10px;
+  }
+.mailbox-read .btn-default {
+    background-color: #f8f9fa;
+    border-color: #ddd;
+    color: #444;
+  }
+.mailbox-read .btn-default.hover, .mailbox-read .btn-default:active, .mailbox-read .btn-default:hover {
+    background-color: #e9ecef;
+    color: #2b2b2b;
+  }
+/* ----------------------------------------------------- */
+/* ----------------------------------------------------- */
 
 
 .no-decoration {

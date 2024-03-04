@@ -6,6 +6,7 @@ use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
 use src\Controller\HomeController;
 use src\Controller\LibraryController;
+use src\Controller\MailController;
 use src\Controller\ProfileController;
 use src\Controller\SettingsController;
 use src\Controller\UtilitiesController;
@@ -44,14 +45,23 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
             $arrUri = explode('/', $uri);
             $slug = $arrUri[1] ?? ConstantConstant::CST_HOME;
 
-            if ($slug==ConstantConstant::CST_SETTINGS) {
-                $controller = new SettingsController();
-            } elseif ($slug==ConstantConstant::CST_PROFILE) {
-                $controller = new ProfileController($arrUri);
-            } elseif ($slug==ConstantConstant::CST_LIBRARY) {
-                $controller = new LibraryController($arrUri);
-            } else {
-                $controller = new HomeController();
+            switch ($slug) {
+                case ConstantConstant::CST_SETTINGS :
+                    $controller = new SettingsController();
+                break;
+                case ConstantConstant::CST_PROFILE :
+                    $controller = new ProfileController($arrUri);
+                break;
+                case ConstantConstant::CST_LIBRARY :
+                    $controller = new LibraryController($arrUri);
+                break;
+                case ConstantConstant::CST_NOTIFICATION :
+                case ConstantConstant::CST_TRASH :
+                        $controller = new MailController($arrUri, $slug);
+                break;
+                default :
+                    $controller = new HomeController();
+                break;
             }
             /////////////////////////////////////////
         }

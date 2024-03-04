@@ -9,7 +9,9 @@ interface LabelConstant
     public const LBL_DESK               = 'Bureau';
     public const LBL_SKILLS             = 'Compétences';
     public const LBL_LOGIN              = 'Connexion';
+    public const LBL_TRASH              = 'Corbeille';
     public const LBL_ID                 = 'Identifiant';
+    public const LBL_NOTIFICATIONS      = 'Notifications';
     public const LBL_SETTINGS           = 'Paramètres';
     public const LBL_PROFILE            = 'Profil';
     public const LBL_COURSES            = 'Stages';

@@ -75,11 +75,12 @@ function copsiteMenu()
     if (function_exists('add_menu_page')) {
         $uploadFiles = 'upload_files';
         $pluginName = 'Copsite';
-        $urlIcon = plugins_url('/hj-cops/assets/images/icons/icon_s1.png');
+        $urlIcon = plugins_url('/hj-cops/assets/images/favicon-24x24.svg');
         add_menu_page($pluginName, $pluginName, $uploadFiles, $urlRoot, '', $urlIcon);
         if (function_exists('add_submenu_page')) {
             $arrUrlSubMenu = array(
-                'tmp'    => 'Tmp',
+                'home'     => 'Accueil',
+                'mailData' => 'Mails',
             );
             foreach ($arrUrlSubMenu as $key => $value) {
                 $urlSubMenu = $urlRoot.'&amp;onglet='.$key;

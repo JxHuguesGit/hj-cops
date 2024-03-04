@@ -32,12 +32,12 @@ class Repository
             if ($field==FieldConstant::ID) {
                 $id = $obj->getField($field);
             } else {
-                $this->baseQuery .= "$field='%s', ";
+                $this->baseQuery .= "`$field`='%s', ";
                 $this->params['where'][] = $obj->getField($field);
             }
         }
         $this->baseQuery = substr($this->baseQuery, 0, -2);
-        $this->strWhere = " WHERE id='%s'";
+        $this->strWhere = " WHERE id=%s";
         $this->params['where'][] = $id;
 
         return $this;
@@ -80,7 +80,7 @@ class Repository
             $this->strWhere = " WHERE 1=1";
             $this->params['where'] = [];
             foreach ($criteria as $field => $value) {
-                $this->strWhere .= " AND $field='%s'";
+                $this->strWhere .= " AND `$field`='%s'";
                 $this->params['where'][] = $value;
             }
         }
@@ -90,15 +90,14 @@ class Repository
     public function orderBy(array $orderBy=[]): self
     {
         if (!empty($orderBy)) {
-            $this->strOrderBy = " ORDER BY %s";
-            $params = '';
+            $this->strOrderBy = " ORDER BY ";
+            $first = true;
             foreach ($orderBy as $key=>$value) {
-                if ($params!='') {
-                    $params .= ', ';
+                if (!$first) {
+                    $this->strOrderBy .= ', ';
                 }
-                $params .= $key.' '.$value;
+                $this->strOrderBy .= $key.' '.$value;
             }
-            $this->params['orderBy'] = $params;
         }
         return $this;
     }
@@ -106,8 +105,7 @@ class Repository
     public function setMaxResults(int $limit=-1): self
     {
         if ($limit>0) {
-            $this->strLimit = " LIMIT %s";
-            $this->params['limit'] = $limit;
+            $this->strLimit = " LIMIT $limit";
         }
         return $this;
     }
@@ -147,12 +145,6 @@ class Repository
                 $constraint = array_shift($this->params['where']);
                 array_push($args, $constraint);
             }
-        }
-        if (isset($this->params['orderBy'])) {
-            array_push($args, $this->params['orderBy']);
-        }
-        if (isset($this->params['limit'])) {
-            array_push($args, $this->params['limit']);
         }
         $query = $wpdb->prepare($this->query, $args);
         $rows  = $wpdb->get_results($query);

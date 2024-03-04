@@ -12,6 +12,10 @@ interface TemplateConstant
     public const TPL_ADJ_PANEL          = 'templates/library/adj-panel.tpl';
     public const TPL_LIBRARY_PANEL      = 'templates/library/main-panel.tpl';
     public const TPL_LIBRARY_SUBPANEL   = 'templates/library/sub-panel.tpl';
+
+    public const TPL_MAIL_PANEL         = 'templates/mail/main-panel.tpl';
+    public const TPL_MAIL_LIST          = 'templates/mail/mail-list.tpl';
+    public const TPL_MAIL_VIEW          = 'templates/mail/mail-view.tpl';
     
     public const TPL_PROFILE_CARDS      = 'templates/profile/section-fiche-personnage.tpl';
     public const TPL_PROFILE_CARAC_CARD = 'templates/profile/caracteristiques-card.tpl';
@@ -24,6 +28,8 @@ interface TemplateConstant
     public const TPL_ADMIN_EDIT         = 'templates/admin/edit.tpl';
     public const TPL_ADMIN_LIST         = 'templates/admin/list.tpl';
 
+    public const TPL_ADMIN_CONTENT_WRAP = 'templates/section/admin-content-wrapper.tpl';
+    public const TPL_CONTENT_HEADER     = 'templates/section/content-header.tpl';
     public const TPL_DASHBOARD_PANEL    = 'templates/section/dashboard.tpl';
     public const TPL_SECTION_ERROR      = 'templates/section/section-error.tpl';
     

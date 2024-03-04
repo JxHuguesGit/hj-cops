@@ -1,11 +1,18 @@
 <?php
 namespace src\Entity;
 
+use src\Collection\MailDataCollection;
+use src\Collection\MailFolderCollection;
+use src\Collection\MailPlayerCollection;
 use src\Collection\PlayerCollection;
 use src\Collection\PlayerWidgetCollection;
 use src\Constant\FieldConstant;
 use src\Controller\PlayerController;
+use src\Entity\MailPlayer;
 use src\Entity\PlayerWidget;
+use src\Repository\MailDataRepository;
+use src\Repository\MailFolderRepository;
+use src\Repository\MailPlayerRepository;
 use src\Repository\PlayerRepository;
 use src\Repository\PlayerWidgetRepository;
 
@@ -132,5 +139,29 @@ class Player extends Entity
     {
         $repository = new PlayerWidgetRepository(new PlayerWidgetCollection());
         return $repository->findOneBy([FieldConstant::PLAYERID=>$this->id, FieldConstant::WIDGETID=>$widgetId]);
+    }
+
+    public function getMailPlayer(): ?MailPlayer
+    {
+        $repository = new MailPlayerRepository(new MailPlayerCollection());
+        return $repository->findOneBy([FieldConstant::PLAYERID=>$this->id]);
+    }
+
+    public function getMailData(array $searchAttributes): ?MailDataCollection
+    {
+        $mailPlayer = $this->getMailPlayer();
+        if (
+            isset($searchAttributes[FieldConstant::FOLDERID])
+            && !is_numeric($searchAttributes[FieldConstant::FOLDERID])
+        ) {
+            $slug = $searchAttributes[FieldConstant::FOLDERID];
+            $repository = new MailFolderRepository(new MailFolderCollection());
+            $mailFolder = $repository->findOneBy([FieldConstant::SLUG=>$slug]);
+            $searchAttributes[FieldConstant::FOLDERID] = $mailFolder->getField(FieldConstant::ID);
+        }
+
+        $repository = new MailDataRepository(new MailDataCollection());
+        $searchAttributes[FieldConstant::TOID] = $mailPlayer->getField(FieldConstant::ID);
+        return $repository->findByAndOrdered($searchAttributes);
     }
 }
