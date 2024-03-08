@@ -70,7 +70,7 @@ class WidgetController extends UtilitiesController
             );
         }
 
-        $table->addBodyRow()
+        $table->addBodyRow(['attributes'=>$arrParams])
             ->addBodyCell(['content'=>$strDivInput])
             ->addBodyCell(['content'=>$this->widget->getField(FieldConstant::NAME)])
             ->addBodyCell(['content'=>$strDivs]);
@@ -79,12 +79,12 @@ class WidgetController extends UtilitiesController
 
     public function getCard(bool $hideCateg=false): string
     {
-        return '';
+        return 'WIP getCard '.$hideCateg;
     }
 
     public function getForm(bool $hideCateg=false): string
     {
-        return '';
+        return 'WIP getForm '.$hideCateg;
     }
 
     public static function processForm(): void

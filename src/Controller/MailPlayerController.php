@@ -20,7 +20,7 @@ class MailPlayerController extends UtilitiesController
         $this->mailPlayer = $mailPlayer ?? new MailPlayer();
     }
 
-    public function getContentPage($arrParams): string
+    public function getContentPage(): string
     {
         return '';
     }

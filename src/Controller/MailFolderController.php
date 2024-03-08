@@ -20,7 +20,7 @@ class MailFolderController extends UtilitiesController
         $this->mailFolder = $mailFolder ?? new MailFolder();
     }
 
-    public function getContentPage($arrParams): string
+    public function getContentPage(): string
     {
         return '';
     }

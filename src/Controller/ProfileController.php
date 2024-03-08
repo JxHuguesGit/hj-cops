@@ -68,7 +68,7 @@ class ProfileController extends UtilitiesController
         }
     }
 
-    public function getContentPage(string $msgProcessError): string
+    public function getContentPage(): string
     {
         if (isset($this->arrParams[ConstantConstant::CST_ACTION])) {
             // Pour le cas où une action est en cours.

@@ -29,6 +29,7 @@ interface ConstantConstant
     public const CST_LOGOUT             = 'logout';
     public const CST_MENU               = 'menu';
     public const CST_NAME               = 'name';
+    public const CST_NBSP               = '&nbsp;';
     public const CST_NEWMDP             = 'newMdp';
     public const CST_NOTIFICATION       = 'notification';
     public const CST_OLDMDP             = 'oldMdp';

@@ -75,7 +75,7 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
             $controller->getTitle(),
             PLUGINS_COPS,
             $controller->getContentHeader(),
-            $controller->getContentPage($msgProcessError),
+            $controller->getContentPage(),
             $controller->getContentFooter(),
             $controller->getClassLogged(),
             $errorPanel,

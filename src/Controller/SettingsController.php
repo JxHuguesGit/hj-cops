@@ -18,7 +18,7 @@ class SettingsController extends UtilitiesController
         $this->title = LabelConstant::LBL_SETTINGS;
     }
 
-    public function getContentPage(string $msgProcessError): string
+    public function getContentPage(): string
     {
         $mdpCard = $this->getRender(TemplateConstant::TPL_NEW_PASSWORD_CARD);
 

@@ -127,7 +127,7 @@ class MailController extends UtilitiesController
     }
 
     
-    public function getContentPage($arrParams): string
+    public function getContentPage(): string
     {
         $blnRead = false;
         // Si action = read et que l'id est un mailData lisible par le toId

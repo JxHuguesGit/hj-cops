@@ -33,4 +33,3 @@ class CopsiteAdmin
     }
 }
 CopsiteAdmin::display();
-?>

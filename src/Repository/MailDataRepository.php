@@ -66,7 +66,7 @@ class MailDataRepository extends Repository
             ->getQuery()
             ->execQuery();
     }
-
+    
     public function findByAndOrdered(array $criteria=[], array $orderBy=[]): MailDataCollection
     {
         $this->field = MailData::getFields();
@@ -75,7 +75,7 @@ class MailDataRepository extends Repository
         $this->baseQuery .= "LEFT JOIN `copsMail` AS cm ON cmd.mailId = cm.id ";
 
         return $this->setCriteria($criteria)
-            ->orderBy(['sentDate'=>'desc'])
+            ->orderBy($orderBy)
             ->getQuery()
             ->getResult();
     }

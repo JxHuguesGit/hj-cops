@@ -131,14 +131,14 @@ class TableUtils
         return $this;
     }
 
-    public function addBodyRow(): self
+    public function addBodyRow(array $attributes=[]): self
     {
         if ($this->nbBodyRows==-1) {
             $this->nbBodyRows = 0;
         } else {
             ++$this->nbBodyRows;
         }
-        $this->body['rows'][$this->nbBodyRows] = ['attributes'=>[], 'cells'=>[]];
+        $this->body['rows'][$this->nbBodyRows] = ['attributes'=>$attributes, 'cells'=>[]];
         return $this;
     }
     

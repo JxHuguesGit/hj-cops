@@ -18,7 +18,7 @@ class LibraryController extends UtilitiesController
         $this->title = LabelConstant::LBL_LIBRARY;
     }
 
-    public function getContentPage(string $msgProcessError): string
+    public function getContentPage(): string
     {
         $attributes = [];
         if (!isset($this->arrParams[ConstantConstant::CST_PAGE])) {

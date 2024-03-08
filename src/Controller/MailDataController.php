@@ -61,7 +61,7 @@ class MailDataController extends UtilitiesController
         //////////////////////////////////////////
         // Contenu du corps
         $repository = new MailDataRepository(new MailDataCollection());
-        $mailDatas = $repository->findByAndOrdered();
+        $mailDatas = $repository->findByAndOrdered([], ['sentDate'=>'desc']);
         // Initialisation de la table
         $table = new TableUtils();
         $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
@@ -78,7 +78,7 @@ class MailDataController extends UtilitiesController
             ->addHeaderCell(['content'=>'Extrait'])
             ->addHeaderCell(['content'=>'Date d\'envoi'])
             ->addHeaderCell(['content'=>'Nombre'])
-            ->addHeaderCell(['content'=>'&nbsp;']);
+            ->addHeaderCell(['content'=>ConstantConstant::CST_NBSP]);
 
         $table->addBodyRows($mailDatas, 6);
         //////////////////////////////////////////
@@ -94,7 +94,7 @@ class MailDataController extends UtilitiesController
     public function addBodyRow(TableUtils &$table, array $arrParams=[]): void
     {
         
-        $table->addBodyRow()
+        $table->addBodyRow(['attributes'=>$arrParams])
             ->addBodyCell(['content'=>''])
             ->addBodyCell(['content'=>$this->mailData->getMail()->getField(FieldConstant::SUBJECT)])
             ->addBodyCell(['content'=>$this->mailData->getMail()->getExcerpt()])
@@ -134,7 +134,7 @@ class MailDataController extends UtilitiesController
         return HtmlUtils::getBalise('ul', $strLis, $attributes);
     }
 
-    public function getContentPage($arrParams): string
+    public function getContentPage(): string
     {
         return '';
     }
@@ -152,11 +152,15 @@ class MailDataController extends UtilitiesController
         
 /*
         $strButton = '            <div class="btn-group">
-        <button type="button" class="btn btn-default btn-sm" data-container="body" title="Delete"><i class="fa-regular fa-trash-alt"></i></button>
-        <button type="button" class="btn btn-default btn-sm" data-container="body" title="Reply"><i class="fa-solid fa-reply"></i></button>
-        <button type="button" class="btn btn-default btn-sm" data-container="body" title="Forward"><i class="fa-solid fa-share"></i></button>
+        <button type="button" class="btn btn-default btn-sm" data-container="body" title="Delete">
+        <i class="fa-regular fa-trash-alt"></i></button>
+        <button type="button" class="btn btn-default btn-sm" data-container="body" title="Reply">
+        <i class="fa-solid fa-reply"></i></button>
+        <button type="button" class="btn btn-default btn-sm" data-container="body" title="Forward">
+        <i class="fa-solid fa-share"></i></button>
     </div>
-    <button type="button" class="btn btn-default btn-sm" title="Print"><i class="fa-solid fa-print"></i></button>
+    <button type="button" class="btn btn-default btn-sm" title="Print"><i class="fa-solid fa-print">
+    </i></button>
 ';
         $strButtonBottom = '        <div class="float-end">
         <button type="button" class="btn btn-default"><i class="fa-solid fa-reply"></i> Reply</button>
@@ -196,7 +200,7 @@ class MailDataController extends UtilitiesController
 
         // Champ "Star"
         //<td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-        $strTrContent .= HtmlUtils::getBalise('td', '&nbsp;', ['class'=>'mailbox-star']);
+        $strTrContent .= HtmlUtils::getBalise('td', ConstantConstant::CST_NBSP, ['class'=>'mailbox-star']);
 
         // Champ Auteur
         $auteur = $this->mailData->getAuteur();
@@ -207,7 +211,7 @@ class MailDataController extends UtilitiesController
         $strTrContent .= HtmlUtils::getBalise('td', $this->mailData->getSubjectExcerpt(), ['class'=>'mailbox-subject']);
 
         // Champ Pièces jointes
-        $strTrContent .= HtmlUtils::getBalise('td', '&nbsp;', ['class'=>'mailbox-attachment']);
+        $strTrContent .= HtmlUtils::getBalise('td', ConstantConstant::CST_NBSP, ['class'=>'mailbox-attachment']);
 
         // Champ Time
         $strTrContent .= HtmlUtils::getBalise('td', $this->mailData->getSinceWhen(), ['class'=>'mailbox-date']);
