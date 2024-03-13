@@ -18,10 +18,15 @@ class MailController extends UtilitiesController
 {
     private $menu = [];
     private $slug = '';
+    private $mail;
 
-    public function __construct(array $arrUri=[], string $slug='')
+    public function __construct($arrUri=[], string $slug='')
     {
-        parent::__construct($arrUri);
+        if (is_array($arrUri)) {
+            parent::__construct($arrUri);
+        } else {
+            $this->mail = $arrUri;
+        }
         if ($slug!='') {
             $this->slug = $slug;
             $this->menu = [
@@ -61,13 +66,18 @@ class MailController extends UtilitiesController
             return $controller->getAdminContentPage();
         }
 
+        //////////////////////////////////////////
+        // BreadCrumbs
         $this->setBreadCrumbsContent();
         $attributes = [
             'Mail',
             $this->breadCrumbsContent,
         ];
         $contentHeader = $this->getRender(TemplateConstant::TPL_CONTENT_HEADER, $attributes);
+        //////////////////////////////////////////
 
+        //////////////////////////////////////////
+        // Onglets de navigation
         $this->arrTabs = [
             'mailData'   => ['label'=>'MailData'],
             'mail'       => ['label'=>'Mail'],
@@ -76,8 +86,39 @@ class MailController extends UtilitiesController
         ];
         $this->defaultTab = 'mailData';
         $tabsBar = $this->getTabsBar();
+        //////////////////////////////////////////
 
-        return $contentHeader.$tabsBar;
+        //////////////////////////////////////////
+        // Contenu du corps
+        $repository = new MailRepository(new MailCollection());
+        $mails = $repository->findAll([], [FieldConstant::ID=>'asc']);
+        // Initialisation de la table
+        $table = new TableUtils();
+        $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
+        // Pagination
+        $table->setPaginate([
+            ConstantConstant::PAGE_OBJS => $mails,
+            ConstantConstant::CST_CURPAGE => $this->arrParams[ConstantConstant::CST_CURPAGE] ?? 1,
+            ConstantConstant::CST_URL => UrlUtils::getAdminUrl(['onglet'=>'mail']),
+        ]);
+        // Définition du header de la table
+        $table->addHeaderRow()
+            ->addHeaderCell(['content'=>'#'])
+            ->addHeaderCell(['content'=>'Sujet'])
+            ->addHeaderCell(['content'=>'Extrait'])
+            ->addHeaderCell(['content'=>'Date d\'envoi'])
+            ->addHeaderCell(['content'=>'Nombre'])
+            ->addHeaderCell(['content'=>ConstantConstant::CST_NBSP]);
+
+        $table->addBodyRows($mails, 6);
+        //////////////////////////////////////////
+
+        $attributes = [
+            $contentHeader,
+            $tabsBar,
+            $table->display(),
+        ];
+        return $this->getRender(TemplateConstant::TPL_ADMIN_CONTENT_WRAP, $attributes);
     }
 
     public function getTabsBar(): string
@@ -126,7 +167,6 @@ class MailController extends UtilitiesController
 
     }
 
-    
     public function getContentPage(): string
     {
         $blnRead = false;
@@ -171,7 +211,6 @@ class MailController extends UtilitiesController
                 $strFoldersListContent,
                 $mailData->getController()->getMailContent(),
             ];
-            return $this->getRender(TemplateConstant::TPL_MAIL_PANEL, $attributes);
         } else {
             // Sinon la liste des messages du dossier courant
             $attributes = [
@@ -183,8 +222,8 @@ class MailController extends UtilitiesController
                 $strFoldersListContent,
                 $this->getRender(TemplateConstant::TPL_MAIL_LIST, $attributes),
             ];
-            return $this->getRender(TemplateConstant::TPL_MAIL_PANEL, $attributes);
         }
+        return $this->getRender(TemplateConstant::TPL_MAIL_PANEL, $attributes);
     }
 
     private function getMailTableContent(): string
@@ -256,4 +295,14 @@ class MailController extends UtilitiesController
         return $strButtonList;
     }
 
+    public function addBodyRow(TableUtils &$table, array $arrParams=[]): void
+    {
+        $table->addBodyRow(['attributes'=>$arrParams])
+            ->addBodyCell(['content'=>''])
+            ->addBodyCell(['content'=>$this->mail->getField(FieldConstant::SUBJECT)])
+            ->addBodyCell(['content'=>$this->mail->getExcerpt()])
+            ->addBodyCell(['content'=>$this->mail->getField(FieldConstant::SENTDATE)])
+            ->addBodyCell(['content'=>''])
+            ->addBodyCell(['content'=>'']);
+    }
 }

@@ -51,7 +51,8 @@ class HomeController extends UtilitiesController
     {
         $uri = SessionUtils::fromServer('REQUEST_URI');
         $arrUri = explode('/', $uri);
-
+        var_dump($arrUri);
+        
         return 'wip';
     }
 }

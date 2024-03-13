@@ -99,6 +99,13 @@ class MailData extends Entity
         return $repository->find($this->folderId);
     }
 
+    public function getDestinataire(): string
+    {
+        $repository = new MailPlayerRepository(new MailPlayerCollection());
+        $mailPlayer = $repository->find($this->toId);
+        return $mailPlayer->getField(FieldConstant::USER);
+    }
+
     public function getAuteur(): string
     {
         $repository = new MailPlayerRepository(new MailPlayerCollection());

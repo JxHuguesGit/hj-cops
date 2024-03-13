@@ -74,11 +74,12 @@ class MailDataController extends UtilitiesController
         // Définition du header de la table
         $table->addHeaderRow()
             ->addHeaderCell(['content'=>'#'])
-            ->addHeaderCell(['content'=>'Sujet'])
-            ->addHeaderCell(['content'=>'Extrait'])
-            ->addHeaderCell(['content'=>'Date d\'envoi'])
-            ->addHeaderCell(['content'=>'Nombre'])
-            ->addHeaderCell(['content'=>ConstantConstant::CST_NBSP]);
+            ->addHeaderCell(['content'=>'MailId'])
+            ->addHeaderCell(['content'=>'Destinataire'])
+            ->addHeaderCell(['content'=>'Statut'])
+            ->addHeaderCell(['content'=>'Expéditeur'])
+            ->addHeaderCell(['content'=>'Dossier'])
+            ->addHeaderCell(['content'=>'Lu']);
 
         $table->addBodyRows($mailDatas, 6);
         //////////////////////////////////////////
@@ -96,11 +97,12 @@ class MailDataController extends UtilitiesController
         
         $table->addBodyRow(['attributes'=>$arrParams])
             ->addBodyCell(['content'=>''])
-            ->addBodyCell(['content'=>$this->mailData->getMail()->getField(FieldConstant::SUBJECT)])
-            ->addBodyCell(['content'=>$this->mailData->getMail()->getExcerpt()])
-            ->addBodyCell(['content'=>$this->mailData->getMail()->getField(FieldConstant::SENTDATE)])
-            ->addBodyCell(['content'=>''])
-            ->addBodyCell(['content'=>'']);
+            ->addBodyCell(['content'=>$this->mailData->getField(FieldConstant::MAILID)])
+            ->addBodyCell(['content'=>$this->mailData->getDestinataire()])
+            ->addBodyCell(['content'=>$this->mailData->getField(FieldConstant::STATUS)])
+            ->addBodyCell(['content'=>$this->mailData->getAuteur()])
+            ->addBodyCell(['content'=>$this->mailData->getMailFolder()->getField(FieldConstant::LABEL)])
+            ->addBodyCell(['content'=>$this->mailData->getField(FieldConstant::READ)==1 ? 'Oui' : 'Non']);
     }
 
     public function getTabsBar(): string
