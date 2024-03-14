@@ -18,7 +18,7 @@ class TableUtils
      *              'cells' => [
      *                  0 => [
      *                      'attributes'=>[]
-     *                      'content'=>'',
+     *                      ConstantConstant::CST_CONTENT=>'',
      *                      'type'=>'',
      *                  ]
      *              ]
@@ -36,7 +36,7 @@ class TableUtils
     public function __construct()
     {
         $this->attributes = [
-            'class'=>'table',// table-sm table-striped m-0 sortableTable text-center',
+            ConstantConstant::CST_CLASS=>'table',// table-sm table-striped m-0 sortableTable text-center',
             'aria-describedby' => '',//'Liste des missions',
         ];
     }
@@ -47,8 +47,8 @@ class TableUtils
         foreach ($this->header['rows'] as $row) {
             $rowContent = '';
             foreach ($row['cells'] as $cell) {
-                $cellContent = $cell['content'];
-                $cellType = $cell['type'];
+                $cellContent = $cell[ConstantConstant::CST_CONTENT];
+                $cellType = $cell[ConstantConstant::CST_TYPE];
                 $cellAttributes = $cell['attributes'];
                 $rowContent .= HtmlUtils::getBalise($cellType, $cellContent, $cellAttributes);
             }
@@ -59,8 +59,8 @@ class TableUtils
         foreach ($this->body['rows'] as $row) {
             $rowContent = '';
             foreach ($row['cells'] as $cell) {
-                $cellContent = $cell['content'];
-                $cellType = $cell['type'];
+                $cellContent = $cell[ConstantConstant::CST_CONTENT];
+                $cellType = $cell[ConstantConstant::CST_TYPE];
                 $cellAttributes = $cell['attributes'];
                 $rowContent .= HtmlUtils::getBalise($cellType, $cellContent, $cellAttributes);
             }
@@ -72,8 +72,8 @@ class TableUtils
             foreach ($this->foot['rows'] as $row) {
                 $rowContent = '';
                 foreach ($row['cells'] as $cell) {
-                    $cellContent = $cell['content'];
-                    $cellType = $cell['type'];
+                    $cellContent = $cell[ConstantConstant::CST_CONTENT];
+                    $cellType = $cell[ConstantConstant::CST_TYPE];
                     $cellAttributes = $cell['attributes'];
                     $rowContent .= HtmlUtils::getBalise($cellType, $cellContent, $cellAttributes);
                 }
@@ -106,8 +106,8 @@ class TableUtils
         if (!isset($cell['attributes'])) {
             $cell['attributes'] = [];
         }
-        if (!isset($cell['type'])) {
-            $cell['type'] = 'th';
+        if (!isset($cell[ConstantConstant::CST_TYPE])) {
+            $cell[ConstantConstant::CST_TYPE] = 'th';
         }
         array_push($this->header['rows'][$this->nbHeaderRows]['cells'], $cell);
         return $this;
@@ -119,7 +119,7 @@ class TableUtils
             $paginateBlock = $this->paginate->getPaginationBlock();
             if ($paginateBlock!='') {
                 $this->addFootRow()
-                    ->addFootCell(['attributes'=>['colspan'=>$colspan], 'content'=>$paginateBlock ]);
+                    ->addFootCell(['attributes'=>['colspan'=>$colspan], ConstantConstant::CST_CONTENT=>$paginateBlock ]);
             }
         }
 
@@ -147,8 +147,8 @@ class TableUtils
         if (!isset($cell['attributes'])) {
             $cell['attributes'] = [];
         }
-        if (!isset($cell['type'])) {
-            $cell['type'] = 'td';
+        if (!isset($cell[ConstantConstant::CST_TYPE])) {
+            $cell[ConstantConstant::CST_TYPE] = 'td';
         }
         array_push($this->body['rows'][$this->nbBodyRows]['cells'], $cell);
         return $this;
@@ -170,8 +170,8 @@ class TableUtils
         if (!isset($cell['attributes'])) {
             $cell['attributes'] = [];
         }
-        if (!isset($cell['type'])) {
-            $cell['type'] = 'th';
+        if (!isset($cell[ConstantConstant::CST_TYPE])) {
+            $cell[ConstantConstant::CST_TYPE] = 'th';
         }
         array_push($this->foot['rows'][$this->nbFootRows]['cells'], $cell);
         return $this;

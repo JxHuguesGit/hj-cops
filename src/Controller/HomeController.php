@@ -17,7 +17,7 @@ class HomeController extends UtilitiesController
         }
     }
 
-    public function getContentPage(string $msgProcessError): string
+    public function getContentPage(string $msgProcessError=''): string
     {
         if (!$this->isLogged) {
             $attributes = [

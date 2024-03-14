@@ -62,7 +62,7 @@ class WidgetController extends UtilitiesController
 
             $strLabel = HtmlUtils::getSpan(
                 $i,
-                [ConstantConstant::CST_CLASS => 'form-check-label', 'for'=>$slug.'Width'.$i]
+                [ConstantConstant::CST_CLASS => 'form-check-label', ConstantConstant::CST_FOR=>$slug.'Width'.$i]
             );
             $strDivs .= HtmlUtils::getDiv(
                 $strInput.$strLabel,
@@ -71,9 +71,9 @@ class WidgetController extends UtilitiesController
         }
 
         $table->addBodyRow(['attributes'=>$arrParams])
-            ->addBodyCell(['content'=>$strDivInput])
-            ->addBodyCell(['content'=>$this->widget->getField(FieldConstant::NAME)])
-            ->addBodyCell(['content'=>$strDivs]);
+            ->addBodyCell([ConstantConstant::CST_CONTENT=>$strDivInput])
+            ->addBodyCell([ConstantConstant::CST_CONTENT=>$this->widget->getField(FieldConstant::NAME)])
+            ->addBodyCell([ConstantConstant::CST_CONTENT=>$strDivs]);
 
     }
 

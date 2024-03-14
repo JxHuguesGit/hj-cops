@@ -49,7 +49,7 @@ class PlayerRepository extends Repository
         return $collection->valid() ? $collection->current() : null;
     }
 
-    public function findAll(array $orderBy=['lastname'=>'ASC']): PlayerCollection
+    public function findAll(array $orderBy=['lastname'=>ConstantConstant::CST_ASC]): PlayerCollection
     {
         return $this->findBy([], $orderBy);
     }
@@ -67,7 +67,7 @@ class PlayerRepository extends Repository
     public function getDistinct(string $field): array
     {
         return $this->createDistinctQueryBuilder($field)
-            ->orderBy([$field=>'asc'])
+            ->orderBy([$field=>ConstantConstant::CST_ASC])
             ->getQuery()
             ->getDistinctResult($field);
     }

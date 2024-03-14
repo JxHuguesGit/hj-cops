@@ -1,13 +1,9 @@
 <?php
 namespace src\Controller;
 
-use src\Collection\MailFolderCollection;
 use src\Constant\ConstantConstant;
 use src\Constant\FieldConstant;
-use src\Constant\LabelConstant;
-use src\Constant\TemplateConstant;
 use src\Entity\MailFolder;
-use src\Repository\MailFolderRepository;
 use src\Utils\HtmlUtils;
 use src\Utils\TableUtils;
 
@@ -18,6 +14,16 @@ class MailFolderController extends UtilitiesController
     public function __construct(MailFolder $mailFolder=null)
     {
         $this->mailFolder = $mailFolder ?? new MailFolder();
+    }
+
+    public function addBodyRow(TableUtils &$table, array $arrParams=[]): void
+    {
+		$strIcon = HtmlUtils::getIcon($this->mailFolder->getField(FieldConstant::ICON));
+        $table->addBodyRow(['attributes'=>$arrParams])
+            ->addBodyCell([ConstantConstant::CST_CONTENT=>''])
+            ->addBodyCell([ConstantConstant::CST_CONTENT=>$this->mailFolder->getField(FieldConstant::SLUG)])
+            ->addBodyCell([ConstantConstant::CST_CONTENT=>$this->mailFolder->getField(FieldConstant::LABEL)])
+            ->addBodyCell([ConstantConstant::CST_CONTENT=>$strIcon]);
     }
 
     public function getContentPage(): string

@@ -38,9 +38,6 @@ $(document).ready(function() {
 
   // Interface Inbox
   // On s'appuie sur la présence du block "mailbox-controls"
-{
-
-
     // Pas d'actions individuelles pour le moment
 
     // Action sur le reply global
@@ -48,7 +45,6 @@ $(document).ready(function() {
     // Action sur le refresh global
     // Action sur le bouton Précédent
     // Action sur le bouton Suivant
-  }
 
   // Interface Compose
   if ($('.mailbox-read-info').length!=0) {

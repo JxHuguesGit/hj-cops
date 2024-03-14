@@ -117,7 +117,7 @@ class ProfileController extends UtilitiesController
         /////////////////////////////////////////////
         // Récupération des compétences.
         $repository = new SkillRepository(new SkillCollection());
-        $skills = $repository->findBy([], [FieldConstant::NAME=>'asc']);
+        $skills = $repository->findBy([], [FieldConstant::NAME=>ConstantConstant::CST_ASC]);
         $strLiSkills = '';
         $strLisSpecs = '';
         $this->dispatchSkills($strLiSkills, $strLisSpecs, $skills, $arrIds, $playerSkills);
@@ -181,22 +181,24 @@ class ProfileController extends UtilitiesController
 
     public function getCaracteristiquesCard(): string
     {
-        $attributes = [
-            $this->player->getField(FieldConstant::ATTRCARRURE),
-            $this->player->getField(FieldConstant::ATTRCHARME),
-            $this->player->getField(FieldConstant::ATTRCOORDINATION),
-            $this->player->getField(FieldConstant::ATTREDUCATION),
-            $this->player->getField(FieldConstant::ATTRPERCEPTION),
-            $this->player->getField(FieldConstant::ATTRREFLEXES),
-            $this->player->getField(FieldConstant::ATTRSANGFROID),
-            3-$this->player->getField(FieldConstant::ATTRREFLEXES),
-            $this->player->getField(FieldConstant::HPMAX),
-            $this->player->getField(FieldConstant::HPCUR),
-            $this->player->getField(FieldConstant::ADMAX),
-            $this->player->getField(FieldConstant::ADCUR),
-            $this->player->getField(FieldConstant::ANMAX),
-            $this->player->getField(FieldConstant::ANCUR),
-        ];
-        return $this->getRender(TemplateConstant::TPL_PROFILE_CARAC_CARD, $attributes);
+        return $this->getRender(
+			TemplateConstant::TPL_PROFILE_CARAC_CARD,
+			[
+				$this->player->getField(FieldConstant::ATTRCARRURE),
+				$this->player->getField(FieldConstant::ATTRCHARME),
+				$this->player->getField(FieldConstant::ATTRCOORDINATION),
+				$this->player->getField(FieldConstant::ATTREDUCATION),
+				$this->player->getField(FieldConstant::ATTRPERCEPTION),
+				$this->player->getField(FieldConstant::ATTRREFLEXES),
+				$this->player->getField(FieldConstant::ATTRSANGFROID),
+				3-$this->player->getField(FieldConstant::ATTRREFLEXES),
+				$this->player->getField(FieldConstant::HPMAX),
+				$this->player->getField(FieldConstant::HPCUR),
+				$this->player->getField(FieldConstant::ADMAX),
+				$this->player->getField(FieldConstant::ADCUR),
+				$this->player->getField(FieldConstant::ANMAX),
+				$this->player->getField(FieldConstant::ANCUR),
+			]
+		);
     }
 }

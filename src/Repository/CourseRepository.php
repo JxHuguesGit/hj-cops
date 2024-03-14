@@ -1,6 +1,8 @@
 <?php
 namespace src\Repository;
 
+use src\Constant\ConstantConstant;
+use src\Constant\FieldConstant;
 use src\Collection\CourseCollection;
 use src\Entity\Course;
 
@@ -50,7 +52,7 @@ class CourseRepository extends Repository
         return $collection->valid() ? $collection->current() : null;
     }
 
-    public function findAll(array $orderBy=['name'=>'ASC']): CourseCollection
+    public function findAll(array $orderBy=[FieldConstant::CST_NAME=>ConstantConstant::CST_ASC]): CourseCollection
     {
         return $this->findBy([], $orderBy);
     }
@@ -68,7 +70,7 @@ class CourseRepository extends Repository
     public function getDistinct(string $field): array
     {
         return $this->createDistinctQueryBuilder($field)
-            ->orderBy([$field=>'asc'])
+            ->orderBy([$field=>ConstantConstant::CST_ASC])
             ->getQuery()
             ->getDistinctResult($field);
     }

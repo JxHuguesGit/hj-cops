@@ -49,7 +49,7 @@ class PlayerWidgetRepository extends Repository
         return $collection->valid() ? $collection->current() : null;
     }
 
-    public function findAll(array $orderBy=['id'=>'ASC']): PlayerWidgetCollection
+    public function findAll(array $orderBy=['id'=>ConstantConstant::CST_ASC]): PlayerWidgetCollection
     {
         return $this->findBy([], $orderBy);
     }
@@ -67,7 +67,7 @@ class PlayerWidgetRepository extends Repository
     public function getDistinct(string $field): array
     {
         return $this->createDistinctQueryBuilder($field)
-            ->orderBy([$field=>'asc'])
+            ->orderBy([$field=>ConstantConstant::CST_ASC])
             ->getQuery()
             ->getDistinctResult($field);
     }

@@ -44,7 +44,7 @@ class MailPlayerRepository extends Repository
         return $collection->valid() ? $collection->current() : null;
     }
 
-    public function findAll(array $orderBy=['mail'=>'ASC']): MailPlayerCollection
+    public function findAll(array $orderBy=['mail'=>ConstantConstant::CST_ASC]): MailPlayerCollection
     {
         return $this->findBy([], $orderBy);
     }

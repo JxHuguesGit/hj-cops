@@ -33,7 +33,7 @@ class Form extends UtilitiesController
             ConstantConstant::CST_ID => $id,
             'aria-label' => $label,
             'aria-describedby' => $label,
-            'value' => $value,
+            ConstantConstant::CST_VALUE => $value,
         ];
     }
 
@@ -46,8 +46,8 @@ class Form extends UtilitiesController
         }
         $attributes[ConstantConstant::CST_TYPE] = $extraAttributes[ConstantConstant::CST_TYPE] ?? 'text';
 
-        if (isset($extraAttributes['readonly'])) {
-            $attributes['readonly'] = 'readonly';
+        if (isset($extraAttributes[ConstantConstant::CST_READONLY])) {
+            $attributes[ConstantConstant::CST_READONLY] = ConstantConstant::CST_READONLY;
         }
         if (isset($extraAttributes['required'])) {
             $attributes['required'] = 'required';
@@ -76,7 +76,7 @@ class Form extends UtilitiesController
         while (!empty($enumCases)) {
             $element = array_shift($enumCases);
             $name = $element->label();
-            $optAttributes = ['value'=>$element->value];
+            $optAttributes = [ConstantConstant::CST_VALUE=>$element->value];
             if ($element->value==$value) {
                 $optAttributes['selected'] = 'selected';
             }
@@ -84,7 +84,7 @@ class Form extends UtilitiesController
         }
 
         $attributes = $this->initAttributes($id, $label, $value);
-        unset($attributes['value']);
+        unset($attributes[ConstantConstant::CST_VALUE]);
         $strSelect = HtmlUtils::getBalise('select', $content, $attributes);
 
         $this->formRows[$this->nbRows] .= $this->getSpan($id, $label).$strSelect;
@@ -102,7 +102,7 @@ class Form extends UtilitiesController
         $dataListContent = '';
         while (!empty($collection)) {
             $element = array_shift($collection);
-            $dataListContent .= HtmlUtils::getBalise('option', '', ['value'=>$element]);
+            $dataListContent .= HtmlUtils::getBalise('option', '', [ConstantConstant::CST_VALUE=>$element]);
         }
         $this->formRows[$this->nbRows] .= HtmlUtils::getBalise(
             'datalist',

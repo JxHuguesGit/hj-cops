@@ -49,7 +49,7 @@ class PlayerSkillRepository extends Repository
         return $collection->valid() ? $collection->current() : null;
     }
 
-    public function findAll(array $orderBy=['id'=>'ASC']): PlayerSkillCollection
+    public function findAll(array $orderBy=['id'=>ConstantConstant::CST_ASC]): PlayerSkillCollection
     {
         return $this->findBy([], $orderBy);
     }
@@ -67,7 +67,7 @@ class PlayerSkillRepository extends Repository
     public function getDistinct(string $field): array
     {
         return $this->createDistinctQueryBuilder($field)
-            ->orderBy([$field=>'asc'])
+            ->orderBy([$field=>ConstantConstant::CST_ASC])
             ->getQuery()
             ->getDistinctResult($field);
     }
@@ -99,7 +99,7 @@ class PlayerSkillRepository extends Repository
         $this->baseQuery .= "LEFT JOIN `copsSkill` AS cs2 ON cs.skillId = cs2.id ";
 
         return $this->setCriteria($criteria)
-            ->orderBy(['mainSkill'=>'asc', 'secondarySkill'=>'asc'])
+            ->orderBy(['mainSkill'=>ConstantConstant::CST_ASC, 'secondarySkill'=>ConstantConstant::CST_ASC])
             ->getQuery()
             ->getResult();
     }

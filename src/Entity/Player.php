@@ -6,6 +6,7 @@ use src\Collection\MailFolderCollection;
 use src\Collection\MailPlayerCollection;
 use src\Collection\PlayerCollection;
 use src\Collection\PlayerWidgetCollection;
+use src\Constant\ConstantConstant;
 use src\Constant\FieldConstant;
 use src\Controller\PlayerController;
 use src\Entity\MailPlayer;
@@ -132,7 +133,10 @@ class Player extends Entity
     public function getWidgets(): PlayerWidgetCollection
     {
         $repository = new PlayerWidgetRepository(new PlayerWidgetCollection());
-        return $repository->findBy([FieldConstant::PLAYERID=>$this->id], [FieldConstant::POS=>'asc']);
+        return $repository->findBy(
+            [FieldConstant::PLAYERID=>$this->id],
+            [FieldConstant::POS=>ConstantConstant::CST_ASC]
+        );
     }
 
     public function getWidget(int $widgetId): ?PlayerWidget

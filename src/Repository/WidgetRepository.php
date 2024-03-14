@@ -1,6 +1,8 @@
 <?php
 namespace src\Repository;
 
+use src\Constant\ConstantConstant;
+use src\Constant\FieldConstant;
 use src\Collection\WidgetCollection;
 use src\Entity\Widget;
 
@@ -50,7 +52,7 @@ class WidgetRepository extends Repository
         return $collection->valid() ? $collection->current() : null;
     }
 
-    public function findAll(array $orderBy=['name'=>'ASC']): WidgetCollection
+    public function findAll(array $orderBy=[FieldConstant::NAME=>ConstantConstant::CST_ASC]): WidgetCollection
     {
         return $this->findBy([], $orderBy);
     }
@@ -68,7 +70,7 @@ class WidgetRepository extends Repository
     public function getDistinct(string $field): array
     {
         return $this->createDistinctQueryBuilder($field)
-            ->orderBy([$field=>'asc'])
+            ->orderBy([$field=>ConstantConstant::CST_ASC])
             ->getQuery()
             ->getDistinctResult($field);
     }

@@ -44,7 +44,9 @@ class MailFolderRepository extends Repository
         return $collection->valid() ? $collection->current() : null;
     }
 
-    public function findAll(array $orderBy=['label'=>'ASC']): MailFolderCollection
+    public function findAll(
+        array $orderBy=[ConstantConstant::CST_LABEL=>ConstantConstant::CST_ASC]
+    ): MailFolderCollection
     {
         return $this->findBy([], $orderBy);
     }

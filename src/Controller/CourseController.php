@@ -5,6 +5,7 @@ use src\Collection\CourseCollection;
 use src\Collection\SkillCollection;
 use src\Constant\ConstantConstant;
 use src\Constant\FieldConstant;
+use src\Constant\IconConstant;
 use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
 use src\Entity\Course;
@@ -28,31 +29,39 @@ class CourseController extends UtilitiesController
         $this->arrParams = $arrParams;
         
         $repository = new CourseRepository(new CourseCollection());
-        $courses = $repository->findAll([FieldConstant::CATEGORY=>'asc', FieldConstant::LEVEL=>'asc']);
+        $orders = [FieldConstant::CATEGORY=>ConstantConstant::CST_ASC, FieldConstant::LEVEL=>ConstantConstant::CST_ASC];
+        $courses = $repository->findAll($orders);
 
         $table = new TableUtils();
         $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
         $table->setPaginate([
             ConstantConstant::PAGE_OBJS => $courses,
             ConstantConstant::CST_CURPAGE => $this->arrParams[ConstantConstant::CST_CURPAGE] ?? 1,
-            ConstantConstant::CST_URL => '/library/?page=courses',
+            ConstantConstant::CST_URL => UrlUtils::getPublicUrl(
+                ConstantConstant::CST_LIBRARY,
+                [ConstantConstant::CST_PAGE=>ConstantConstant::CST_COURSES]
+            ),
         ]);
 
         $table->addHeaderRow()
-            ->addHeaderCell(['content'=>'#'])
-            ->addHeaderCell(['content'=>'Catégorie'])
-            ->addHeaderCell(['content'=>'Nom'])
-            ->addHeaderCell(['content'=>'Niveau'])
-            ->addHeaderCell(['content'=>'Source']);
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>'#'])
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>FieldConstant::LBL_CATEGORY])
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>FieldConstant::LBL_NAME])
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>FieldConstant::LBL_LEVEL])
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>FieldConstant::LBL_SOURCE]);
 
         $table->addBodyRows($courses, 5, $arrParams);
 
         $viewCard = '';
-        if (isset($this->arrParams['action']) && $this->arrParams['action']=='view') {
+        if (isset($this->arrParams[ConstantConstant::CST_ACTION])
+            && $this->arrParams[ConstantConstant::CST_ACTION]==ConstantConstant::CST_VIEW
+        ) {
             $repository = new CourseRepository(new CourseCollection());
-            $course = $repository->find($this->arrParams['id']);
+            $course = $repository->find($this->arrParams[ConstantConstant::CST_ID]);
             if ($course!=null) {
-                if (!isset($this->arrParams['type']) || $this->arrParams['type']=='course') {
+                if (!isset($this->arrParams[ConstantConstant::CST_TYPE])
+                    || $this->arrParams[ConstantConstant::CST_TYPE]==ConstantConstant::CST_COURSE
+                ) {
                     $viewCard = $course->getController()->getCard();
                 } else {
                     $viewCard = $course->getController()->getAccordion();
@@ -71,17 +80,29 @@ class CourseController extends UtilitiesController
     public function addBodyRow(TableUtils &$table, array $arrParams=[]): void
     {
         $id = $this->course->getField(FieldConstant::ID);
-        $href = '/library/?page=courses&amp;action=view&amp;id='.$id;
+        $linkAttributes = [
+            ConstantConstant::CST_PAGE=>ConstantConstant::CST_COURSES,
+            ConstantConstant::CST_ACTION=>ConstantConstant::CST_VIEW,
+            'id'=>$id
+        ];
         if (isset($arrParams[ConstantConstant::CST_CURPAGE])) {
-            $href .= '&amp;'.ConstantConstant::CST_CURPAGE.'='.$arrParams[ConstantConstant::CST_CURPAGE];
+            $linkAttributes[ConstantConstant::CST_CURPAGE] = $arrParams[ConstantConstant::CST_CURPAGE];
         }
         $category = $this->course->getField(FieldConstant::CATEGORY);
-        $strLinkCateg = HtmlUtils::getLink($category, $href.'&amp;type=category');
+        $linkAttributes[ConstantConstant::CST_TYPE] = 'category';
+        $strLinkCateg = HtmlUtils::getLink(
+            $category,
+            UrlUtils::getPublicUrl(ConstantConstant::CST_LIBRARY, $linkAttributes)
+        );
         $name = $this->course->getField(FieldConstant::NAME);
-        $strLinkName = HtmlUtils::getLink($name, $href.'&amp;type=course');
+        $linkAttributes[ConstantConstant::CST_TYPE] = ConstantConstant::CST_COURSE;
+        $strLinkName = HtmlUtils::getLink(
+            $name,
+            UrlUtils::getPublicUrl(ConstantConstant::CST_LIBRARY, $linkAttributes)
+        );
         $level = $this->course->getField(FieldConstant::LEVEL);
 
-        $strIcon = HtmlUtils::getIcon('medal');
+        $strIcon = HtmlUtils::getIcon(IconConstant::I_MEDAL);
         $bgColor = 'btn btn-sm disabled btn-';
         if ($level==3) {
             $bgColor .= 'gold';
@@ -99,27 +120,27 @@ class CourseController extends UtilitiesController
             strpos($reference, 'ici')===false &&
             strpos($reference, 'inconnu')===false
         ) {
-            $strIcon = HtmlUtils::getIcon('check');
+            $strIcon = HtmlUtils::getIcon(IconConstant::I_CHECK);
             $bgColor .= 'success';
         } else {
-            $strIcon = HtmlUtils::getIcon('times');
+            $strIcon = HtmlUtils::getIcon(IconConstant::I_TIMES);
             $bgColor .= 'danger';
         }
         $strSpanOff = HtmlUtils::getSpan($strIcon, [ConstantConstant::CST_CLASS=>$bgColor]);
 
         $table->addBodyRow()
-            ->addBodyCell(['content'=>$id])
-            ->addBodyCell(['content'=>$strLinkCateg])
-            ->addBodyCell(['content'=>$strLinkName])
-            ->addBodyCell(['content'=>$strSpanLevel])
-            ->addBodyCell(['content'=>$strSpanOff]);
+            ->addBodyCell([ConstantConstant::CST_CONTENT=>$id])
+            ->addBodyCell([ConstantConstant::CST_CONTENT=>$strLinkCateg])
+            ->addBodyCell([ConstantConstant::CST_CONTENT=>$strLinkName])
+            ->addBodyCell([ConstantConstant::CST_CONTENT=>$strSpanLevel])
+            ->addBodyCell([ConstantConstant::CST_CONTENT=>$strSpanOff]);
     }
 
     public function getCard(bool $hideCateg=false): string
     {
         $card = new CardUtils();
-        return $card->setHeader(['content'=>$this->course->getField(FieldConstant::NAME)])
-            ->setBody(['content'=>$this->getForm($hideCateg)])
+        return $card->setHeader([ConstantConstant::CST_CONTENT=>$this->course->getField(FieldConstant::NAME)])
+            ->setBody([ConstantConstant::CST_CONTENT=>$this->getForm($hideCateg)])
             ->setFooter([ConstantConstant::CST_CLASS=>' hidden'])
             ->display();
     }
@@ -159,7 +180,10 @@ class CourseController extends UtilitiesController
         $category = $this->course->getField(FieldConstant::CATEGORY);
         // On doit récupérer les stages associés à la catégorie du stage courant.
         $repository = new CourseRepository(new CourseCollection());
-        $courses = $repository->findBy([FieldConstant::CATEGORY=>$category], [FieldConstant::LEVEL=>'asc']);
+        $courses = $repository->findBy(
+            [FieldConstant::CATEGORY=>$category],
+            [FieldConstant::LEVEL=>ConstantConstant::CST_ASC]
+        );
         $nb = $courses->length();
 
         $attributes = [$category];

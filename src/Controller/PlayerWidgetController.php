@@ -48,13 +48,13 @@ class PlayerWidgetController extends UtilitiesController
             //
             $card->addClass('bg-transparent border-0')
                 ->setHeader([ConstantConstant::CST_CLASS=>' d-none'])
-                ->setBody(['content'=>$body, ConstantConstant::CST_CLASS=>' p-0 m-0'])
+                ->setBody([ConstantConstant::CST_CONTENT=>$body, ConstantConstant::CST_CLASS=>' p-0 m-0'])
                 ->setFooter([ConstantConstant::CST_CLASS=>' d-none']);
         } else {
             $card->addClass('bg-'.$this->playerWidget->getField(FieldConstant::COLOR))
-                ->setHeader(['content'=>'Header'])
-                ->setBody(['content'=>'Body'])
-                ->setFooter(['content'=>'Footer']);
+                ->setHeader([ConstantConstant::CST_CONTENT=>'Header'])
+                ->setBody([ConstantConstant::CST_CONTENT=>'Body'])
+                ->setFooter([ConstantConstant::CST_CONTENT=>'Footer']);
         }
         return '<div class="col-md-'.(4*$width).' col-sm-'.(4*$width).' mb-1">'.$card->display().'</div>';
 

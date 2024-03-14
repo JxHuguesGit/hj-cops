@@ -4,6 +4,7 @@ namespace src\Controller;
 use src\Collection\MailDataCollection;
 use src\Constant\ConstantConstant;
 use src\Constant\FieldConstant;
+use src\Constant\IconConstant;
 use src\Constant\TemplateConstant;
 use src\Entity\Player;
 use src\Exception\TemplateException;
@@ -43,34 +44,6 @@ class UtilitiesController
         }
     }
 
-    public function setBreadCrumbsContent(): void
-    {
-        $aContent = HtmlUtils::getIcon('desktop');
-        $buttonContent = HtmlUtils::getLink(
-            $aContent,
-            UrlUtils::getAdminUrl(),
-            'text-white',
-        );
-        //if ($this->slugOnglet==self::ONGLET_DESK || $this->slugOnglet=='') {
-        //    $buttonAttributes = [self::ATTR_CLASS=>' '.self::BTS_BTN_DARK_DISABLED];
-        //} else {
-            $buttonAttributes = ['class'=>'btn-secondary'];
-        //}
-        $this->breadCrumbsContent = HtmlUtils::getButton($buttonContent, $buttonAttributes);
-
-    }
-
-    public static function getAdminController(array $arrUri): mixed
-    {
-        $controller = new UtilitiesController($arrUri);
-        if (substr($controller->getArrParams('onglet'), 0, 4)=='mail') {
-            $controller = new MailController($arrUri);
-        } else {
-            $controller = new HomeController($arrUri);
-        }
-        return $controller;
-    }
-
     public function getArrParams(string $key): mixed
     {
         return $this->arrParams[$key] ?? '';
@@ -81,10 +54,44 @@ class UtilitiesController
         return $this->player;
     }
 
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
     public function setParams(array $params=[]): self
     {
         $this->arrParams = $params;
         return $this;
+    }
+
+    public function setBreadCrumbsContent(): string
+    {
+        return HtmlUtils::getButton(
+			HtmlUtils::getLink(
+				HtmlUtils::getIcon(IconConstant::I_DESKTOP),
+				UrlUtils::getAdminUrl(),
+				'text-white',
+			),
+			[ConstantConstant::CST_CLASS=>'btn-secondary']
+		);
+    }
+
+
+
+
+
+
+
+    public static function getAdminController(array $arrUri): mixed
+    {
+        $controller = new UtilitiesController($arrUri);
+        if (substr($controller->getArrParams(ConstantConstant::CST_ONGLET), 0, 4)=='mail') {
+            $controller = new PageController($arrUri);
+        } else {
+            $controller = new HomePageController($arrUri);
+        }
+        return $controller;
     }
     
     public function getRender(string $urlTemplate, array $args=[]): string
@@ -125,14 +132,14 @@ class UtilitiesController
                 ];
                 $mailNotifs = $this->getPlayer()->getMailData($searchAttributes);
 
-                $strIcon = HtmlUtils::getIcon('bell');
+                $strIcon = HtmlUtils::getIcon(IconConstant::I_BELL);
                 if ($mailNotifs->valid()) {
                     $strIcon .= HtmlUtils::getSpan(
                         $mailNotifs->length(),
                         [ConstantConstant::CST_CLASS=>'badge bg-teal']
                     );
                 }
-                $strLink = HtmlUtils::getLink($strIcon, '/notification');
+                $strLink = HtmlUtils::getLink($strIcon, UrlUtils::getPublicUrl(ConstantConstant::CST_NOTIFICATION));
                 $strBtn  = HtmlUtils::getButton($strLink, [ConstantConstant::CST_CLASS=>'text-white']);
                 $strNotifIcons .= HtmlUtils::getLi(
                     $strBtn,
@@ -142,7 +149,7 @@ class UtilitiesController
             }
 
             $attributes = [
-                PLUGINS_COPS.'assets/images/',
+                UrlUtils::getAssetUrl('images'),
                 $this->getPlayer()->getFullName(),
                 $strMask,
                 $menuClass,
@@ -152,11 +159,6 @@ class UtilitiesController
         } else {
             return '';
         }
-    }
-
-    public function getTitle(): string
-    {
-        return $this->title;
     }
 
     public function getClassLogged(): string

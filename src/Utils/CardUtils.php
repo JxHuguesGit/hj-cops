@@ -15,15 +15,15 @@ class CardUtils
         $this->attributes = [
             'header' => [
                 ConstantConstant::CST_CLASS => 'card-header',
-                'content' => '',
+                ConstantConstant::CST_CONTENT => '',
             ],
             'body' => [
                 ConstantConstant::CST_CLASS => 'card-body',
-                'content' => '',
+                ConstantConstant::CST_CONTENT => '',
             ],
             'footer' => [
                 ConstantConstant::CST_CLASS => 'card-footer',
-                'content' => '',
+                ConstantConstant::CST_CONTENT => '',
             ],
 
         ];
@@ -37,8 +37,8 @@ class CardUtils
 
     public function setHeader(array $attributes): self
     {
-        if (isset($attributes['content'])) {
-            $this->attributes['header']['content'] .= $attributes['content'];
+        if (isset($attributes[ConstantConstant::CST_CONTENT])) {
+            $this->attributes['header'][ConstantConstant::CST_CONTENT] .= $attributes[ConstantConstant::CST_CONTENT];
         }
         if (isset($attributes[ConstantConstant::CST_CLASS])) {
             $this->attributes['header'][ConstantConstant::CST_CLASS] .= $attributes[ConstantConstant::CST_CLASS];
@@ -49,8 +49,8 @@ class CardUtils
 
     public function setBody(array $attributes): self
     {
-        if (isset($attributes['content'])) {
-            $this->attributes['body']['content'] .= $attributes['content'];
+        if (isset($attributes[ConstantConstant::CST_CONTENT])) {
+            $this->attributes['body'][ConstantConstant::CST_CONTENT] .= $attributes[ConstantConstant::CST_CONTENT];
         }
         if (isset($attributes[ConstantConstant::CST_CLASS])) {
             $this->attributes['body'][ConstantConstant::CST_CLASS] .= $attributes[ConstantConstant::CST_CLASS];
@@ -61,8 +61,8 @@ class CardUtils
 
     public function setFooter(array $attributes): self
     {
-        if (isset($attributes['content'])) {
-            $this->attributes['footer']['content'] .= $attributes['content'];
+        if (isset($attributes[ConstantConstant::CST_CONTENT])) {
+            $this->attributes['footer'][ConstantConstant::CST_CONTENT] .= $attributes[ConstantConstant::CST_CONTENT];
         }
         if (isset($attributes[ConstantConstant::CST_CLASS])) {
             $this->attributes['footer'][ConstantConstant::CST_CLASS] .= $attributes[ConstantConstant::CST_CLASS];
@@ -74,15 +74,15 @@ class CardUtils
     public function display(): string
     {
         $header = HtmlUtils::getDiv(
-            $this->attributes['header']['content'],
+            $this->attributes['header'][ConstantConstant::CST_CONTENT],
             [ConstantConstant::CST_CLASS=>$this->attributes['header'][ConstantConstant::CST_CLASS]]
         );
         $body = HtmlUtils::getDiv(
-            $this->attributes['body']['content'],
+            $this->attributes['body'][ConstantConstant::CST_CONTENT],
             [ConstantConstant::CST_CLASS=>$this->attributes['body'][ConstantConstant::CST_CLASS]]
         );
         $footer = HtmlUtils::getDiv(
-            $this->attributes['footer']['content'],
+            $this->attributes['footer'][ConstantConstant::CST_CONTENT],
             [ConstantConstant::CST_CLASS=>$this->attributes['footer'][ConstantConstant::CST_CLASS]]
         );
 

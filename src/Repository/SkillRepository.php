@@ -1,6 +1,8 @@
 <?php
 namespace src\Repository;
 
+use src\Constant\ConstantConstant;
+use src\Constant\FieldConstant;
 use src\Collection\SkillCollection;
 use src\Entity\Skill;
 
@@ -50,7 +52,7 @@ class SkillRepository extends Repository
         return $collection->valid() ? $collection->current() : null;
     }
 
-    public function findAll(array $orderBy=['name'=>'ASC']): SkillCollection
+    public function findAll(array $orderBy=[FieldConstant::CST_NAME=>ConstantConstant::CST_ASC]): SkillCollection
     {
         return $this->findBy([], $orderBy);
     }
@@ -68,7 +70,7 @@ class SkillRepository extends Repository
     public function getDistinct(string $field): array
     {
         return $this->createDistinctQueryBuilder($field)
-            ->orderBy([$field=>'asc'])
+            ->orderBy([$field=>ConstantConstant::CST_ASC])
             ->getQuery()
             ->getDistinctResult($field);
     }

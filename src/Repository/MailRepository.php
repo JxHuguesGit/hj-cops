@@ -44,7 +44,7 @@ class MailRepository extends Repository
         return $collection->valid() ? $collection->current() : null;
     }
 
-    public function findAll(array $orderBy=['sentDate'=>'ASC']): MailCollection
+    public function findAll(array $orderBy=['sentDate'=>ConstantConstant::CST_ASC]): MailCollection
     {
         return $this->findBy([], $orderBy);
     }

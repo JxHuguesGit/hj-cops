@@ -44,7 +44,7 @@ class MailDataRepository extends Repository
         return $collection->valid() ? $collection->current() : null;
     }
 
-    public function findAll(array $orderBy=['id'=>'ASC']): MailDataCollection
+    public function findAll(array $orderBy=['id'=>ConstantConstant::CST_ASC]): MailDataCollection
     {
         return $this->findBy([], $orderBy);
     }

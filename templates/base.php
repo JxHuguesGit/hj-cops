@@ -6,7 +6,7 @@ use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
 use src\Controller\HomeController;
 use src\Controller\LibraryController;
-use src\Controller\MailController;
+use src\Controller\MailPageController;
 use src\Controller\ProfileController;
 use src\Controller\SettingsController;
 use src\Controller\UtilitiesController;
@@ -57,7 +57,7 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
                 break;
                 case ConstantConstant::CST_NOTIFICATION :
                 case ConstantConstant::CST_TRASH :
-                        $controller = new MailController($arrUri, $slug);
+                        $controller = new MailPageController($arrUri, $slug);
                 break;
                 default :
                     $controller = new HomeController();

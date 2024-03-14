@@ -5,14 +5,18 @@ interface ConstantConstant
 {
     public const CST_ACTION             = 'action';
     public const CST_ALERT              = 'alert';
+    public const CST_ASC                = 'asc';
     public const CST_CHANGEMDP          = 'changeMdp';
     public const CST_CHAT               = 'chat';
     public const CST_CHECKED            = 'checked';
     public const CST_CLASS              = 'class';
     public const CST_CONFIRMMDP         = 'confirmMdp';
+    public const CST_CONTENT            = 'content';
     public const CST_COPSDATE           = 'copsDate';
+    public const CST_COURSE             = 'course';
     public const CST_COURSES            = 'courses';
     public const CST_CURPAGE            = 'curpage';
+    public const CST_DESC               = 'desc';
     public const CST_DISABLED           = 'disabled';
     public const CST_DRAFT              = 'draft';
     public const CST_EVENT              = 'event';
@@ -51,6 +55,7 @@ interface ConstantConstant
     public const CST_TYPE               = 'type';
     public const CST_URL                = 'url';
     public const CST_VALUE              = 'value';
+    public const CST_VIEW               = 'view';
 
     /////////////////////////////////////////////////
     // Pagination

@@ -2,6 +2,7 @@
 namespace src\Repository;
 
 use src\Collection\Collection;
+use src\Constant\ConstantConstant;
 use src\Constant\FieldConstant;
 
 class Repository
@@ -68,7 +69,7 @@ class Repository
             $this->params['where'] = [];
             foreach ($criteria as $crit) {
                 $this->strWhere .= " AND ".$crit['field'].$crit['operand']."'%s'";
-                $this->params['where'][] = $crit['value'];
+                $this->params['where'][] = $crit[ConstantConstant::CST_VALUE];
             }
         }
         return $this;
@@ -161,8 +162,8 @@ class Repository
         global $wpdb;
 
         $args = [];
-        if (isset($this->params['orderBy'])) {
-            array_push($args, $this->params['orderBy']);
+        if (isset($this->params[ConstantConstant::CST_ORDERBY])) {
+            array_push($args, $this->params[ConstantConstant::CST_ORDERBY]);
         }
         $query = vsprintf($this->query, $args);
         $rows  = $wpdb->get_results($query);

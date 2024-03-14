@@ -29,22 +29,29 @@ class SettingsController extends UtilitiesController
         $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
 
         $table->addHeaderRow()
-            ->addHeaderCell(['content'=>'#'])
-            ->addHeaderCell(['content'=>'Nom'])
-            ->addHeaderCell(['content'=>'Largeur']);
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>'#'])
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>'Nom'])
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>'Largeur']);
 
         $table->addBodyRows($widgets, 3);
 
-        $strInput = HtmlUtils::getInput(['type'=>'hidden', 'name'=>'formName', 'value'=>'dashboardSettings']);
+        $strInput = HtmlUtils::getInput([
+            ConstantConstant::CST_TYPE=>'hidden',
+            ConstantConstant::CST_NAME=>ConstantConstant::CST_FORMNAME,
+            ConstantConstant::CST_VALUE=>'dashboardSettings'
+        ]);
         $strButton = HtmlUtils::getBalise(
             'button',
             'Confirmer',
-            ['class'=>'btn btn-secondary btn-sm', 'type'=>'submit']
+            [ConstantConstant::CST_CLASS=>'btn btn-secondary btn-sm', ConstantConstant::CST_TYPE=>'submit']
         );
-        $strFootContent = HtmlUtils::getDiv($strInput.$strButton, ['class'=>'d-flex justify-content-end']);
+        $strFootContent = HtmlUtils::getDiv(
+            $strInput.$strButton,
+            [ConstantConstant::CST_CLASS=>'d-flex justify-content-end']
+        );
 
         $table->addFootRow()
-            ->addFootCell(['attributes'=>['colspan'=>3], 'content'=>$strFootContent]);
+            ->addFootCell(['attributes'=>['colspan'=>3], ConstantConstant::CST_CONTENT=>$strFootContent]);
 
         $attributes = [
             $table->display(),
