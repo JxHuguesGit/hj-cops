@@ -14,6 +14,7 @@ use src\Repository\SkillRepository;
 use src\Utils\CardUtils;
 use src\Utils\HtmlUtils;
 use src\Utils\TableUtils;
+use src\Utils\UrlUtils;
 
 class CourseController extends UtilitiesController
 {
@@ -45,10 +46,10 @@ class CourseController extends UtilitiesController
 
         $table->addHeaderRow()
             ->addHeaderCell([ConstantConstant::CST_CONTENT=>'#'])
-            ->addHeaderCell([ConstantConstant::CST_CONTENT=>FieldConstant::LBL_CATEGORY])
-            ->addHeaderCell([ConstantConstant::CST_CONTENT=>FieldConstant::LBL_NAME])
-            ->addHeaderCell([ConstantConstant::CST_CONTENT=>FieldConstant::LBL_LEVEL])
-            ->addHeaderCell([ConstantConstant::CST_CONTENT=>FieldConstant::LBL_SOURCE]);
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>LabelConstant::LBL_CATEGORY])
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>LabelConstant::LBL_NAME])
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>LabelConstant::LBL_LEVEL])
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>LabelConstant::LBL_SOURCE]);
 
         $table->addBodyRows($courses, 5, $arrParams);
 

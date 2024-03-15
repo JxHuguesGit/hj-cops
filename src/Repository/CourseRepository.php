@@ -40,8 +40,8 @@ class CourseRepository extends Repository
     public function find($id): ?Course
     {
         $this->collection->empty();
-        return $this->createQueryBuilder('s')
-            ->setCriteria(['s.id'=>$id])
+        return $this->createQueryBuilder()
+            ->setCriteria(['id'=>$id])
             ->getQuery()
             ->getOneOrNullResult();
     }
@@ -59,7 +59,7 @@ class CourseRepository extends Repository
 
     public function findBy(array $criteria, array $orderBy=[], int $limit=-1): CourseCollection
     {
-        return $this->createQueryBuilder('s')
+        return $this->createQueryBuilder()
             ->setCriteria($criteria)
             ->orderBy($orderBy)
             ->setMaxResults($limit)

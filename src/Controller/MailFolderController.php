@@ -18,7 +18,7 @@ class MailFolderController extends UtilitiesController
 
     public function addBodyRow(TableUtils &$table, array $arrParams=[]): void
     {
-		$strIcon = HtmlUtils::getIcon($this->mailFolder->getField(FieldConstant::ICON));
+        $strIcon = HtmlUtils::getIcon($this->mailFolder->getField(FieldConstant::ICON));
         $table->addBodyRow(['attributes'=>$arrParams])
             ->addBodyCell([ConstantConstant::CST_CONTENT=>''])
             ->addBodyCell([ConstantConstant::CST_CONTENT=>$this->mailFolder->getField(FieldConstant::SLUG)])

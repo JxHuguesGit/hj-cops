@@ -119,7 +119,9 @@ class TableUtils
             $paginateBlock = $this->paginate->getPaginationBlock();
             if ($paginateBlock!='') {
                 $this->addFootRow()
-                    ->addFootCell(['attributes'=>['colspan'=>$colspan], ConstantConstant::CST_CONTENT=>$paginateBlock ]);
+                    ->addFootCell(
+                        ['attributes'=>['colspan'=>$colspan], ConstantConstant::CST_CONTENT=>$paginateBlock]
+                    );
             }
         }
 

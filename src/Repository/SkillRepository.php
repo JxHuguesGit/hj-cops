@@ -40,8 +40,8 @@ class SkillRepository extends Repository
     public function find($id): ?Skill
     {
         $this->collection->empty();
-        return $this->createQueryBuilder('s')
-            ->setCriteria(['s.id'=>$id])
+        return $this->createQueryBuilder()
+            ->setCriteria(['id'=>$id])
             ->getQuery()
             ->getOneOrNullResult();
     }

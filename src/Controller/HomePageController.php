@@ -5,7 +5,7 @@ use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
 use src\Utils\SessionUtils;
 
-class HomeController extends UtilitiesController
+class HomePageController extends UtilitiesController
 {
     public function __construct()
     {

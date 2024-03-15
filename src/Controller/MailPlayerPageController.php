@@ -66,17 +66,17 @@ class MailPlayerPageController extends PageController
     public function setBreadCrumbsContent(): string
     {
         return $this->getRender(
-			TemplateConstant::TPL_CONTENT_HEADER,
-			[
-				'MailPlayer',
-				parent::setBreadCrumbsContent()
-					. ' ' . HtmlUtils::getIcon(IconConstant::I_CARETRIGHT)
-					. ' ' . HtmlUtils::getButton(
-						'MailPlayer',
-						[ConstantConstant::CST_CLASS=>'btn-secondary disabled']
-					)
-			]
-		);
+            TemplateConstant::TPL_CONTENT_HEADER,
+            [
+                'MailPlayer',
+                parent::setBreadCrumbsContent()
+                    . ' ' . HtmlUtils::getIcon(IconConstant::I_CARETRIGHT)
+                    . ' ' . HtmlUtils::getButton(
+                        'MailPlayer',
+                        [ConstantConstant::CST_CLASS=>'btn-secondary disabled']
+                    )
+            ]
+        );
     }
 
     public function getContentPage(): string

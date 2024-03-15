@@ -98,6 +98,7 @@ class Repository
                     $this->strOrderBy .= ', ';
                 }
                 $this->strOrderBy .= $key.' '.$value;
+                $first = false;
             }
         }
         return $this;

@@ -11,6 +11,7 @@ use src\Entity\Skill;
 use src\Repository\SkillRepository;
 use src\Utils\HtmlUtils;
 use src\Utils\TableUtils;
+use src\Utils\UrlUtils;
 
 class SkillController extends UtilitiesController
 {
@@ -69,21 +70,21 @@ class SkillController extends UtilitiesController
     {
         return HtmlUtils::getLi(
             HtmlUtils::getLink(
-				$this->skill->getField(FieldConstant::NAME),
-				UrlUtils::getPublicUrl(
-					ConstantConstant::CST_PROFILE,
-					[ConstantConstant::CST_ACTION=>'addskill', 'skillId'=>$this->skill->getField(FieldConstant::ID)]
-				),
-				'dropdown-item ajaxAction',
-				[
-					'data-speclevel'    => $this->skill->getField(FieldConstant::SPECLEVEL),
-					'data-skillid'      => $this->skill->getField(FieldConstant::ID),
-					'data-parentid'     => $this->skill->getField(FieldConstant::SKILLID),
-					'data-score'        => $score,
-					'data-trigger'      => 'click',
-					'data-ajax'         => 'skillCreation',
-				]
-			)
+                $this->skill->getField(FieldConstant::NAME),
+                UrlUtils::getPublicUrl(
+                    ConstantConstant::CST_PROFILE,
+                    [ConstantConstant::CST_ACTION=>'addskill', 'skillId'=>$this->skill->getField(FieldConstant::ID)]
+                ),
+                'dropdown-item ajaxAction',
+                [
+                    'data-speclevel'    => $this->skill->getField(FieldConstant::SPECLEVEL),
+                    'data-skillid'      => $this->skill->getField(FieldConstant::ID),
+                    'data-parentid'     => $this->skill->getField(FieldConstant::SKILLID),
+                    'data-score'        => $score,
+                    'data-trigger'      => 'click',
+                    'data-ajax'         => 'skillCreation',
+                ]
+            )
         );
     }
 
@@ -113,7 +114,10 @@ class SkillController extends UtilitiesController
         $divContent .= HtmlUtils::getSpan($secondLabel, [ConstantConstant::CST_CLASS=>"input-group-text col-3"]);
         $divContent .= HtmlUtils::getInput($attributes);
         if ($score>2 && $score>$specLevel+1) {
-            $aContent = HtmlUtils::getButton(HtmlUtils::getIcon(IconConstant::I_CARETDOWN), []);
+            $aContent = HtmlUtils::getButton(
+                HtmlUtils::getIcon(IconConstant::I_CARETDOWN),
+                [ConstantConstant::CST_CLASS=>'py-0 border-0']
+            );
             $linkAttributes = [
                 ConstantConstant::CST_ACTION=>'improveskill',
                 'skillId'=>$this->skill->getField(FieldConstant::ID)
@@ -123,10 +127,10 @@ class SkillController extends UtilitiesController
                 UrlUtils::getPublicUrl(ConstantConstant::CST_PROFILE, $linkAttributes)
             );
         } else {
-			$spanContent = '';
+            $spanContent = '';
         }
         $divContent .= HtmlUtils::getSpan($spanContent, [ConstantConstant::CST_CLASS=>"input-group-text col-1"]);
-        return HtmlUtils::getDiv($divContent, [ConstantConstant::CST_CLASS=>"input-group mb-3"]);
+        return HtmlUtils::getDiv($divContent, [ConstantConstant::CST_CLASS=>"input-group input-group-sm mb-1"]);
     }
 
     public function addBodyRow(TableUtils &$table): void

@@ -17,7 +17,7 @@ class MailPlayerController extends UtilitiesController
 
     public function addBodyRow(TableUtils &$table, array $arrParams=[]): void
     {
-		$blnCops = $this->mailPlayer->getField(FieldConstant::PLAYERID)!=0;
+        $blnCops = $this->mailPlayer->getField(FieldConstant::PLAYERID)!=0;
         $table->addBodyRow(['attributes'=>$arrParams])
             ->addBodyCell([ConstantConstant::CST_CONTENT=>''])
             ->addBodyCell([ConstantConstant::CST_CONTENT=>$this->mailPlayer->getField(FieldConstant::MAIL)])

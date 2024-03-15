@@ -7,7 +7,7 @@ class HtmlUtils
 {
     public static function getBalise(string $balise, string $label='', array $attributes=[]): string
     {
-        if ($balise=='input') {
+        if (in_array($balise, ['img', 'input'])) {
             return '<'.$balise.static::getExtraAttributesString($attributes).'/>';
         } else {
             return '<'.$balise.static::getExtraAttributesString($attributes).'>'.$label.'</'.$balise.'>';
@@ -61,6 +61,11 @@ class HtmlUtils
     {
         $strClass = 'fa-'.$prefix.' fa-'.$icon;
         return static::getBalise('i', '', [ConstantConstant::CST_CLASS=>$strClass]);
+    }
+
+    public static function getImage(array $extraAttributes=[]): string
+    {
+        return static::getBalise('img', '', $extraAttributes);
     }
 
     public static function getLi(string $content, array $extraAttributes=[]): string

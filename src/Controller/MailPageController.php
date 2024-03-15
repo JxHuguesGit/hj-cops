@@ -42,7 +42,7 @@ class MailPageController extends PageController
         // BreadCrumbs
         $contentHeader = $this->setBreadCrumbsContent();
         //////////////////////////////////////////
-		
+        
         //////////////////////////////////////////
         // Onglets de navigation
         $this->arrTabs = [
@@ -54,7 +54,7 @@ class MailPageController extends PageController
         $this->defaultTab = 'mailData';
         $tabsBar = $this->getTabsBar();
         //////////////////////////////////////////
-		
+        
         //////////////////////////////////////////
         // Contenu du corps
         $repository = new MailRepository(new MailCollection());
@@ -91,17 +91,17 @@ class MailPageController extends PageController
     public function setBreadCrumbsContent(): string
     {
         return $this->getRender(
-			TemplateConstant::TPL_CONTENT_HEADER,
-			[
-				'Mail',
-				parent::setBreadCrumbsContent()
-					. ' ' . HtmlUtils::getIcon(IconConstant::I_CARETRIGHT)
-					. ' ' . HtmlUtils::getButton(
-						'Mail',
-						[ConstantConstant::CST_CLASS=>'btn-secondary disabled']
-					)
-			]
-		);
+            TemplateConstant::TPL_CONTENT_HEADER,
+            [
+                'Mail',
+                parent::setBreadCrumbsContent()
+                    . ' ' . HtmlUtils::getIcon(IconConstant::I_CARETRIGHT)
+                    . ' ' . HtmlUtils::getButton(
+                        'Mail',
+                        [ConstantConstant::CST_CLASS=>'btn-secondary disabled']
+                    )
+            ]
+        );
     }
 
 
@@ -166,7 +166,7 @@ class MailPageController extends PageController
             // alors on affiche la lecture du message
             $attributes = [
                 $strFoldersListContent,
-                $mailData->getController()->getMailContent(),
+                '',//$mailData->getController()->getMailContent(),
             ];
         } else {
             // Sinon la liste des messages du dossier courant
@@ -241,10 +241,10 @@ class MailPageController extends PageController
         // selectAll
         $strIcon = HtmlUtils::getIcon(IconConstant::I_SQUARE, IconConstant::REGULAR);
         $btnAttributes = [
-			ConstantConstant::CST_CLASS=>'ajaxAction',
-			'data-trigger'=>'click',
-			'data-ajax'=>'selectAll'
-		];
+            ConstantConstant::CST_CLASS=>'ajaxAction',
+            'data-trigger'=>'click',
+            'data-ajax'=>'selectAll'
+        ];
         $strButtonList = HtmlUtils::getButton($strIcon, $btnAttributes).' ';
 
         // trash

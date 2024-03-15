@@ -10,11 +10,11 @@ use src\Repository\WidgetRepository;
 use src\Utils\HtmlUtils;
 use src\Utils\TableUtils;
 
-class SettingsController extends UtilitiesController
+class SettingsPageController extends PageController
 {
-    public function __construct()
+    public function __construct(array $arrUri=[])
     {
-        parent::__construct();
+        parent::__construct($arrUri);
         $this->title = LabelConstant::LBL_SETTINGS;
     }
 

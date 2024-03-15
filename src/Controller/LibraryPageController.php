@@ -11,7 +11,7 @@ use src\Controller\SkillController;
 use src\Utils\HtmlUtils;
 use src\Utils\TableUtils;
 
-class LibraryController extends UtilitiesController
+class LibraryPageController extends PageController
 {
     public function __construct(array $arrUri=[])
     {
@@ -63,20 +63,23 @@ class LibraryController extends UtilitiesController
             if ($file != "." && $file != ".." && preg_match('#^\[ADJ]_COPS_(.*)\.(pdf)#', $file, $matches)) {
                 $ext = $matches[2];
                 $strFib = HtmlUtils::getDiv(
-					HtmlUtils::getBalise('img', '', ['alt'=>ConstantConstant::CST_ICON, 'src'=>$urlBase.'images/svg/'.$ext.'.svg']),
-					[ConstantConstant::CST_CLASS=>'file-img-box']
-				);
+                    HtmlUtils::getImage([
+                        'alt'=>ConstantConstant::CST_ICON,
+                        'src'=>$urlBase.'images/svg/'.$ext.'.svg'
+                    ]),
+                    [ConstantConstant::CST_CLASS=>'file-img-box']
+                );
                 $href = $urlBase.$ext.'/'.$file;
                 $strA = HtmlUtils::getLink(
-					HtmlUtils::getIcon(IconConstant::I_DOWNLOAD),
-					$href,
-					'file-download'
-				);
+                    HtmlUtils::getIcon(IconConstant::I_DOWNLOAD),
+                    $href,
+                    'file-download'
+                );
                 $strH5 = HtmlUtils::getBalise(
-					'h5',
-					str_replace('_', ' ', $matches[1]),
-					[ConstantConstant::CST_CLASS=>'mb-0 text-overflow']
-				);
+                    'h5',
+                    str_replace('_', ' ', $matches[1]),
+                    [ConstantConstant::CST_CLASS=>'mb-0 text-overflow']
+                );
                 $size = filesize($_SERVER['DOCUMENT_ROOT'].$href);
                 if ($size<1000) {
                     $strSize = $size.'o';
@@ -88,19 +91,19 @@ class LibraryController extends UtilitiesController
                     $strSize = round($size/1000000000, 2).'Go';
                 }
                 $strP = HtmlUtils::getBalise(
-					'p',
-					'<small>'.$strSize.'</small>',
-					[ConstantConstant::CST_CLASS=>'mb-0']
-				);
+                    'p',
+                    '<small>'.$strSize.'</small>',
+                    [ConstantConstant::CST_CLASS=>'mb-0']
+                );
                 $strTitle = HtmlUtils::getDiv(
-					$strH5.$strP,
-					[ConstantConstant::CST_CLASS=>'file-man-title']
-				);
+                    $strH5.$strP,
+                    [ConstantConstant::CST_CLASS=>'file-man-title']
+                );
 
                 $content = HtmlUtils::getDiv(
-					$strFib.$strA.$strTitle,
-					[ConstantConstant::CST_CLASS=>'file-man-box']
-				);
+                    $strFib.$strA.$strTitle,
+                    [ConstantConstant::CST_CLASS=>'file-man-box']
+                );
                 $strListFiles .= HtmlUtils::getDiv($content, [ConstantConstant::CST_CLASS=>'col-lg-3 col-xl-2']);
             }
         }

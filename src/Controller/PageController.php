@@ -10,7 +10,7 @@ class PageController extends UtilitiesController
     protected $menu = [];
     protected $slug = '';
 
-    public function __construct($arrUri=[], string $slug='')
+    public function __construct(array $arrUri=[], string $slug='')
     {
         parent::__construct($arrUri);
         $this->slug = $slug;
