@@ -12,12 +12,7 @@ class CourseRepository extends Repository
     {
         $this->table = 'copsCourse';
         $this->collection = $collection;
-    }
-
-    public function createQueryBuilder(): self
-    {
         $this->field = Course::getFields();
-        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): Course
@@ -30,35 +25,10 @@ class CourseRepository extends Repository
         return $this->findBy([], $orderBy);
     }
 
-
-
-    
-
-
-
-    
-
-    public function getDistinct(string $field): array
+    public function findByCriteria(array $criteria, array $orderBy): CourseCollection
     {
-        return $this->createDistinctQueryBuilder($field)
-            ->orderBy([$field=>ConstantConstant::CST_ASC])
-            ->getQuery()
-            ->getDistinctResult($field);
-    }
-
-    public function update(Course $course): void
-    {
-        $this->field = Course::getFields();
-        $this->updateQueryBuilder($course)
-            ->getQuery()
-            ->execQuery();
-    }
-
-    public function findByCriteria(array $complexCriteria, array $orderBy): CourseCollection
-    {
-        $this->field = Course::getFields();
         return $this->createQueryBuilder()
-            ->setCriteriaComplex($complexCriteria)
+            ->setCriteriaComplex($criteria)
             ->orderBy($orderBy)
             ->getQuery()
             ->getResult();

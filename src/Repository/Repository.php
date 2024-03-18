@@ -26,8 +26,6 @@ class Repository
         return $this;
     }
 
-
-
     public function createDistinctQueryBuilder(string $field): self
     {
         $this->baseQuery = "SELECT DISTINCT $field FROM ".$this->table;
@@ -64,15 +62,41 @@ class Repository
         return $this->findBy([], $orderBy);
     }
 
+    public function getDistinct(string $field): array
+    {
+        return $this->createDistinctQueryBuilder($field)
+            ->orderBy([$field=>ConstantConstant::CST_ASC])
+            ->getQuery()
+            ->getDistinctResult($field);
+    }
 
+    public function getDistinctResult(string $field): array
+    {
+        global $wpdb;
 
+        $args = [];
+        if (isset($this->params[ConstantConstant::CST_ORDERBY])) {
+            array_push($args, $this->params[ConstantConstant::CST_ORDERBY]);
+        }
+        $query = vsprintf($this->query, $args);
+        $rows  = $wpdb->get_results($query);
 
+        $results = [];
+        while (!empty($rows)) {
+            $row = array_shift($rows);
+            array_push($results, $row->{$field});
+        }
+        return $results;
+    }
 
+    public function update(Entity $entity): void
+    {
+        $this->updateQueryBuilder($entity)
+            ->getQuery()
+            ->execQuery();
+    }
 
-
-
-
-    public function updateQueryBuilder($obj): self
+    public function updateQueryBuilder(Entity $obj): self
     {
         $this->strLimit = '';
         $this->baseQuery = "UPDATE ".$this->table." SET ";
@@ -91,7 +115,14 @@ class Repository
         return $this;
     }
 
-    public function insertQueryBuilder($obj): self
+    public function insert(Entity $entity): void
+    {
+        $this->insertQueryBuilder($entity)
+            ->getQuery()
+            ->execQuery();
+    }
+
+    public function insertQueryBuilder(Entity $obj): self
     {
         $this->strLimit = '';
         $this->baseQuery = "INSERT INTO ".$this->table." (";
@@ -108,6 +139,11 @@ class Repository
 
         return $this;
     }
+
+
+
+
+
 
     public function setCriteriaComplex(array $criteria=[]): self
     {
@@ -209,24 +245,6 @@ class Repository
         return $this->collection;
     }
 
-    public function getDistinctResult(string $field): array
-    {
-        global $wpdb;
-
-        $args = [];
-        if (isset($this->params[ConstantConstant::CST_ORDERBY])) {
-            array_push($args, $this->params[ConstantConstant::CST_ORDERBY]);
-        }
-        $query = vsprintf($this->query, $args);
-        $rows  = $wpdb->get_results($query);
-
-        $results = [];
-        while (!empty($rows)) {
-            $row = array_shift($rows);
-            array_push($results, $row->{$field});
-        }
-        return $results;
-    }
 
     /*
     ->andWhere('m.id = :val')

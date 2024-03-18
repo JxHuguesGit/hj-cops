@@ -60,7 +60,7 @@ class AcronymController extends PageController
         $strCode = $this->acronym->getField(FieldConstant::CODE);
         $strName = $this->acronym->getField(FieldConstant::NAME);
 
-        $table->addBodyRow()
+        $table->addBodyRow($arrParams)
             ->addBodyCell([ConstantConstant::CST_CONTENT=>$id])
             ->addBodyCell([ConstantConstant::CST_CONTENT=>$strCode])
             ->addBodyCell([ConstantConstant::CST_CONTENT=>$strName]);

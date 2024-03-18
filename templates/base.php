@@ -7,8 +7,8 @@ use src\Constant\TemplateConstant;
 use src\Controller\HomeController;
 use src\Controller\LibraryController;
 use src\Controller\MailPageController;
-use src\Controller\ProfileController;
-use src\Controller\SettingsController;
+use src\Controller\ProfilePageController;
+use src\Controller\SettingsPageController;
 use src\Controller\UtilitiesController;
 use src\Controller\WidgetController;
 use src\Repository\PlayerRepository;
@@ -47,10 +47,10 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
 
             switch ($slug) {
                 case ConstantConstant::CST_SETTINGS :
-                    $controller = new SettingsController();
+                    $controller = new SettingsPageController();
                 break;
                 case ConstantConstant::CST_PROFILE :
-                    $controller = new ProfileController($arrUri);
+                    $controller = new ProfilePageController($arrUri);
                 break;
                 case ConstantConstant::CST_LIBRARY :
                     $controller = new LibraryController($arrUri);

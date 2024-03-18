@@ -11,12 +11,7 @@ class PlayerSkillRepository extends Repository
     {
         $this->table = 'copsPlayerSkill';
         $this->collection = $collection;
-    }
-
-    public function createQueryBuilder(): self
-    {
         $this->field = PlayerSkill::getFields();
-        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): PlayerSkill
@@ -24,40 +19,8 @@ class PlayerSkillRepository extends Repository
         return PlayerSkill::initFromRow($row);
     }
 
-
-
-
-
-
-    
-
-    public function getDistinct(string $field): array
-    {
-        return $this->createDistinctQueryBuilder($field)
-            ->orderBy([$field=>ConstantConstant::CST_ASC])
-            ->getQuery()
-            ->getDistinctResult($field);
-    }
-
-    public function update(PlayerSkill $playerSkill): void
-    {
-        $this->field = PlayerSkill::getFields();
-        $this->updateQueryBuilder($playerSkill)
-            ->getQuery()
-            ->execQuery();
-    }
-
-    public function insert(PlayerSkill $playerSkill): void
-    {
-        $this->field = PlayerSkill::getFields();
-        $this->insertQueryBuilder($playerSkill)
-            ->getQuery()
-            ->execQuery();
-    }
-
     public function findByAndOrdered(array $criteria): PlayerSkillCollection
     {
-        $this->field = PlayerSkill::getFields();
         $this->baseQuery  = "SELECT cps.`".implode('`, cps.`', $this->field)."`, ";
         $this->baseQuery .= "IF (cs2.name IS NULL, cs.name, cs2.name) AS mainSKill, ";
         $this->baseQuery .= "IF (cs2.name IS NULL, '', cs.name) AS secondarySkill ";

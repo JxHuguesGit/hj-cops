@@ -24,21 +24,19 @@ class LibraryController extends UtilitiesController
     {
         $arrCards = [
             ConstantConstant::CST_SKILLS => [
-                'label'=>'Compétences',
-                'description'=>'Liste et description des compétences.',
-                'file'=>'COPS_Compétences.pdf'],
+                ConstantConstant::CST_LABEL=>LabelConstant::LBL_SKILLS,
+                ConstantConstant::CST_DESCRIPTION=>'Liste et descriptions des compétences.',
+                ConstantConstant::CST_FILE=>'COPS_Compétences.pdf'],
             ConstantConstant::CST_COURSES => [
-                'label'=>'Stages',
-                'description'=>'Liste et description des stages.',
-                'file'=>'COPS_Stages.pdf'],
+                ConstantConstant::CST_LABEL=>LabelConstant::LBL_COURSES,
+                ConstantConstant::CST_DESCRIPTION=>'Liste et descriptions des stages.',
+                ConstantConstant::CST_FILE=>'COPS_Stages.pdf'],
             ConstantConstant::CST_PLAYERAID => [
-                'label'=>'Aides de jeu',
-                'description'=>'Diverses aides de jeu, fluff et ingame.',
-                'file'=>''],
+                ConstantConstant::CST_LABEL=>LabelConstant::LBL_GAME_AIDS,
+                ConstantConstant::CST_DESCRIPTION=>'Diverses aides de jeu, fluff et ingame.'],
             ConstantConstant::CST_ACRONYMS => [
-                'label'=>'Acronymes',
-                'description'=>'Tous les acronymes du jeu.',
-                'file'=>''],
+                ConstantConstant::CST_LABEL=>LabelConstant::LBL_ACRONYMS,
+                ConstantConstant::CST_DESCRIPTION=>'Tous les acronymes du jeu.'],
         ];
         if (!isset($this->arrParams[ConstantConstant::CST_PAGE]) ||
             !in_array($this->arrParams[ConstantConstant::CST_PAGE], array_keys($arrCards))
@@ -54,10 +52,10 @@ class LibraryController extends UtilitiesController
                     $cpt++;
                     $cardAttributes = [
                             $key,
-                            $data['label'],
-                            $data['description'],
-                            $data['file']=='' ? 'd-none' : '',
-                            $data['file'],
+                            $data[ConstantConstant::CST_LABEL],
+                            $data[ConstantConstant::CST_DESCRIPTION],
+                            !isset($data[ConstantConstant::CST_FILE]) ? 'd-none' : '',
+                            $data[ConstantConstant::CST_FILE] ?? '',
                     ];
                     $cardRow .= $this->getRender(TemplateConstant::TPL_LIBRARY_CARD, $cardAttributes);
             }

@@ -12,12 +12,7 @@ class SkillRepository extends Repository
     {
         $this->table = 'copsSkill';
         $this->collection = $collection;
-    }
-
-    public function createQueryBuilder(): self
-    {
         $this->field = Skill::getFields();
-        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): Skill
@@ -30,35 +25,8 @@ class SkillRepository extends Repository
         return $this->findBy([], $orderBy);
     }
 
-
-
-
-
- 
-
-
-
-    
-
-    public function getDistinct(string $field): array
-    {
-        return $this->createDistinctQueryBuilder($field)
-            ->orderBy([$field=>ConstantConstant::CST_ASC])
-            ->getQuery()
-            ->getDistinctResult($field);
-    }
-
-    public function update(Skill $skill): void
-    {
-        $this->field = Skill::getFields();
-        $this->updateQueryBuilder($skill)
-            ->getQuery()
-            ->execQuery();
-    }
-
     public function findByCriteria(array $criteria, array $orderBy): SkillCollection
     {
-        $this->field = Skill::getFields();
         return $this->createQueryBuilder()
             ->setCriteriaComplex($criteria)
             ->orderBy($orderBy)

@@ -12,12 +12,7 @@ class MailPlayerRepository extends Repository
     {
         $this->table = 'copsMailPlayer';
         $this->collection = $collection;
-    }
-
-    public function createQueryBuilder(): self
-    {
         $this->field = MailPlayer::getFields();
-        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): MailPlayer
@@ -28,19 +23,5 @@ class MailPlayerRepository extends Repository
     public function findAll(array $orderBy=[FieldConstant::MAIL=>ConstantConstant::CST_ASC]): MailPlayerCollection
     {
         return $this->findBy([], $orderBy);
-    }
-
-
-
-
-    
-    
-
-    public function update(MailPlayer $mailPlayer): void
-    {
-        $this->field = MailPlayer::getFields();
-        $this->updateQueryBuilder($mailPlayer)
-            ->getQuery()
-            ->execQuery();
     }
 }

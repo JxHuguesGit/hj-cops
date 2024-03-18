@@ -5,6 +5,7 @@ interface LabelConstant
 {
     public const LBL_HOME               = 'Accueil';
     public const LBL_ACRONYMS           = 'Acronymes';
+    public const LBL_GAME_AIDS          = 'Aides de jeu';
     public const LBL_NO_RESULTS         = 'Aucun résultat';
     public const LBL_LIBRARY            = 'Bibliothèque';
     public const LBL_DESK               = 'Bureau';

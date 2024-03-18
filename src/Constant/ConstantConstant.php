@@ -18,9 +18,11 @@ interface ConstantConstant
     public const CST_COURSES            = 'courses';
     public const CST_CURPAGE            = 'curpage';
     public const CST_DESC               = 'desc';
+    public const CST_DESCRIPTION        = 'description';
     public const CST_DISABLED           = 'disabled';
     public const CST_DRAFT              = 'draft';
     public const CST_EVENT              = 'event';
+    public const CST_FILE               = 'file';
     public const CST_FOR                = 'for';
     public const CST_FORMNAME           = 'formName';
     public const CST_HOME               = 'home';

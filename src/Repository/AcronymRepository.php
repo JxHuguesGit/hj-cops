@@ -12,12 +12,7 @@ class AcronymRepository extends Repository
     {
         $this->table = 'copsAcronym';
         $this->collection = $collection;
-    }
-
-    public function createQueryBuilder(): self
-    {
         $this->field = Acronym::getFields();
-        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): Acronym

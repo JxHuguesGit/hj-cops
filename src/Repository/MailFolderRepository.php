@@ -12,12 +12,7 @@ class MailFolderRepository extends Repository
     {
         $this->table = 'copsMailFolder';
         $this->collection = $collection;
-    }
-
-    public function createQueryBuilder(): self
-    {
         $this->field = MailFolder::getFields();
-        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): MailFolder
@@ -31,15 +26,5 @@ class MailFolderRepository extends Repository
     {
         return $this->findBy([], $orderBy);
     }
-
   
-    
-
-    public function update(MailFolder $folder): void
-    {
-        $this->field = MailFolder::getFields();
-        $this->updateQueryBuilder($folder)
-            ->getQuery()
-            ->execQuery();
-    }
 }
