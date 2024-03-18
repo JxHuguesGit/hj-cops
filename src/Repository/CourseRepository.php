@@ -24,13 +24,4 @@ class CourseRepository extends Repository
     {
         return $this->findBy([], $orderBy);
     }
-
-    public function findByCriteria(array $criteria, array $orderBy): CourseCollection
-    {
-        return $this->createQueryBuilder()
-            ->setCriteriaComplex($criteria)
-            ->orderBy($orderBy)
-            ->getQuery()
-            ->getResult();
-    }
 }
