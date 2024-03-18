@@ -10,7 +10,7 @@ class PageController extends UtilitiesController
     protected $menu = [];
     protected $slug = '';
 
-    public function __construct(array $arrUri=[], string $slug='')
+    public function __construct($arrUri=[], string $slug='')
     {
         parent::__construct($arrUri);
         $this->slug = $slug;
@@ -19,6 +19,9 @@ class PageController extends UtilitiesController
     public function getAdminContentPage(): string
     {
         switch ($this->arrParams[ConstantConstant::CST_ONGLET]) {
+            case 'admin' :
+                $controller = new AdminPageController();
+            break;
             case 'mail' :
                 $controller = new MailPageController();
             break;

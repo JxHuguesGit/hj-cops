@@ -2,14 +2,10 @@
 namespace src\Repository;
 
 use src\Collection\PlayerCollection;
+use src\Constant\ConstantConstant;
+use src\Constant\FieldConstant;
 use src\Entity\Player;
 
-/**
- * @method Player|null find($id)
- * @method Player|null findOneBy(array $criteria, array $orderBy=null)
- * @method Player[]    findAll()
- * @method Player[]    findBy(array $criteria, array $orderBy=null, $limit=null, $offset=null)
- */
 class PlayerRepository extends Repository
 {
     public function __construct(PlayerCollection $collection)
@@ -18,16 +14,10 @@ class PlayerRepository extends Repository
         $this->collection = $collection;
     }
 
-    public function createQueryBuilder(string $alias=''): self
+    public function createQueryBuilder(): self
     {
         $this->field = Player::getFields();
-        return parent::createQueryBuilder($alias);
-    }
-
-    public function createDistinctQueryBuilder(string $field): self
-    {
-        $this->baseQuery = "SELECT DISTINCT $field FROM ".$this->table;
-        return $this;
+        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): Player
@@ -35,34 +25,17 @@ class PlayerRepository extends Repository
         return Player::initFromRow($row);
     }
 
-    public function find($id): ?Player
-    {
-        return $this->createQueryBuilder('p')
-            ->setCriteria(['id'=>$id])
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    public function findOneBy(array $criteria, array $orderBy=[]): ?Player
-    {
-        $collection = $this->findBy($criteria, $orderBy, 1);
-        return $collection->valid() ? $collection->current() : null;
-    }
-
-    public function findAll(array $orderBy=['lastname'=>ConstantConstant::CST_ASC]): PlayerCollection
+    public function findAll(array $orderBy=[FieldConstant::LASTNAME=>ConstantConstant::CST_ASC]): PlayerCollection
     {
         return $this->findBy([], $orderBy);
     }
 
-    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): PlayerCollection
-    {
-        return $this->createQueryBuilder('p')
-            ->setCriteria($criteria)
-            ->orderBy($orderBy)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }
+    
+
+
+
+
+    
 
     public function getDistinct(string $field): array
     {

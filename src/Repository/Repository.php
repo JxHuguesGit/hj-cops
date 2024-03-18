@@ -4,6 +4,7 @@ namespace src\Repository;
 use src\Collection\Collection;
 use src\Constant\ConstantConstant;
 use src\Constant\FieldConstant;
+use src\Entity\Entity;
 
 class Repository
 {
@@ -19,11 +20,57 @@ class Repository
     protected $table = '';
     protected $collection;
 
-    public function createQueryBuilder(string $alias=''): self
+    public function createQueryBuilder(): self
     {
-        $this->baseQuery = "SELECT `".implode('`, `', $this->field)."` FROM ".$this->table." $alias";
+        $this->baseQuery = "SELECT `".implode('`, `', $this->field)."` FROM ".$this->table." ";
         return $this;
     }
+
+
+
+    public function createDistinctQueryBuilder(string $field): self
+    {
+        $this->baseQuery = "SELECT DISTINCT $field FROM ".$this->table;
+        return $this;
+    }
+
+    public function find($id): ?Entity
+    {
+        $this->collection->empty();
+        return $this->createQueryBuilder()
+            ->setCriteria([FieldConstant::ID=>$id])
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): Collection
+    {
+        return $this->createQueryBuilder()
+            ->setCriteria($criteria)
+            ->orderBy($orderBy)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOneBy(array $criteria, array $orderBy=[]): ?Entity
+    {
+        $collection = $this->findBy($criteria, $orderBy, 1);
+        return $collection->valid() ? $collection->current() : null;
+    }
+
+    public function findAll(array $orderBy=[FieldConstant::ID=>ConstantConstant::CST_ASC]): Collection
+    {
+        return $this->findBy([], $orderBy);
+    }
+
+
+
+
+
+
+
+
 
     public function updateQueryBuilder($obj): self
     {
@@ -81,8 +128,12 @@ class Repository
             $this->strWhere = " WHERE 1=1";
             $this->params['where'] = [];
             foreach ($criteria as $field => $value) {
-                $this->strWhere .= " AND `$field`='%s'";
-                $this->params['where'][] = $value;
+                if ($field=='-----') {
+                    $this->strWhere .= $value;
+                } else {
+                    $this->strWhere .= " AND `$field`='%s'";
+                    $this->params['where'][] = $value;
+                }
             }
         }
         return $this;

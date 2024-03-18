@@ -5,12 +5,6 @@ use src\Collection\PlayerSkillCollection;
 use src\Constant\ConstantConstant;
 use src\Entity\PlayerSkill;
 
-/**
- * @method PlayerSkill|null find($id)
- * @method PlayerSkill|null findOneBy(array $criteria, array $orderBy=null)
- * @method PlayerSkill[]    findAll()
- * @method PlayerSkill[]    findBy(array $criteria, array $orderBy=null, $limit=null, $offset=null)
- */
 class PlayerSkillRepository extends Repository
 {
     public function __construct(PlayerSkillCollection $collection)
@@ -19,16 +13,10 @@ class PlayerSkillRepository extends Repository
         $this->collection = $collection;
     }
 
-    public function createQueryBuilder(string $alias=''): self
+    public function createQueryBuilder(): self
     {
         $this->field = PlayerSkill::getFields();
-        return parent::createQueryBuilder($alias);
-    }
-
-    public function createDistinctQueryBuilder(string $field): self
-    {
-        $this->baseQuery = "SELECT DISTINCT $field FROM ".$this->table;
-        return $this;
+        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): PlayerSkill
@@ -36,34 +24,12 @@ class PlayerSkillRepository extends Repository
         return PlayerSkill::initFromRow($row);
     }
 
-    public function find($id): ?Player
-    {
-        return $this->createQueryBuilder('ps')
-            ->setCriteria(['ps.id'=>$id])
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
 
-    public function findOneBy(array $criteria, array $orderBy=[]): ?PlayerSkill
-    {
-        $collection = $this->findBy($criteria, $orderBy, 1);
-        return $collection->valid() ? $collection->current() : null;
-    }
 
-    public function findAll(array $orderBy=['id'=>ConstantConstant::CST_ASC]): PlayerSkillCollection
-    {
-        return $this->findBy([], $orderBy);
-    }
 
-    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): PlayerSkillCollection
-    {
-        return $this->createQueryBuilder('ps')
-            ->setCriteria($criteria)
-            ->orderBy($orderBy)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }
+
+
+    
 
     public function getDistinct(string $field): array
     {

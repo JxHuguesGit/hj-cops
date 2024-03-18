@@ -1,11 +1,16 @@
 <?php
 namespace src\Controller;
 
+use src\Collection\MailDataCollection;
 use src\Constant\ConstantConstant;
 use src\Constant\FieldConstant;
+use src\Constant\IconConstant;
+use src\Constant\TemplateConstant;
 use src\Entity\MailData;
+use src\Repository\MailDataRepository;
 use src\Utils\HtmlUtils;
 use src\Utils\TableUtils;
+use src\Utils\UrlUtils;
 
 class MailDataController extends UtilitiesController
 {
@@ -86,11 +91,112 @@ class MailDataController extends UtilitiesController
         // Champ Time
         $strTrContent .= HtmlUtils::getBalise(
             'td',
-            $this->mailData->getSinceWhen(),
+            '',//$this->mailData->getSinceWhen(),
             [ConstantConstant::CST_CLASS=>'mailbox-date']
         );
 
         return HtmlUtils::getBalise('tr', $strTrContent);
     }
+    
+    public function getMailContent(): string
+    {
+        ////////////////////////////////////////////:
+        // Url du message précédent. Et si aucun, définir la classe pour le bouton à disabled
+        $repository = new MailDataRepository(new MailDataCollection());
+        $mailDatas = $repository->findByAndOrdered(
+            [
+                FieldConstant::TOID     => $this->mailData->getField(FieldConstant::TOID),
+                FieldConstant::FOLDERID => $this->mailData->getField(FieldConstant::FOLDERID),
+                '-----'    => " AND `sentDate` < '".$this->mailData->getMail()->getField(FieldConstant::SENTDATE)."'"
+            ],
+            [FieldConstant::SENTDATE => ConstantConstant::CST_DESC],
+            1
+        );
+        if ($mailDatas->valid()) {
+            $prevClass = 'bg-dark text-white';
+            $prevMailData = $mailDatas->current();
+            $prevUrl = $prevMailData->getUrl(ConstantConstant::CST_READ);
+        } else {
+            $prevClass = ConstantConstant::CST_DISABLED;
+            $prevUrl = '#';
+        }
+        // Url du message suivant. Et si aucun, définir la classe pour le bouton à disabled
+        $repository = new MailDataRepository(new MailDataCollection());
+        $mailDatas = $repository->findByAndOrdered(
+            [
+                FieldConstant::TOID     => $this->mailData->getField(FieldConstant::TOID),
+                FieldConstant::FOLDERID => $this->mailData->getField(FieldConstant::FOLDERID),
+                '-----'    => " AND `sentDate` > '".$this->mailData->getMail()->getField(FieldConstant::SENTDATE)."'"
+            ],
+            [FieldConstant::SENTDATE => ConstantConstant::CST_ASC],
+            1
+        );
+        if ($mailDatas->valid()) {
+            $nextClass = 'bg-dark text-white';
+            $nextMailData = $mailDatas->current();
+            $nextUrl = $nextMailData->getUrl(ConstantConstant::CST_READ);
+        } else {
+            $nextClass = ConstantConstant::CST_DISABLED;
+            $nextUrl = '#';
+        }
+        ////////////////////////////////////////////:
+
+        ////////////////////////////////////////////:
+        // Boutons à afficher en haut. Pour le moment, seulement Suppression
+        $strTopButtons = HtmlUtils::getButton(
+            HtmlUtils::getIcon(IconConstant::I_TRASHALT),
+            [
+                ConstantConstant::CST_CLASS=>'ajaxAction',
+                'data-trigger'=>'click',
+                'data-ajax'=>'trash'
+            ]
+        );
+        ////////////////////////////////////////////:
+
+        ////////////////////////////////////////////:
+        // Boutons à afficher en bas. Pour le moment, seulement Suppression
+        $strBottomButtons = HtmlUtils::getButton(
+            HtmlUtils::getIcon(IconConstant::I_TRASHALT).' Supprimer',
+            [
+                ConstantConstant::CST_CLASS=>'ajaxAction',
+                'data-trigger'=>'click',
+                'data-ajax'=>'trash'
+            ]
+        );
+        ////////////////////////////////////////////:
+
+/*
+        $strButton = '            <div class="btn-group">
+        <button type="button" class="btn btn-default btn-sm" data-container="body" title="Reply">
+        <i class="fa-solid fa-reply"></i></button>
+        <button type="button" class="btn btn-default btn-sm" data-container="body" title="Forward">
+        <i class="fa-solid fa-share"></i></button>
+    </div>
+    <button type="button" class="btn btn-default btn-sm" title="Print"><i class="fa-solid fa-print">
+    </i></button>
+';
+        $strButtonBottom = '        <div class="float-end">
+        <button type="button" class="btn btn-default"><i class="fa-solid fa-reply"></i> Reply</button>
+        <button type="button" class="btn btn-default"><i class="fa-solid fa-share"></i> Forward</button>
+    </div>
+    <button type="button" class="btn btn-default"><i class="fa-solid fa-print"></i> Print</button>
+';
+*/
+        $attributes = [
+            'Lecture',
+            $prevUrl,
+            $prevClass,
+            $nextUrl,
+            $nextClass,
+            $this->mailData->getMail()->getField(FieldConstant::SUBJECT),
+            $this->mailData->getAuteur(),
+            $this->mailData->getSinceWhen(),
+            $strTopButtons,
+            $this->mailData->getMail()->getContent(),
+            $strBottomButtons,
+        ];
+        return $this->getRender(TemplateConstant::TPL_MAIL_VIEW, $attributes);
+    }
+
 
 }

@@ -4,12 +4,6 @@ namespace src\Repository;
 use src\Collection\MailDataCollection;
 use src\Entity\MailData;
 
-/**
- * @method MailData|null find($id)
- * @method MailData|null findOneBy(array $criteria, array $orderBy=null)
- * @method MailData[]    findAll()
- * @method MailData[]    findBy(array $criteria, array $orderBy=null, $limit=null, $offset=null)
- */
 class MailDataRepository extends Repository
 {
     public function __construct(MailDataCollection $collection)
@@ -18,10 +12,10 @@ class MailDataRepository extends Repository
         $this->collection = $collection;
     }
 
-    public function createQueryBuilder(string $alias=''): self
+    public function createQueryBuilder(): self
     {
         $this->field = MailData::getFields();
-        return parent::createQueryBuilder($alias);
+        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): MailData
@@ -29,35 +23,13 @@ class MailDataRepository extends Repository
         return MailData::initFromRow($row);
     }
 
-    public function find($id): ?MailData
-    {
-        $this->collection->empty();
-        return $this->createQueryBuilder()
-            ->setCriteria(['id'=>$id])
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
 
-    public function findOneBy(array $criteria, array $orderBy=[]): ?MailData
-    {
-        $collection = $this->findBy($criteria, $orderBy, 1);
-        return $collection->valid() ? $collection->current() : null;
-    }
 
-    public function findAll(array $orderBy=['id'=>ConstantConstant::CST_ASC]): MailDataCollection
-    {
-        return $this->findBy([], $orderBy);
-    }
 
-    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): MailDataCollection
-    {
-        return $this->createQueryBuilder('s')
-            ->setCriteria($criteria)
-            ->orderBy($orderBy)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }
+
+
+
+
 
     public function update(MailData $mailData): void
     {
@@ -67,7 +39,7 @@ class MailDataRepository extends Repository
             ->execQuery();
     }
     
-    public function findByAndOrdered(array $criteria=[], array $orderBy=[]): MailDataCollection
+    public function findByAndOrdered(array $criteria=[], array $orderBy=[], int $limit=-1): MailDataCollection
     {
         $this->field = MailData::getFields();
         $this->baseQuery  = "SELECT cmd.`".implode('`, cmd.`', $this->field)."` ";
@@ -76,6 +48,7 @@ class MailDataRepository extends Repository
 
         return $this->setCriteria($criteria)
             ->orderBy($orderBy)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }

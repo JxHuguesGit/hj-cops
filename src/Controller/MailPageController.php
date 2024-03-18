@@ -8,6 +8,7 @@ use src\Constant\FieldConstant;
 use src\Constant\IconConstant;
 use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
+use src\Entity\MailData;
 use src\Repository\MailRepository;
 use src\Repository\MailDataRepository;
 use src\Utils\HtmlUtils;
@@ -104,69 +105,53 @@ class MailPageController extends PageController
         );
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function getContentPage(): string
+    private function dealWithAction(MailData &$mailData): bool
     {
         $blnRead = false;
-        // Si action = read et que l'id est un mailData lisible par le toId
-        if (isset($this->arrParams[ConstantConstant::CST_ACTION])) {
-            if (
-                $this->arrParams[ConstantConstant::CST_ACTION]==ConstantConstant::CST_READ
-                && isset($this->arrParams[ConstantConstant::CST_ID])
-            ) {
-                $repository = new MailDataRepository(new MailDataCollection());
-                $mailData = $repository->find($this->arrParams[ConstantConstant::CST_ID]);
-                $mailUser = $this->player->getMailPlayer();
-                $blnRead = $mailData->getField(FieldConstant::TOID)==$mailUser->getField(FieldConstant::ID);
+        $repository = new MailDataRepository(new MailDataCollection());
+        $mailPlayer = $this->player->getMailPlayer();
 
-                if ($blnRead) {
-                    $mailData->setField(FieldConstant::READ, 1);
+        if (
+            $this->arrParams[ConstantConstant::CST_ACTION]==ConstantConstant::CST_READ
+            && isset($this->arrParams[ConstantConstant::CST_ID])
+        ) {
+            $mailData = $repository->find($this->arrParams[ConstantConstant::CST_ID]);
+            $blnRead = $mailData->getField(FieldConstant::TOID)==$mailPlayer->getField(FieldConstant::ID);
+            if ($blnRead) {
+                $mailData->setField(FieldConstant::READ, 1);
+                $mailData->update();
+            }
+        } elseif (
+            $this->arrParams[ConstantConstant::CST_ACTION]==ConstantConstant::CST_TRASH
+            && isset($this->arrParams['ids'])
+        ) {
+            $ids = explode(',', $this->arrParams['ids']);
+            foreach ($ids as $id) {
+                $mailData = $repository->find($id);
+                if ($mailData->getField(FieldConstant::TOID)==$mailPlayer->getField(FieldConstant::ID)) {
+                    // Un message supprimé déjà dans la corbeille est supprimé définitivement.
+                    // Techniquement on le met dans un folder inaccessible
+                    $folderId = $mailData->getField(FieldConstant::FOLDERID)==6 ? 99 : 6;
+                    $mailData->setField(FieldConstant::FOLDERID, $folderId);
                     $mailData->update();
-                }
-            } elseif (
-                $this->arrParams[ConstantConstant::CST_ACTION]==ConstantConstant::CST_TRASH
-                && isset($this->arrParams['ids'])
-            ) {
-                $repository = new MailDataRepository(new MailDataCollection());
-                $mailUser = $this->player->getMailPlayer();
-                $ids = explode(',', $this->arrParams['ids']);
-                foreach ($ids as $id) {
-                    $mailData = $repository->find($id);
-                    if ($mailData->getField(FieldConstant::TOID)==$mailUser->getField(FieldConstant::ID)) {
-                        // TODO, si le message est déjà dans Trash, il doit être supprimé définitivement.
-                        // Pour l'heure, on se content de le déplacer dans Trash
-                        $mailData->setField(FieldConstant::FOLDERID, 6);
-                        $mailData->update();
-                    }
                 }
             }
         }
+
+        return $blnRead;
+    }
+
+    public function getContentPage(): string
+    {
+        $mailData = new MailData();
+        $blnRead = isset($this->arrParams[ConstantConstant::CST_ACTION]) ? $this->dealWithAction($mailData) : false;
 
         $strFoldersListContent     = $this->getFoldersListContent();
         if ($blnRead) {
             // alors on affiche la lecture du message
             $attributes = [
                 $strFoldersListContent,
-                '',//$mailData->getController()->getMailContent(),
+                $mailData->getController()->getMailContent(),
             ];
         } else {
             // Sinon la liste des messages du dossier courant
@@ -182,6 +167,24 @@ class MailPageController extends PageController
         }
         return $this->getRender(TemplateConstant::TPL_MAIL_PANEL, $attributes);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private function getMailTableContent(): string
     {

@@ -4,6 +4,7 @@ namespace src\Constant;
 interface ConstantConstant
 {
     public const CST_ACTION             = 'action';
+    public const CST_ACRONYMS           = 'acronymes';
     public const CST_ALERT              = 'alert';
     public const CST_ASC                = 'asc';
     public const CST_CHANGEMDP          = 'changeMdp';

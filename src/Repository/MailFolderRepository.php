@@ -2,14 +2,10 @@
 namespace src\Repository;
 
 use src\Collection\MailFolderCollection;
+use src\Constant\ConstantConstant;
+use src\Constant\FieldConstant;
 use src\Entity\MailFolder;
 
-/**
- * @method MailFolder|null find($id)
- * @method MailFolder|null findOneBy(array $criteria, array $orderBy=null)
- * @method MailFolder[]    findAll()
- * @method MailFolder[]    findBy(array $criteria, array $orderBy=null, $limit=null, $offset=null)
- */
 class MailFolderRepository extends Repository
 {
     public function __construct(MailFolderCollection $collection)
@@ -18,10 +14,10 @@ class MailFolderRepository extends Repository
         $this->collection = $collection;
     }
 
-    public function createQueryBuilder(string $alias=''): self
+    public function createQueryBuilder(): self
     {
         $this->field = MailFolder::getFields();
-        return parent::createQueryBuilder($alias);
+        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): MailFolder
@@ -29,37 +25,15 @@ class MailFolderRepository extends Repository
         return MailFolder::initFromRow($row);
     }
 
-    public function find($id): ?MailFolder
-    {
-        $this->collection->empty();
-        return $this->createQueryBuilder()
-            ->setCriteria(['id'=>$id])
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    public function findOneBy(array $criteria, array $orderBy=[]): ?MailFolder
-    {
-        $collection = $this->findBy($criteria, $orderBy, 1);
-        return $collection->valid() ? $collection->current() : null;
-    }
-
     public function findAll(
-        array $orderBy=[ConstantConstant::CST_LABEL=>ConstantConstant::CST_ASC]
+        array $orderBy=[FieldConstant::LABEL=>ConstantConstant::CST_ASC]
     ): MailFolderCollection
     {
         return $this->findBy([], $orderBy);
     }
 
-    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): MailFolderCollection
-    {
-        return $this->createQueryBuilder('s')
-            ->setCriteria($criteria)
-            ->orderBy($orderBy)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }
+  
+    
 
     public function update(MailFolder $folder): void
     {

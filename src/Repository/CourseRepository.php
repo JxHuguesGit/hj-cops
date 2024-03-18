@@ -6,12 +6,6 @@ use src\Constant\FieldConstant;
 use src\Collection\CourseCollection;
 use src\Entity\Course;
 
-/**
- * @method Course|null find($id)
- * @method Course|null findOneBy(array $criteria, array $orderBy=null)
- * @method Course[]    findAll()
- * @method Course[]    findBy(array $criteria, array $orderBy=null, $limit=null, $offset=null)
- */
 class CourseRepository extends Repository
 {
     public function __construct(CourseCollection $collection)
@@ -20,16 +14,10 @@ class CourseRepository extends Repository
         $this->collection = $collection;
     }
 
-    public function createQueryBuilder(string $alias=''): self
+    public function createQueryBuilder(): self
     {
         $this->field = Course::getFields();
-        return parent::createQueryBuilder($alias);
-    }
-
-    public function createDistinctQueryBuilder(string $field): self
-    {
-        $this->baseQuery = "SELECT DISTINCT $field FROM ".$this->table;
-        return $this;
+        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): Course
@@ -37,35 +25,18 @@ class CourseRepository extends Repository
         return Course::initFromRow($row);
     }
 
-    public function find($id): ?Course
-    {
-        $this->collection->empty();
-        return $this->createQueryBuilder()
-            ->setCriteria(['id'=>$id])
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    public function findOneBy(array $criteria, array $orderBy=[]): ?Course
-    {
-        $collection = $this->findBy($criteria, $orderBy, 1);
-        return $collection->valid() ? $collection->current() : null;
-    }
-
     public function findAll(array $orderBy=[FieldConstant::CST_NAME=>ConstantConstant::CST_ASC]): CourseCollection
     {
         return $this->findBy([], $orderBy);
     }
 
-    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): CourseCollection
-    {
-        return $this->createQueryBuilder()
-            ->setCriteria($criteria)
-            ->orderBy($orderBy)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }
+
+
+    
+
+
+
+    
 
     public function getDistinct(string $field): array
     {
@@ -86,7 +57,7 @@ class CourseRepository extends Repository
     public function findByCriteria(array $complexCriteria, array $orderBy): CourseCollection
     {
         $this->field = Course::getFields();
-        return $this->createQueryBuilder('s')
+        return $this->createQueryBuilder()
             ->setCriteriaComplex($complexCriteria)
             ->orderBy($orderBy)
             ->getQuery()

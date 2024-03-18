@@ -18,6 +18,7 @@ interface FieldConstant
     public const ATTRSANGFROID          = 'attrSangfroid';
     public const BONUS                  = 'bonus';
     public const CATEGORY               = 'category';
+    public const CODE                   = 'code';
     public const COLOR                  = 'color';
     public const CONTENT                = 'content';
     public const COURSEID               = 'courseId';

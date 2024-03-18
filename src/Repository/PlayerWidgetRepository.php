@@ -2,14 +2,9 @@
 namespace src\Repository;
 
 use src\Collection\PlayerWidgetCollection;
+use src\Constant\ConstantConstant;
 use src\Entity\PlayerWidget;
 
-/**
- * @method PlayerWidget|null find($id)
- * @method PlayerWidget|null findOneBy(array $criteria, array $orderBy=null)
- * @method PlayerWidget[]    findAll()
- * @method PlayerWidget[]    findBy(array $criteria, array $orderBy=null, $limit=null, $offset=null)
- */
 class PlayerWidgetRepository extends Repository
 {
     public function __construct(PlayerWidgetCollection $collection)
@@ -18,16 +13,10 @@ class PlayerWidgetRepository extends Repository
         $this->collection = $collection;
     }
 
-    public function createQueryBuilder(string $alias=''): self
+    public function createQueryBuilder(): self
     {
         $this->field = PlayerWidget::getFields();
-        return parent::createQueryBuilder($alias);
-    }
-
-    public function createDistinctQueryBuilder(string $field): self
-    {
-        $this->baseQuery = "SELECT DISTINCT $field FROM ".$this->table;
-        return $this;
+        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): PlayerWidget
@@ -35,34 +24,13 @@ class PlayerWidgetRepository extends Repository
         return PlayerWidget::initFromRow($row);
     }
 
-    public function find($id): ?PlayerWidget
-    {
-        return $this->createQueryBuilder('pw')
-            ->setCriteria(['pw.id'=>$id])
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
 
-    public function findOneBy(array $criteria, array $orderBy=[]): ?PlayerWidget
-    {
-        $collection = $this->findBy($criteria, $orderBy, 1);
-        return $collection->valid() ? $collection->current() : null;
-    }
+    
 
-    public function findAll(array $orderBy=['id'=>ConstantConstant::CST_ASC]): PlayerWidgetCollection
-    {
-        return $this->findBy([], $orderBy);
-    }
 
-    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): PlayerWidgetCollection
-    {
-        return $this->createQueryBuilder('pw')
-            ->setCriteria($criteria)
-            ->orderBy($orderBy)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }
+
+
+    
 
     public function getDistinct(string $field): array
     {

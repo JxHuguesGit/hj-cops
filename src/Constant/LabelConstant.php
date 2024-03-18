@@ -4,10 +4,12 @@ namespace src\Constant;
 interface LabelConstant
 {
     public const LBL_HOME               = 'Accueil';
+    public const LBL_ACRONYMS           = 'Acronymes';
     public const LBL_NO_RESULTS         = 'Aucun résultat';
     public const LBL_LIBRARY            = 'Bibliothèque';
     public const LBL_DESK               = 'Bureau';
     public const LBL_CATEGORY           = 'Catégorie';
+    public const LBL_CODE               = 'Code';
     public const LBL_SKILLS             = 'Compétences';
     public const LBL_LOGIN              = 'Connexion';
     public const LBL_TRASH              = 'Corbeille';

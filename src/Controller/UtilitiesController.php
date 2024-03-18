@@ -86,7 +86,9 @@ class UtilitiesController
     public static function getAdminController(array $arrUri): mixed
     {
         $controller = new UtilitiesController($arrUri);
-        if (substr($controller->getArrParams(ConstantConstant::CST_ONGLET), 0, 4)=='mail') {
+        if (substr($controller->getArrParams(ConstantConstant::CST_ONGLET), 0, 4)=='mail' ||
+			$controller->getArrParams(ConstantConstant::CST_ONGLET)=='admin'
+		) {
             $controller = new PageController($arrUri);
         } else {
             $controller = new HomePageController($arrUri);

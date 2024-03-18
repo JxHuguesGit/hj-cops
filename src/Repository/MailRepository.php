@@ -2,14 +2,10 @@
 namespace src\Repository;
 
 use src\Collection\MailCollection;
+use src\Constant\ConstantConstant;
+use src\Constant\FieldConstant;
 use src\Entity\Mail;
 
-/**
- * @method Mail|null find($id)
- * @method Mail|null findOneBy(array $criteria, array $orderBy=null)
- * @method Mail[]    findAll()
- * @method Mail[]    findBy(array $criteria, array $orderBy=null, $limit=null, $offset=null)
- */
 class MailRepository extends Repository
 {
     public function __construct(MailCollection $collection)
@@ -18,10 +14,10 @@ class MailRepository extends Repository
         $this->collection = $collection;
     }
 
-    public function createQueryBuilder(string $alias=''): self
+    public function createQueryBuilder(): self
     {
         $this->field = Mail::getFields();
-        return parent::createQueryBuilder($alias);
+        return parent::createQueryBuilder();
     }
 
     public function convertElement($row): Mail
@@ -29,35 +25,17 @@ class MailRepository extends Repository
         return Mail::initFromRow($row);
     }
 
-    public function find($id): ?Mail
-    {
-        $this->collection->empty();
-        return $this->createQueryBuilder('s')
-            ->setCriteria(['id'=>$id])
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
-    public function findOneBy(array $criteria, array $orderBy=[]): ?Mail
-    {
-        $collection = $this->findBy($criteria, $orderBy, 1);
-        return $collection->valid() ? $collection->current() : null;
-    }
-
-    public function findAll(array $orderBy=['sentDate'=>ConstantConstant::CST_ASC]): MailCollection
+    public function findAll(array $orderBy=[FieldConstant::SENTDATE=>ConstantConstant::CST_ASC]): MailCollection
     {
         return $this->findBy([], $orderBy);
     }
 
-    public function findBy(array $criteria, array $orderBy=[], int $limit=-1): MailCollection
-    {
-        return $this->createQueryBuilder('s')
-            ->setCriteria($criteria)
-            ->orderBy($orderBy)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }
+    
+
+
+
+
+    
 
     public function update(Mail $mail): void
     {

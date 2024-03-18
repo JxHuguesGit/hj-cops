@@ -80,6 +80,7 @@ function copsiteMenu()
         if (function_exists('add_submenu_page')) {
             $arrUrlSubMenu = array(
                 'home'     => 'Accueil',
+                'admin'    => 'Admin',
                 'mailData' => 'Mails',
             );
             foreach ($arrUrlSubMenu as $key => $value) {

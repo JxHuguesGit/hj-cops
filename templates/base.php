@@ -4,11 +4,11 @@ use src\Constant\ConstantConstant;
 use src\Constant\FieldConstant;
 use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
-use src\Controller\HomePageController;
-use src\Controller\LibraryPageController;
+use src\Controller\HomeController;
+use src\Controller\LibraryController;
 use src\Controller\MailPageController;
-use src\Controller\ProfilePageController;
-use src\Controller\SettingsPageController;
+use src\Controller\ProfileController;
+use src\Controller\SettingsController;
 use src\Controller\UtilitiesController;
 use src\Controller\WidgetController;
 use src\Repository\PlayerRepository;
@@ -47,20 +47,20 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
 
             switch ($slug) {
                 case ConstantConstant::CST_SETTINGS :
-                    $controller = new SettingsPageController($arrUri);
+                    $controller = new SettingsController();
                 break;
                 case ConstantConstant::CST_PROFILE :
-                    $controller = new ProfilePageController($arrUri);
+                    $controller = new ProfileController($arrUri);
                 break;
                 case ConstantConstant::CST_LIBRARY :
-                    $controller = new LibraryPageController($arrUri);
+                    $controller = new LibraryController($arrUri);
                 break;
                 case ConstantConstant::CST_NOTIFICATION :
                 case ConstantConstant::CST_TRASH :
                         $controller = new MailPageController($arrUri, $slug);
                 break;
                 default :
-                    $controller = new HomePageController();
+                    $controller = new HomeController();
                 break;
             }
             /////////////////////////////////////////
@@ -75,7 +75,7 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
             $controller->getTitle(),
             PLUGINS_COPS,
             $controller->getContentHeader(),
-            $controller->getContentPage(),
+            $controller->getContentPage($msgProcessError),
             $controller->getContentFooter(),
             $controller->getClassLogged(),
             $errorPanel,
