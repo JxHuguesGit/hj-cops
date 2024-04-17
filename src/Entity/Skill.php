@@ -37,13 +37,6 @@ class Skill extends Entity
         $this->repository = new SkillRepository(new SkillCollection());
     }
 
-    public function __toString()
-    {
-        $str  = ($this->id ?? '').' - ';
-        $str .= '<br>';
-        return $str;
-    }
-
     public static function initFromRow($row): Skill
     {
         $obj = new Skill();

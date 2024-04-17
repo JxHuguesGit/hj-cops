@@ -38,13 +38,6 @@ class Course extends Entity
         $this->repository = new CourseRepository(new CourseCollection());
     }
 
-    public function __toString()
-    {
-        $str  = ($this->id ?? '').' - ';
-        $str .= '<br>';
-        return $str;
-    }
-
     public static function initFromRow($row): Course
     {
         $obj = new Course();

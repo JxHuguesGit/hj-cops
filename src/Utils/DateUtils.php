@@ -78,6 +78,10 @@ class DateUtils
     public static function getCopsDate(string $strFormat): string
     {
         $strCopsDate = get_option(ConstantConstant::CST_COPSDATE);
+        if ($strCopsDate=='') {
+            $strCopsDate = '07:00:00 03/06/2030';
+        }
+ 
         $h = substr((string) $strCopsDate, 0, 2);
         $i = substr((string) $strCopsDate, 3, 2);
         $s = substr((string) $strCopsDate, 6, 2);

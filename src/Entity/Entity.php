@@ -12,6 +12,16 @@ class Entity
         }
     }
 
+    public function __toString(): string
+    {
+        $fields = static::getFields();
+        $str = '';
+        foreach ($fields as $field) {
+            $str .= ($this->{$field} ?? '').' - ';
+        }
+        return substr($str, 0, -3).'<br>';
+    }
+
     public function initRepository($repositories=[])
     {
         while (!empty($repositories)) {

@@ -32,13 +32,6 @@ class MailFolder extends Entity
         $this->repository = new MailFolderRepository(new MailFolderCollection());
     }
 
-    public function __toString()
-    {
-        $str  = ($this->id ?? '').' - ';
-        $str .= '<br>';
-        return $str;
-    }
-
     public static function initFromRow($row): MailFolder
     {
         $obj = new MailFolder();

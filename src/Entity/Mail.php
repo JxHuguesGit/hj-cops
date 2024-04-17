@@ -32,13 +32,6 @@ class Mail extends Entity
         $this->repository = new MailRepository(new MailCollection());
     }
 
-    public function __toString()
-    {
-        $str  = ($this->id ?? '').' - ';
-        $str .= '<br>';
-        return $str;
-    }
-
     public static function initFromRow($row): Mail
     {
         $obj = new Mail();

@@ -26,17 +26,18 @@ class LibraryController extends UtilitiesController
             ConstantConstant::CST_SKILLS => [
                 ConstantConstant::CST_LABEL=>LabelConstant::LBL_SKILLS,
                 ConstantConstant::CST_DESCRIPTION=>'Liste et descriptions des compétences.',
-                ConstantConstant::CST_FILE=>'COPS_Compétences.pdf'],
+                ConstantConstant::CST_FILE=>'[ADJ]_COPS_Compétences.pdf'],
             ConstantConstant::CST_COURSES => [
                 ConstantConstant::CST_LABEL=>LabelConstant::LBL_COURSES,
                 ConstantConstant::CST_DESCRIPTION=>'Liste et descriptions des stages.',
-                ConstantConstant::CST_FILE=>'COPS_Stages.pdf'],
+                ConstantConstant::CST_FILE=>'[ADJ]_COPS_Stages.pdf'],
             ConstantConstant::CST_PLAYERAID => [
                 ConstantConstant::CST_LABEL=>LabelConstant::LBL_GAME_AIDS,
                 ConstantConstant::CST_DESCRIPTION=>'Diverses aides de jeu, fluff et ingame.'],
             ConstantConstant::CST_ACRONYMS => [
                 ConstantConstant::CST_LABEL=>LabelConstant::LBL_ACRONYMS,
-                ConstantConstant::CST_DESCRIPTION=>'Tous les acronymes du jeu.'],
+                ConstantConstant::CST_DESCRIPTION=>'Tous les acronymes du jeu.',
+                ConstantConstant::CST_FILE=>'[ADJ]_COPS_Acronymes.pdf'],
         ];
         if (!isset($this->arrParams[ConstantConstant::CST_PAGE]) ||
             !in_array($this->arrParams[ConstantConstant::CST_PAGE], array_keys($arrCards))

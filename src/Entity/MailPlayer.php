@@ -32,13 +32,6 @@ class MailPlayer extends Entity
         $this->repository = new MailPlayerRepository(new MailPlayerCollection());
     }
 
-    public function __toString()
-    {
-        $str  = ($this->id ?? '').' - ';
-        $str .= '<br>';
-        return $str;
-    }
-
     public static function initFromRow($row): MailPlayer
     {
         $obj = new MailPlayer();

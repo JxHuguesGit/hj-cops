@@ -44,13 +44,9 @@ class MailData extends Entity
     private function initRepositories()
     {
         $this->repository = new MailDataRepository(new MailDataCollection());
-    }
-
-    public function __toString()
-    {
-        $str  = ($this->id ?? '').' - ';
-        $str .= '<br>';
-        return $str;
+        $this->mailRepository = new MailRepository(new MailCollection());
+        $this->mailFolderRepository = new MailFolderRepository(new MailFolderCollection());
+        $this->mailPlayerRepository = new MailPlayerRepository(new MailPlayerCollection());
     }
 
     public static function initFromRow($row): MailData
@@ -83,40 +79,32 @@ class MailData extends Entity
 
     public function update(): void
     {
-        $repository = new MailDataRepository(new MailDataCollection());
-        $repository->update($this);
+        $this->repository->update($this);
     }
 
     public function getMail(): Mail
     {
-        $repository = new MailRepository(new MailCollection());
-        return $repository->find($this->mailId);
+        return $this->mailRepository->find($this->mailId);
     }
 
     public function getMailFolder(): MailFolder
     {
-        $repository = new MailFolderRepository(new MailFolderCollection());
-        return $repository->find($this->folderId);
+        return $this->mailFolderRepository->find($this->folderId);
     }
 
     public function getDestinataire(): string
     {
-        $repository = new MailPlayerRepository(new MailPlayerCollection());
-        $mailPlayer = $repository->find($this->toId);
-        return $mailPlayer->getField(FieldConstant::USER);
+        return $this->mailPlayerRepository->find($this->toId)->getField(FieldConstant::USER);
     }
 
     public function getAuteur(): string
     {
-        $repository = new MailPlayerRepository(new MailPlayerCollection());
-        $mailPlayer = $repository->find($this->fromId);
-        return $mailPlayer->getField(FieldConstant::USER);
+        return $this->mailPlayerRepository->find($this->fromId)->getField(FieldConstant::USER);
     }
 
     public function getSubjectExcerpt(): string
     {
-        $repository = new MailRepository(new MailCollection());
-        $this->mail = $repository->find($this->mailId);
+        $this->mail = $this->mailRepository->find($this->mailId);
         $excerpt = mb_substr($this->mail->getField(FieldConstant::CONTENT), 0, 20).'...';
         $title = $this->mail->getField(FieldConstant::SUBJECT);
         return HtmlUtils::getBalise('strong', $title).' - '.$excerpt;
@@ -125,8 +113,7 @@ class MailData extends Entity
     public function getSinceWhen(): string
     {
         if ($this->mail==null) {
-            $repository = new MailRepository(new MailCollection());
-            $this->mail = $repository->find($this->mailId);
+            $this->mail = $this->mailRepository->find($this->mailId);
         }
         list($y, $m, $d, $h, $i, $s) = preg_split("/[ :-]/", $this->mail->getField(FieldConstant::SENTDATE));
         $from = mktime($h, $i, $s, $m, $d, $y);

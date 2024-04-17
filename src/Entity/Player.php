@@ -65,13 +65,6 @@ class Player extends Entity
         $this->repository = new PlayerRepository(new PlayerCollection());
     }
 
-    public function __toString()
-    {
-        $str  = ($this->id ?? '').' - ';
-        $str .= '<br>';
-        return $str;
-    }
-
     public static function initFromRow($row): Player
     {
         $obj = new Player();

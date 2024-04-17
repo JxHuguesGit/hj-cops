@@ -31,13 +31,6 @@ class Acronym extends Entity
         $this->repository = new AcronymRepository(new AcronymCollection());
     }
 
-    public function __toString()
-    {
-        $str  = ($this->id ?? '').' - ';
-        $str .= '<br>';
-        return $str;
-    }
-
     public static function initFromRow($row): Acronym
     {
         $obj = new Acronym();

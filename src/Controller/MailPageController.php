@@ -82,9 +82,9 @@ class MailPageController extends PageController
         //////////////////////////////////////////
 
         $attributes = [
-            $contentHeader,
-            $tabsBar,
-            $table->display(),
+            '',//$contentHeader,
+            '',//$tabsBar,
+            '',//$table->display(),
         ];
         return $this->getRender(TemplateConstant::TPL_ADMIN_CONTENT_WRAP, $attributes);
     }

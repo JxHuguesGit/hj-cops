@@ -31,6 +31,7 @@ class PlayerSkill extends Entity
     private function initRepositories()
     {
         $this->repository = new PlayerSkillRepository(new PlayerSkillCollection());
+        $this->skillRepository = new SkillRepository(new SkillCollection());
     }
 
     public static function initFromRow($row): PlayerSkill
@@ -55,7 +56,6 @@ class PlayerSkill extends Entity
 
     public function getSkill(): Skill
     {
-        $repository = new SkillRepository(new SkillCollection());
-        return $repository->find($this->skillId);
+        return $this->skillRepository->find($this->skillId);
     }
 }

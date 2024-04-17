@@ -32,13 +32,6 @@ class Widget extends Entity
         $this->repository = new WidgetRepository(new WidgetCollection());
     }
 
-    public function __toString()
-    {
-        $str  = ($this->id ?? '').' - ';
-        $str .= '<br>';
-        return $str;
-    }
-
     public static function initFromRow($row): Widget
     {
         $obj = new Widget();
