@@ -8,6 +8,8 @@ class TableUtils
 {
     private PaginateUtils $paginate;
     private bool $blnPaginate = false;
+    private array $filters = [];
+    private bool $blnFilter = false;
     private array $attributes = [];
     /**
      * $header = [
@@ -115,6 +117,17 @@ class TableUtils
 
     public function addBodyRows(mixed $objs, int $colspan=1, array $arrParams=[]): self
     {
+        if ($this->blnFilter) {
+            $this->addFootRow();
+            for ($i=1; $i<=$colspan; $i++) {
+                if (isset($this->filters[$i])) {
+                    $filterBlock = $this->filters[$i]->getFilterBlock();
+                    $this->addFootCell([ConstantConstant::CST_CONTENT=>$filterBlock]);
+                } else {
+                    $this->addFootCell([ConstantConstant::CST_CONTENT=>'&nbsp;']);
+                }
+            }
+        }
         if ($this->blnPaginate) {
             $paginateBlock = $this->paginate->getPaginationBlock();
             if ($paginateBlock!='') {
@@ -183,6 +196,13 @@ class TableUtils
     {
         $this->blnPaginate = true;
         $this->paginate = new PaginateUtils($paginate);
+        return $this;
+    }
+
+    public function setFilter(array $filter=[]): self
+    {
+        $this->blnFilter = true;
+        $this->filters[$filter[ConstantConstant::CST_COL]] = new FilterUtils($filter);
         return $this;
     }
 

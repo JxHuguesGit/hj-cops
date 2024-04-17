@@ -8,7 +8,7 @@ use src\Collection\PlayerCollection;
 use src\Collection\PlayerWidgetCollection;
 use src\Constant\ConstantConstant;
 use src\Constant\FieldConstant;
-use src\Controller\PlayerController;
+use src\Controller\CopsController;
 use src\Entity\MailPlayer;
 use src\Entity\PlayerWidget;
 use src\Repository\MailDataRepository;
@@ -112,15 +112,22 @@ class Player extends Entity
         return $this->id==64;
     }
 
-    public function getFullName(): string
+    public function getFullName(bool $withSurname=false): string
     {
-        return $this->firstname.($this->firstname=='' ? '' : ' ').$this->lastname;
+        return $this->lastname . ' ' .
+            (!$withSurname || $this->surname==' ' ? '' : '"'.$this->surname.'" ').
+            $this->firstname;
     }
 
     public function update(): void
     {
         $this->initRepositories();
         $this->repository->update($this);
+    }
+
+    public function getController(): CopsController
+    {
+        return new CopsController($this);
     }
 
     public function getWidgets(): PlayerWidgetCollection

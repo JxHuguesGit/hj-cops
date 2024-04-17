@@ -22,7 +22,18 @@ class LibraryController extends UtilitiesController
 
     public function getContentPage(): string
     {
+        // Définition du contenu accessible dans la bibliothèque
         $arrCards = [
+            ConstantConstant::CST_ACRONYMS => [
+                ConstantConstant::CST_LABEL=>LabelConstant::LBL_ACRONYMS,
+                ConstantConstant::CST_DESCRIPTION=>'Tous les acronymes du jeu.',
+                ConstantConstant::CST_FILE=>'[ADJ]_COPS_Acronymes.pdf'],
+            ConstantConstant::CST_PLAYERAID => [
+                ConstantConstant::CST_LABEL=>LabelConstant::LBL_GAME_AIDS,
+                ConstantConstant::CST_DESCRIPTION=>'Diverses aides de jeu, fluff et ingame.'],
+            ConstantConstant::CST_COPS => [
+                ConstantConstant::CST_LABEL=>LabelConstant::LBL_COPS,
+                ConstantConstant::CST_DESCRIPTION=>'Liste des COPS en service.'],
             ConstantConstant::CST_SKILLS => [
                 ConstantConstant::CST_LABEL=>LabelConstant::LBL_SKILLS,
                 ConstantConstant::CST_DESCRIPTION=>'Liste et descriptions des compétences.',
@@ -31,17 +42,14 @@ class LibraryController extends UtilitiesController
                 ConstantConstant::CST_LABEL=>LabelConstant::LBL_COURSES,
                 ConstantConstant::CST_DESCRIPTION=>'Liste et descriptions des stages.',
                 ConstantConstant::CST_FILE=>'[ADJ]_COPS_Stages.pdf'],
-            ConstantConstant::CST_PLAYERAID => [
-                ConstantConstant::CST_LABEL=>LabelConstant::LBL_GAME_AIDS,
-                ConstantConstant::CST_DESCRIPTION=>'Diverses aides de jeu, fluff et ingame.'],
-            ConstantConstant::CST_ACRONYMS => [
-                ConstantConstant::CST_LABEL=>LabelConstant::LBL_ACRONYMS,
-                ConstantConstant::CST_DESCRIPTION=>'Tous les acronymes du jeu.',
-                ConstantConstant::CST_FILE=>'[ADJ]_COPS_Acronymes.pdf'],
-        ];
+            ];
+
+        // Si on ne regarde pas une page en particulier
+        // ou si la page souhaitée n'existe pas
         if (!isset($this->arrParams[ConstantConstant::CST_PAGE]) ||
             !in_array($this->arrParams[ConstantConstant::CST_PAGE], array_keys($arrCards))
         ) {
+            // On affiche la liste des pages disponibles dans la bibliothèque
             $cardBody = '';
             $cardRow = '';
             $cpt = 0;
@@ -63,24 +71,29 @@ class LibraryController extends UtilitiesController
             $cardBody .= HtmlUtils::getDiv($cardRow, [ConstantConstant::CST_CLASS=>'row mb-3']);
             $returned = $this->getRender(TemplateConstant::TPL_LIBRARY_PANEL, [$cardBody]);
         } else {
+            // Sinon, on récupère le controller associé à la page souhaitée.
             $controller = null;
             switch ($this->arrParams[ConstantConstant::CST_PAGE]) {
-                case ConstantConstant::CST_SKILLS :
-                    $controller = new SkillController();
+                case ConstantConstant::CST_ACRONYMS :
+                    $controller = new AcronymController();
+                    $returned = $controller->getContentPage($this->arrParams);
+                    break;
+                case ConstantConstant::CST_COPS :
+                    $controller = new CopsController();
                     $returned = $controller->getContentPage($this->arrParams);
                     break;
                 case ConstantConstant::CST_COURSES :
                     $controller = new CourseController();
                     $returned = $controller->getContentPage($this->arrParams);
                     break;
-                case ConstantConstant::CST_ACRONYMS :
-                    $controller = new AcronymController();
-                    $returned = $controller->getContentPage($this->arrParams);
-                    break;
                 case ConstantConstant::CST_PLAYERAID :
                     $returned = $this->getPlayerAidPage();
                     break;
-                default :
+                case ConstantConstant::CST_SKILLS :
+                    $controller = new SkillController();
+                    $returned = $controller->getContentPage($this->arrParams);
+                break;
+                    default :
                     $returned = '';
             }
         }

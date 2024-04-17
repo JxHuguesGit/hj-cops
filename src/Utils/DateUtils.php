@@ -97,6 +97,8 @@ class DateUtils
 
         if ($strFormat=='ts') {
             $strFormatted = mktime($h, $i, $s, $m, $d, $y);
+        } elseif ($strFormat=='dbDate') {
+            $strFormatted = date('Y-m-d', mktime($h, $i, $s, $m, $d, $y));
         } else {
             $strFormatted = 'Error';
         }

@@ -148,8 +148,10 @@ class Repository
     public function setCriteriaComplex(array $criteria=[]): self
     {
         if (!empty($criteria)) {
-            $this->strWhere = " WHERE 1=1";
-            $this->params['where'] = [];
+            if ($this->strWhere=='') {
+                $this->strWhere = " WHERE 1=1";
+                $this->params['where'] = [];
+            }
             foreach ($criteria as $crit) {
                 $this->strWhere .= " AND ".$crit['field'].$crit['operand']."'%s'";
                 $this->params['where'][] = $crit[ConstantConstant::CST_VALUE];
@@ -244,11 +246,4 @@ class Repository
         }
         return $this->collection;
     }
-
-
-    /*
-    ->andWhere('m.id = :val')
-    ->setParameter('val', $id)
-    ->getOneOrNullResult()
-*/
 }

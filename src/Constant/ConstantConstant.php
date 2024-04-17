@@ -11,8 +11,10 @@ interface ConstantConstant
     public const CST_CHAT               = 'chat';
     public const CST_CHECKED            = 'checked';
     public const CST_CLASS              = 'class';
+    public const CST_COL                = 'col';
     public const CST_CONFIRMMDP         = 'confirmMdp';
     public const CST_CONTENT            = 'content';
+    public const CST_COPS               = 'cops';
     public const CST_COPSDATE           = 'copsDate';
     public const CST_COURSE             = 'course';
     public const CST_COURSES            = 'courses';
@@ -22,6 +24,7 @@ interface ConstantConstant
     public const CST_DISABLED           = 'disabled';
     public const CST_DRAFT              = 'draft';
     public const CST_EVENT              = 'event';
+    public const CST_FIELD              = 'field';
     public const CST_FILE               = 'file';
     public const CST_FOR                = 'for';
     public const CST_FORMNAME           = 'formName';
@@ -48,6 +51,7 @@ interface ConstantConstant
     public const CST_PROFILE            = 'profile';
     public const CST_READ               = 'read';
     public const CST_READONLY           = 'readonly';
+    public const CST_SELECTED           = 'selected';
     public const CST_SETTINGS           = 'settings';
     public const CST_SENT               = 'sent';
     public const CST_SLUG               = 'slug';
@@ -58,6 +62,7 @@ interface ConstantConstant
     public const CST_TYPE               = 'type';
     public const CST_URL                = 'url';
     public const CST_VALUE              = 'value';
+    public const CST_VALUES             = 'values';
     public const CST_VIEW               = 'view';
 
     /////////////////////////////////////////////////

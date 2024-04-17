@@ -37,7 +37,7 @@ class Entity
 
     public function setField(string $field, $value): void
     {
-        if ($value==null && gettype($this->{$field})=='string') {
+        if ($value==null) {
             $value = ' ';
         }
         $this->{$field} = $value;

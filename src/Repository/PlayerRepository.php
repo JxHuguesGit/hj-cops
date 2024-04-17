@@ -5,6 +5,7 @@ use src\Collection\PlayerCollection;
 use src\Constant\ConstantConstant;
 use src\Constant\FieldConstant;
 use src\Entity\Player;
+use src\Utils\DateUtils;
 
 class PlayerRepository extends Repository
 {
@@ -23,5 +24,24 @@ class PlayerRepository extends Repository
     public function findAll(array $orderBy=[FieldConstant::LASTNAME=>ConstantConstant::CST_ASC]): PlayerCollection
     {
         return $this->findBy([], $orderBy);
+    }
+
+    public function findAllCopsBy(
+        array $criteria=[],
+        array $orderBy=[FieldConstant::LASTNAME=>ConstantConstant::CST_ASC]
+    ): PlayerCollection
+    {
+        $this->baseQuery  = "SELECT * ";
+        $this->baseQuery .= "FROM ".$this->table;
+        $criteriaComplex = [
+            ['field'=>FieldConstant::RANK, 'operand'=>'<>', 'value'=>''],
+            ['field'=>FieldConstant::STARTDATE, 'operand'=>'<=', 'value'=>DateUtils::getCopsDate('dbDate')]
+        ];
+
+        return $this->setCriteria($criteria)
+            ->setCriteriaComplex($criteriaComplex)
+            ->orderBy($orderBy)
+            ->getQuery()
+            ->getResult();
     }
 }

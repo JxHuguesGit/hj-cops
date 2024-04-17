@@ -11,7 +11,6 @@ class PaginateUtils
     private $nbElements;
     private $nbPages;
     private $curPage;
-    private $queryArg;
     private $objs;
     private $url;
     private $pageWidth;
@@ -42,17 +41,21 @@ class PaginateUtils
         $this->nbPages = ceil($this->nbElements/$this->nbPerPage);
         $curPage = $arrData[ConstantConstant::CST_CURPAGE] ?? 1;
         $this->curPage = max(1, min($curPage, $this->nbPages));
-        $queryArg = $arrData[ConstantConstant::PAGE_QUERY_ARG] ?? [];
-        $queryArg[ConstantConstant::CST_CURPAGE] = $this->curPage;
-        $this->queryArg = $queryArg;
-        $this->url = $arrData[ConstantConstant::CST_URL] ?? '';
         /////////////////////////////////////////////////
+
+        $this->url = remove_query_arg(ConstantConstant::CST_CURPAGE);
     }
 
     public function getPaginationBlock(): string
     {
+        $strClass = 'pagination pagination-sm justify-content-start mb-0 col-6';
+        $firstElement = ($this->curPage-1)*$this->nbPerPage*1+1;
+        $lastElement  = min($this->nbElements, $this->curPage*$this->nbPerPage);
+        $divContent = "Entrées $firstElement à $lastElement sur ".$this->nbElements;
+        $navContent = HtmlUtils::getSpan($divContent, [ConstantConstant::CST_CLASS => $strClass]);
+
         if ($this->nbPages<=1) {
-            return '';
+            return $navContent;
         }
 
         // Selon l'option choisie, on affiche une pagination plus ou moins enrichie.
@@ -129,9 +132,9 @@ class PaginateUtils
             $ulContent = $strToFirst.$ulContent.$strToLast;
         }
 
-        $strClass = 'pagination pagination-sm justify-content-end mb-0';
-        $navContent = HtmlUtils::getBalise('ul', $ulContent, [ConstantConstant::CST_CLASS => $strClass]);
-        $navAttributes = ['aria-label' => 'Pagination liste'];
+        $strClass = 'pagination pagination-sm justify-content-end mb-0 col-6';
+        $navContent .= HtmlUtils::getBalise('ul', $ulContent, [ConstantConstant::CST_CLASS => $strClass]);
+        $navAttributes = [ConstantConstant::CST_CLASS => 'row', 'aria-label' => 'Pagination liste'];
         return HtmlUtils::getBalise('nav', $navContent, $navAttributes);
     }
 
@@ -141,7 +144,7 @@ class PaginateUtils
         if ($isDisabled) {
             $strLink = HtmlUtils::getLink($label, '#', ConstantConstant::CST_DISABLED.$this->cssPageLink);
         } else {
-            $href = $this->url.'&amp;'.ConstantConstant::CST_CURPAGE.'='.$curpage;
+            $href = add_query_arg(ConstantConstant::CST_CURPAGE, $curpage, $this->url);
             $strLink = HtmlUtils::getLink($label, $href, $this->cssPageLink);
         }
 
