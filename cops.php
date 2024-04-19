@@ -81,6 +81,7 @@ function copsiteMenu()
             $arrUrlSubMenu = array(
                 'home'     => 'Accueil',
                 'admin'    => 'Admin',
+                'player'   => 'COPS',
                 'mailData' => 'Mails',
             );
             foreach ($arrUrlSubMenu as $key => $value) {

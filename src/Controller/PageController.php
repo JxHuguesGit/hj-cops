@@ -31,6 +31,9 @@ class PageController extends UtilitiesController
             case 'mailFolder' :
                 $controller = new MailFolderPageController();
             break;
+            case 'player' :
+                $controller = new CopsController();
+            break;
             default :
                 $controller = new MailDataPageController();
             break;

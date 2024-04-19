@@ -58,15 +58,17 @@ class TableUtils
         }
 
         $bodyContent = '';
-        foreach ($this->body['rows'] as $row) {
-            $rowContent = '';
-            foreach ($row['cells'] as $cell) {
-                $cellContent = $cell[ConstantConstant::CST_CONTENT];
-                $cellType = $cell[ConstantConstant::CST_TYPE];
-                $cellAttributes = $cell['attributes'];
-                $rowContent .= HtmlUtils::getBalise($cellType, $cellContent, $cellAttributes);
+        if (!empty($this->body['rows'])) {
+            foreach ($this->body['rows'] as $row) {
+                $rowContent = '';
+                foreach ($row['cells'] as $cell) {
+                    $cellContent = $cell[ConstantConstant::CST_CONTENT];
+                    $cellType = $cell[ConstantConstant::CST_TYPE];
+                    $cellAttributes = $cell['attributes'];
+                    $rowContent .= HtmlUtils::getBalise($cellType, $cellContent, $cellAttributes);
+                }
+                $bodyContent .= HtmlUtils::getBalise('tr', $rowContent, $row['attributes']);
             }
-            $bodyContent .= HtmlUtils::getBalise('tr', $rowContent, $row['attributes']);
         }
 
         $footContent = '';

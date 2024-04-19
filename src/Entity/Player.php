@@ -1,6 +1,7 @@
 <?php
 namespace src\Entity;
 
+use src\Collection\BinomeCollection;
 use src\Collection\MailDataCollection;
 use src\Collection\MailFolderCollection;
 use src\Collection\MailPlayerCollection;
@@ -11,11 +12,13 @@ use src\Constant\FieldConstant;
 use src\Controller\CopsController;
 use src\Entity\MailPlayer;
 use src\Entity\PlayerWidget;
+use src\Repository\BinomeRepository;
 use src\Repository\MailDataRepository;
 use src\Repository\MailFolderRepository;
 use src\Repository\MailPlayerRepository;
 use src\Repository\PlayerRepository;
 use src\Repository\PlayerWidgetRepository;
+use src\Utils\DateUtils;
 
 class Player extends Entity
 {
@@ -50,6 +53,7 @@ class Player extends Entity
     protected string $startDate;
 
     protected PlayerRepository $repository;
+    protected BinomeRepository $binomeRepository;
 
     //////////////////////////////////////////////////
     // CONSTRUCT
@@ -63,6 +67,7 @@ class Player extends Entity
     private function initRepositories()
     {
         $this->repository = new PlayerRepository(new PlayerCollection());
+        $this->binomeRepository = new BinomeRepository(new BinomeCollection());
     }
 
     public static function initFromRow($row): Player
@@ -101,6 +106,7 @@ class Player extends Entity
             FieldConstant::SECTION,
             FieldConstant::SERIALNUMBER,
             FieldConstant::STARTDATE,
+            FieldConstant::ENDDATE,
             FieldConstant::SURNAME,
             FieldConstant::XPCUMUL,
             FieldConstant::XPCUR,
@@ -167,5 +173,24 @@ class Player extends Entity
         $repository = new MailDataRepository(new MailDataCollection());
         $searchAttributes[FieldConstant::TOID] = $mailPlayer->getField(FieldConstant::ID);
         return $repository->findByAndOrdered($searchAttributes);
+    }
+
+    public function getBinome(): ?Player
+    {
+        $binomes = $this->binomeRepository->findBinome([
+            FieldConstant::ID=>$this->id,
+            ConstantConstant::CST_CURDATE=>DateUtils::getCopsDate('dbDate')
+        ]);
+
+        if ($binomes->valid()) {
+            $binome = $binomes->current();
+            if ($binome->getField(FieldConstant::LEADERID)==$this->id) {
+                return $binome->getBinome();
+            } else {
+                return $binome->getLeader();
+            }
+        } else {
+            return null;
+        }
     }
 }

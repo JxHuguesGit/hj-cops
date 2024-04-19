@@ -9,10 +9,11 @@ class CardUtils
     protected array $attributes;
     protected string $cardClass;
 
-    public function __construct()
+    public function __construct(array $attributes=[])
     {
         $this->cardClass = 'card';
         $this->attributes = [
+            'card' => $attributes,
             'header' => [
                 ConstantConstant::CST_CLASS => 'card-header',
                 ConstantConstant::CST_CONTENT => '',
@@ -86,6 +87,7 @@ class CardUtils
             [ConstantConstant::CST_CLASS=>$this->attributes['footer'][ConstantConstant::CST_CLASS]]
         );
 
-        return HtmlUtils::getDiv($header.$body.$footer, [ConstantConstant::CST_CLASS=>$this->cardClass]);
+        $extraAttributes = array_merge([ConstantConstant::CST_CLASS=>$this->cardClass], $this->attributes['card']);
+        return HtmlUtils::getDiv($header.$body.$footer, $extraAttributes);
     }
 }

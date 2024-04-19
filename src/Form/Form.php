@@ -111,6 +111,18 @@ class Form extends UtilitiesController
         );
     }
 
+    public function addHidden(string $id, $value, array $extraAttributes=[]): void
+    {
+        $attributes = $this->initAttributes($id, '', $value);
+
+        if (isset($extraAttributes[ConstantConstant::CST_CLASS])) {
+            $attributes[ConstantConstant::CST_CLASS] .= ' '.$attributes[ConstantConstant::CST_CLASS];
+        }
+        $attributes[ConstantConstant::CST_TYPE] = 'hidden';
+
+        $this->formRows[$this->nbRows] .= HtmlUtils::getBalise('input', '', $attributes);
+    }
+
     public function addFiller(array $extraAttributes=[]): void
     {
         $attributes = [

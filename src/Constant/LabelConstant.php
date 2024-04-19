@@ -15,10 +15,14 @@ interface LabelConstant
     public const LBL_LOGIN              = 'Connexion';
     public const LBL_COPS               = 'COPS';
     public const LBL_TRASH              = 'Corbeille';
+    public const LBL_ECHELON            = 'Echelon';
+    public const LBL_END_SHIFT_DATE     = 'Fin de service';
     public const LBL_GRADE              = 'Grade';
     public const LBL_GROUP              = 'Groupe';
     public const LBL_ID                 = 'Identifiant';
+    public const LBL_INTEGRATION_DATE   = 'Intégration';
     public const LBL_MATRICULE          = 'Matricule';
+    public const LBL_MDP                = 'Mot de passe';
     public const LBL_LEVEL              = 'Niveau';
     public const LBL_NAME               = 'Nom';
     public const LBL_NOTIFICATIONS      = 'Notifications';
@@ -26,6 +30,8 @@ interface LabelConstant
     public const LBL_BINOME             = 'Partenaire';
     public const LBL_FIRSTNAME          = 'Prénom';
     public const LBL_PROFILE            = 'Profil';
+    public const LBL_SECTION            = 'Section';
+    public const LBL_SUBMIT             = 'Soumettre';
     public const LBL_SOURCE             = 'Source';
     public const LBL_COURSES            = 'Stages';
     public const LBL_SURNAME            = 'Surnom';

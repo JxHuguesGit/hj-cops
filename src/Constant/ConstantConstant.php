@@ -18,6 +18,7 @@ interface ConstantConstant
     public const CST_COPSDATE           = 'copsDate';
     public const CST_COURSE             = 'course';
     public const CST_COURSES            = 'courses';
+    public const CST_CURDATE            = 'curdate';
     public const CST_CURPAGE            = 'curpage';
     public const CST_DESC               = 'desc';
     public const CST_DESCRIPTION        = 'description';

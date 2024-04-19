@@ -153,7 +153,7 @@ class Repository
                 $this->params['where'] = [];
             }
             foreach ($criteria as $crit) {
-                $this->strWhere .= " AND ".$crit['field'].$crit['operand']."'%s'";
+                $this->strWhere .= " AND `".$crit['field']."`".$crit['operand']."'%s'";
                 $this->params['where'][] = $crit[ConstantConstant::CST_VALUE];
             }
         }

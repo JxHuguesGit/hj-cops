@@ -16,6 +16,7 @@ interface FieldConstant
     public const ATTRPERCEPTION         = 'attrPerception';
     public const ATTRREFLEXES           = 'attrReflexes';
     public const ATTRSANGFROID          = 'attrSangfroid';
+    public const BINOMEID               = 'binomeId';
     public const BONUS                  = 'bonus';
     public const CATEGORY               = 'category';
     public const CODE                   = 'code';
@@ -26,6 +27,7 @@ interface FieldConstant
     public const DEFAULTABILITY         = 'defaultAbility';
     public const DESCRIPTION            = 'description';
     public const FIRSTNAME              = 'firstname';
+    public const ENDDATE                = 'endDate';
     public const FOLDERID               = 'folderId';
     public const FROMID                 = 'fromId';
     public const HPCUR                  = 'hpCur';
@@ -33,6 +35,7 @@ interface FieldConstant
     public const ICON                   = 'icon';
     public const LABEL                  = 'label';
     public const LASTNAME               = 'lastname';
+    public const LEADERID               = 'leaderId';
     public const LEVEL                  = 'level';
     public const LOGNAME                = 'logname';
     public const MAIL                   = 'mail';
