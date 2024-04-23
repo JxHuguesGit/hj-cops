@@ -13,6 +13,7 @@ use src\Utils\SessionUtils;
 
 class PlayerForm extends Form
 {
+    public Player $player;
 
     public function __construct(Player $player=null)
     {
@@ -23,30 +24,30 @@ class PlayerForm extends Form
     {
         // Id, logname et mot de passe
         $this->addRow();
-        $this->addInput(FieldConstant::ID, 'Id', $this->player->getField(FieldConstant::ID), [ConstantConstant::CST_READONLY=>true]);
-        $this->addInput(FieldConstant::LOGNAME, LabelConstant::LBL_ID, $this->player->getField(FieldConstant::LOGNAME));
-        $this->addInput(FieldConstant::PASSWORD, LabelConstant::LBL_MDP, $this->player->getField(FieldConstant::PASSWORD));
+        $this->addInput(FieldConstant::ID, FieldConstant::ID, 'Id', $this->player->getField(FieldConstant::ID), [ConstantConstant::CST_READONLY=>true]);
+        $this->addInput(FieldConstant::LOGNAME, FieldConstant::LOGNAME, LabelConstant::LBL_ID, $this->player->getField(FieldConstant::LOGNAME));
+        $this->addInput(FieldConstant::PASSWORD, FieldConstant::PASSWORD, LabelConstant::LBL_MDP, $this->player->getField(FieldConstant::PASSWORD));
 
         // Lastname, firstname et surname
         $this->addRow();
-        $this->addInput(FieldConstant::LASTNAME, LabelConstant::LBL_NAME, $this->player->getField(FieldConstant::LASTNAME));
-        $this->addInput(FieldConstant::FIRSTNAME, LabelConstant::LBL_FIRSTNAME, $this->player->getField(FieldConstant::FIRSTNAME));
-        $this->addInput(FieldConstant::SURNAME, LabelConstant::LBL_SURNAME, $this->player->getField(FieldConstant::SURNAME));
+        $this->addInput(FieldConstant::LASTNAME, FieldConstant::LASTNAME, LabelConstant::LBL_NAME, $this->player->getField(FieldConstant::LASTNAME));
+        $this->addInput(FieldConstant::FIRSTNAME, FieldConstant::FIRSTNAME, LabelConstant::LBL_FIRSTNAME, $this->player->getField(FieldConstant::FIRSTNAME));
+        $this->addInput(FieldConstant::SURNAME, FieldConstant::SURNAME, LabelConstant::LBL_SURNAME, $this->player->getField(FieldConstant::SURNAME));
 
         // Serialnumber, startDate, endDate
         $this->addRow();
-        $this->addInput(FieldConstant::SERIALNUMBER, LabelConstant::LBL_MATRICULE, $this->player->getField(FieldConstant::SERIALNUMBER));
-        $this->addInput(FieldConstant::STARTDATE, LabelConstant::LBL_INTEGRATION_DATE, $this->player->getField(FieldConstant::STARTDATE), [ConstantConstant::CST_TYPE=>'date']);
-        $this->addInput(FieldConstant::ENDDATE, LabelConstant::LBL_END_SHIFT_DATE, $this->player->getField(FieldConstant::ENDDATE), [ConstantConstant::CST_TYPE=>'date']);
+        $this->addInput(FieldConstant::SERIALNUMBER, FieldConstant::SERIALNUMBER, LabelConstant::LBL_MATRICULE, $this->player->getField(FieldConstant::SERIALNUMBER));
+        $this->addInput(FieldConstant::STARTDATE, FieldConstant::STARTDATE, LabelConstant::LBL_INTEGRATION_DATE, $this->player->getField(FieldConstant::STARTDATE), [ConstantConstant::CST_TYPE=>'date']);
+        $this->addInput(FieldConstant::ENDDATE, FieldConstant::ENDDATE, LabelConstant::LBL_END_SHIFT_DATE, $this->player->getField(FieldConstant::ENDDATE), [ConstantConstant::CST_TYPE=>'date']);
 
         // Grade, échelon, section
         $this->addRow();
-        $this->addSelect(FieldConstant::RANK, LabelConstant::LBL_GRADE, RankEnum::cases(), $this->player->getField(FieldConstant::RANK));
-        $this->addInput(FieldConstant::RANKECHELON, LabelConstant::LBL_ECHELON, $this->player->getField(FieldConstant::RANKECHELON));
-        $this->addSelect(FieldConstant::SECTION, LabelConstant::LBL_SECTION, SectionEnum::cases(), $this->player->getField(FieldConstant::SECTION));
+        $this->addSelect(FieldConstant::RANK, FieldConstant::RANK, LabelConstant::LBL_GRADE, RankEnum::cases(), $this->player->getField(FieldConstant::RANK));
+        $this->addInput(FieldConstant::RANKECHELON, FieldConstant::RANKECHELON, LabelConstant::LBL_ECHELON, $this->player->getField(FieldConstant::RANKECHELON));
+        $this->addSelect(FieldConstant::SECTION, FieldConstant::SECTION, LabelConstant::LBL_SECTION, SectionEnum::cases(), $this->player->getField(FieldConstant::SECTION));
 
         $this->addRow();
-        $this->addHidden('formName', 'copsPlayer');
+        $this->addHidden('formName', 'formName', 'copsPlayer');
     }
 
     public function getFormContent(): string
@@ -56,6 +57,7 @@ class PlayerForm extends Form
 
         $card = new CardUtils([ConstantConstant::CST_STYLE=>'max-width:initial']);
         $card->addClass('p-0')
+            ->setHeader([ConstantConstant::CST_CONTENT=>'Informations Cops'])
             ->setBody([ConstantConstant::CST_CONTENT=>$formContent])
             ->setFooter([ConstantConstant::CST_CONTENT=>$btnSubmit]);
 
@@ -69,7 +71,7 @@ class PlayerForm extends Form
         );
     }
 
-    public function controlForm()
+    public function controlForm(): void
     {
         // Donc on a un _POST qui vient d'être soumis. On vérifie les différents champs et leurs valeurs.
         // En cas d'erreur, on rajoute des flags d'erreur.

@@ -30,12 +30,35 @@ class Binome extends Entity
         $this->initRepositories();
     }
 
+    public function __toString(): string
+    {
+        return '['.implode(', ', [$this->id, $this->leaderId, $this->binomeId, $this->startDate, $this->endDate]).']';
+    }
+
     private function initRepositories()
     {
         $this->repository = new BinomeRepository(new BinomeCollection());
         $this->playerRepository = new PlayerRepository(new PlayerCollection());
     }
 
+    public function insert(): void
+    {
+        $this->initRepositories();
+        $this->repository->insert($this);
+    }
+
+    public function update(): void
+    {
+        $this->initRepositories();
+        $this->repository->update($this);
+    }
+
+    public function delete(): void
+    {
+        $this->initRepositories();
+        $this->repository->delete($this);
+    }
+    
     public static function initFromRow($row): Binome
     {
         $obj = new Binome();

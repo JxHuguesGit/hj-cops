@@ -140,6 +140,22 @@ class Repository
         return $this;
     }
 
+    public function delete(Entity $entity): void
+    {
+        $this->deleteQueryBuilder($entity)
+            ->getQuery()
+            ->execQuery();
+    }
+
+    public function deleteQueryBuilder(Entity $obj): self
+    {
+        $this->baseQuery = "DELETE FROM ".$this->table." WHERE id='%s';";
+        foreach ($this->field as $field) {
+            $this->params['where'][] = $obj->getField($field);
+        }
+        return $this;
+    }
+
 
 
 

@@ -38,6 +38,11 @@ class SessionUtils
         return filter_var($strSanitized, FILTER_SANITIZE_URL);
     }
 
+    public static function fromTabPost(string $field, $default = []): array
+    {
+        return isset($_POST[$field]) ? $_POST[$field] : $default;
+    }
+
     public static function fromPost(string $field, $default = '', bool $sanitize=false): string
     {
         $strSanitized = isset($_POST[$field]) ? htmlentities((string) $_POST[$field], ENT_QUOTES, 'UTF-8') : $default;

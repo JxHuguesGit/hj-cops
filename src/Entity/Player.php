@@ -193,4 +193,9 @@ class Player extends Entity
             return null;
         }
     }
+
+    public function getBinomes(): BinomeCollection
+    {
+        return $this->binomeRepository->findBinome([FieldConstant::ID=>$this->id]);
+    }
 }

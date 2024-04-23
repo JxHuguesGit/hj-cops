@@ -10,9 +10,11 @@ use src\Constant\TemplateConstant;
 use src\Entity\Player;
 use src\Enum\RankEnum;
 use src\Enum\SectionEnum;
+use src\Form\BinomeForm;
 use src\Form\PlayerForm;
 use src\Repository\PlayerRepository;
 use src\Utils\HtmlUtils;
+use src\Utils\SessionUtils;
 use src\Utils\TableUtils;
 use src\Utils\UrlUtils;
 
@@ -181,8 +183,13 @@ class CopsController extends PageController
     public function getAdminEditContentPage(): string
     {
         $postedFormName = $_POST['formName'] ?? null;
+        if ($postedFormName==null) {
+            $postedFormName = $_GET['formName'] ?? null;
+        }
 
         $formPlayer = new PlayerForm($this->cops);
+        $formBinome = new BinomeForm();
+        $formBinome->setPlayer($this->cops);
 
         if ($postedFormName=='copsPlayer') {
             $formPlayer->controlForm();
@@ -190,10 +197,13 @@ class CopsController extends PageController
 // On va vérifier que les données saisies sont cohérentes.
 // Ensuite, on sauvegardera les données
 // Et sinon, on affichera des erreurs
+        } elseif ($postedFormName=='copsPlayerBinome') {
+            $formBinome->controlForm();
         }
 
         $formPlayer->buildForm();
+        $formBinome->buildForm();
 
-        return $formPlayer->getFormContent();
+        return HtmlUtils::getDiv($formPlayer->getFormContent().$formBinome->getFormContent(), [ConstantConstant::CST_CLASS=>'row mx-3']);
     }
 }

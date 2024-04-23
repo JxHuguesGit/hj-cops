@@ -9,7 +9,9 @@ enum RankEnum: int
     case LtnI = 4;
     case LtnII = 5;
     case LtnIII = 6;
-    case Cpt = 7;
+    case CptI = 7;
+    case CptII = 8;
+    case CptIII = 9;
 
     public function label(): string
     {
@@ -20,8 +22,10 @@ enum RankEnum: int
             static::LtnI   => 'Lieutenant I',
             static::LtnII  => 'Lieutenant II',
             static::LtnIII => 'Lieutenant III',
-            static::Cpt    => 'Capitaine',
-            default        => 'Rang inconnu',
+            static::CptI   => 'Capitaine I',
+            static::CptII  => 'Capitaine II',
+            static::CptIII => 'Capitaine III',
+            default        => 'Rang inconnu.',
         };
     }
 

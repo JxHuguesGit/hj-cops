@@ -2,6 +2,7 @@
 namespace src\Form;
 
 use src\Constant\ConstantConstant;
+use src\Constant\IconConstant;
 use src\Controller\UtilitiesController;
 use src\Utils\HtmlUtils;
 
@@ -25,11 +26,11 @@ class Form extends UtilitiesController
         return HtmlUtils::getSpan($label, $attributes);
     }
 
-    private function initAttributes(string $id, string $label, $value): array
+    private function initAttributes(string $id, string $name, string $label, $value): array
     {
         return [
             ConstantConstant::CST_CLASS => 'form-control',
-            ConstantConstant::CST_NAME => $id,
+            ConstantConstant::CST_NAME => $name,
             ConstantConstant::CST_ID => $id,
             'aria-label' => $label,
             'aria-describedby' => $label,
@@ -37,9 +38,20 @@ class Form extends UtilitiesController
         ];
     }
 
-    public function addInput(string $id, string $label, $value, array $extraAttributes=[]): void
+    public function addBtnDelete(string $href, array $extraAttributes=[]): void
     {
-        $attributes = $this->initAttributes($id, $label, $value);
+        $icon = HtmlUtils::getIcon(IconConstant::I_TRASHALT);
+        $link = HtmlUtils::getLink($icon, $href, 'text-white');
+        $btn = HtmlUtils::getButton($link);
+        $attributes = [
+            ConstantConstant::CST_CLASS => $extraAttributes[ConstantConstant::CST_CLASS] ?? 'col-8',
+        ];
+        $this->formRows[$this->nbRows] .= $this->getSpan('', $btn, $attributes);
+    }
+
+    public function addInput(string $id, string $name, string $label, $value, array $extraAttributes=[]): void
+    {
+        $attributes = $this->initAttributes($id, $name, $label, $value);
 
         if (isset($extraAttributes[ConstantConstant::CST_CLASS])) {
             $attributes[ConstantConstant::CST_CLASS] .= ' '.$attributes[ConstantConstant::CST_CLASS];
@@ -59,31 +71,37 @@ class Form extends UtilitiesController
     public function addFileInput(string $id, string $label, $value, array $extraAttributes=[]): void
     {
         $extraAttributes[ConstantConstant::CST_TYPE] = 'file';
-        $this->addInput($id, $label, $value, $extraAttributes);
+        $this->addInput($id, $id, $label, $value, $extraAttributes);
     }
 
     public function addTextarea(string $id, string $label, $value, array $extraAttributes=[]): void
     {
-        $attributes = $this->initAttributes($id, $label, $value);
+        $attributes = $this->initAttributes($id, $id, $label, $value);
         $attributes['rows'] = $extraAttributes['rows'] ?? '5';
 
         $this->formRows[$this->nbRows] .= $this->getSpan($id, $label).HtmlUtils::getTextarea($value, $attributes);
     }
 
-    public function addSelect(string $id, string $label, array $enumCases, $value, array $extraAttributes=[]): void
+    public function addSelect(string $id, string $name, string $label, array $enumCases, $value, array $extraAttributes=[]): void
     {
         $content = '';
         while (!empty($enumCases)) {
             $element = array_shift($enumCases);
-            $name = $element->label();
-            $optAttributes = [ConstantConstant::CST_VALUE=>$element->value];
-            if ($element->value==$value) {
+            if (is_array($element)) {
+                $elementValue = $element['value'];
+                $elementLabel = $element['label'];
+            } else {
+                $elementValue = $element->value;
+                $elementLabel = $element->label();
+            }
+            $optAttributes = [ConstantConstant::CST_VALUE=>$elementValue];
+            if ($elementValue==$value) {
                 $optAttributes['selected'] = 'selected';
             }
-            $content .= HtmlUtils::getBalise('option', $name, $optAttributes);
+            $content .= HtmlUtils::getBalise('option', $elementLabel, $optAttributes);
         }
 
-        $attributes = $this->initAttributes($id, $label, $value);
+        $attributes = $this->initAttributes($id, $name, $label, $value);
         unset($attributes[ConstantConstant::CST_VALUE]);
         $strSelect = HtmlUtils::getBalise('select', $content, $attributes);
 
@@ -94,7 +112,7 @@ class Form extends UtilitiesController
     {
         $this->formRows[$this->nbRows] .= $this->getSpan($id, $label);
 
-        $attributes = $this->initAttributes($id, $label, $value);
+        $attributes = $this->initAttributes($id, $id, $label, $value);
         $attributes['list'] = 'datalistOptions'.$id;
 
         $this->formRows[$this->nbRows] .= HtmlUtils::getBalise('input', '', $attributes);
@@ -111,9 +129,9 @@ class Form extends UtilitiesController
         );
     }
 
-    public function addHidden(string $id, $value, array $extraAttributes=[]): void
+    public function addHidden(string $id, string $name, $value, array $extraAttributes=[]): void
     {
-        $attributes = $this->initAttributes($id, '', $value);
+        $attributes = $this->initAttributes($id, $name, '', $value);
 
         if (isset($extraAttributes[ConstantConstant::CST_CLASS])) {
             $attributes[ConstantConstant::CST_CLASS] .= ' '.$attributes[ConstantConstant::CST_CLASS];
