@@ -66,6 +66,14 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
             /////////////////////////////////////////
         }
 
+        if (COPS_SITE_URL=='http://localhost/') {
+            $srcCssFilesTpl = $controller->getRender(TemplateConstant::TPL_LOCAL_CSS, [PLUGINS_COPS]);
+            $srcJsFilesTpl = $controller->getRender(TemplateConstant::TPL_LOCAL_JS, [PLUGINS_COPS]);
+        } else {
+            $srcCssFilesTpl = $controller->getRender(TemplateConstant::TPL_WWW_CSS);
+            $srcJsFilesTpl = $controller->getRender(TemplateConstant::TPL_WWW_JS);
+        }
+
         $errorPanel = '';
         if ($msgProcessError!='') {
             $errorPanel = $controller->getRender(TemplateConstant::TPL_SECTION_ERROR, [$msgProcessError]);
@@ -73,6 +81,8 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
 
         $attributes = [
             $controller->getTitle(),
+            $srcCssFilesTpl,
+            $srcJsFilesTpl,
             PLUGINS_COPS,
             $controller->getContentHeader(),
             $controller->getContentPage($msgProcessError),
@@ -107,9 +117,8 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
             $newPassword = SessionUtils::fromPost(ConstantConstant::CST_NEWMDP);
             $confirmPassword = SessionUtils::fromPost(ConstantConstant::CST_CONFIRMMDP);
 
-            // new = confirm ?
-            if ($newPassword==$confirmPassword && md5($oldPassword)==$player->getField(FieldConstant::PASSWORD)) {
-                $player->setField(FieldConstant::PASSWORD, md5($newPassword));
+            if ($newPassword==$confirmPassword && password_verify($oldPassword, $player->getField(FieldConstant::PASSWORD))) {
+                $player->setField(FieldConstant::PASSWORD, password_hash($newPassword, PASSWORD_BCRYPT));
                 $player->update();
             } else {
                 $msgProcessError = LabelConstant::LBL_ERR_MDPCHG;
@@ -119,24 +128,21 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
             WidgetController::processForm();
         } else {
             $logname = SessionUtils::fromPost(FieldConstant::LOGNAME);
-            $password = md5(SessionUtils::fromPost(FieldConstant::PASSWORD));
+            $password = SessionUtils::fromPost(FieldConstant::PASSWORD);
     
             $repository = new PlayerRepository(new PlayerCollection());
-            if (strtolower($logname)=='guest') {
-                $criteria = [
-                    FieldConstant::LOGNAME => $logname,
-                ];
-            } else {
-                $criteria = [
-                    FieldConstant::LOGNAME => $logname,
-                    FieldConstant::PASSWORD => $password,
-                ];
-            }
+            $criteria = [
+                FieldConstant::LOGNAME => $logname,
+            ];
             $playerCollection = $repository->findBy($criteria);
-        
+
             if ($playerCollection->length()==1) {
                 $obj = $playerCollection->current();
-                SessionUtils::setSession('copsSessionId', $obj->getField(FieldConstant::ID));
+                if (password_verify($password, $obj->getField(FieldConstant::PASSWORD)) || strtolower($logname)=='guest') {
+                    SessionUtils::setSession('copsSessionId', $obj->getField(FieldConstant::ID));
+                } else {
+                    $msgProcessError = LabelConstant::LBL_ERR_LOGIN;
+                }
             } else {
                 $msgProcessError = LabelConstant::LBL_ERR_LOGIN;
             }

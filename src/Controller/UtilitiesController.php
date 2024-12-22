@@ -111,7 +111,7 @@ class UtilitiesController
         if ($this->isLogged) {
             return $this->getRender(TemplateConstant::TPL_FOOTER);
         } else {
-            return '';
+            return 'Not logged';
         }
     }
 

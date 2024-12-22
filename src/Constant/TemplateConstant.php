@@ -42,5 +42,9 @@ interface TemplateConstant
     public const TPL_BASE               = 'templates/base.tpl';
     public const TPL_FOOTER             = 'templates/footer.tpl';
     public const TPL_HEADER             = 'templates/header.tpl';
+    public const TPL_LOCAL_CSS          = 'templates/localCss.tpl';
+    public const TPL_LOCAL_JS           = 'templates/localJs.tpl';
+    public const TPL_WWW_CSS            = 'templates/wwwCss.tpl';
+    public const TPL_WWW_JS             = 'templates/wwwJs.tpl';
 
 }
