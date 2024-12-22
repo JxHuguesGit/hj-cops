@@ -82,7 +82,7 @@ class Form extends UtilitiesController
         $this->formRows[$this->nbRows] .= $this->getSpan($id, $label).HtmlUtils::getTextarea($value, $attributes);
     }
 
-    public function addSelect(string $id, string $name, string $label, array $enumCases, $value, array $extraAttributes=[]): void
+    public function addSelect(string $id, string $name, string $label, array $enumCases, $value): void
     {
         $content = '';
         while (!empty($enumCases)) {

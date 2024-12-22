@@ -12,6 +12,7 @@ class IconConstant
     public const I_DESKTOP           = 'desktop';
     public const I_DOWNLOAD          = 'download';
     public const I_MEDAL             = 'medal';
+    public const I_PLAY              = 'play';
     public const I_ROTATE            = 'rotate';
     public const I_SQUARE            = 'square';
     public const I_TIMES             = 'times';

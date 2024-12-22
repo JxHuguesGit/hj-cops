@@ -3,6 +3,10 @@ namespace src\Constant;
 
 interface TemplateConstant
 {
+    public const ASSETS_PATH            = 'assets/';
+    public const SQL_PATH               = self::ASSETS_PATH.'sql/';
+    public const SRC_PATH               = 'src/';
+
     public const TPL_ADMINBASE          = 'templates/adminBase.tpl';
 
     public const TPL_CONN_PANEL         = 'templates/home/section-connexion-panel.tpl';
@@ -28,6 +32,7 @@ interface TemplateConstant
     public const TPL_ADMIN_BASE         = 'templates/admin/base.tpl';
     public const TPL_ADMIN_EDIT         = 'templates/admin/edit.tpl';
     public const TPL_ADMIN_LIST         = 'templates/admin/list.tpl';
+    public const TPL_ADMIN_BDD          = 'templates/admin/bdd.tpl';
 
     public const TPL_ADMIN_CONTENT_WRAP = 'templates/section/admin-content-wrapper.tpl';
     public const TPL_CONTENT_HEADER     = 'templates/section/content-header.tpl';

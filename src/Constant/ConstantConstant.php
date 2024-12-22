@@ -7,10 +7,12 @@ interface ConstantConstant
     public const CST_ACRONYMS           = 'acronymes';
     public const CST_ALERT              = 'alert';
     public const CST_ASC                = 'asc';
+    public const CST_BDD                = 'bdd';
     public const CST_CHANGEMDP          = 'changeMdp';
     public const CST_CHAT               = 'chat';
     public const CST_CHECKED            = 'checked';
     public const CST_CLASS              = 'class';
+    public const CST_CODE               = 'code';
     public const CST_COL                = 'col';
     public const CST_CONFIRMMDP         = 'confirmMdp';
     public const CST_CONTENT            = 'content';
@@ -65,6 +67,9 @@ interface ConstantConstant
     public const CST_VALUE              = 'value';
     public const CST_VALUES             = 'values';
     public const CST_VIEW               = 'view';
+
+    public const CST_FILE_WRITE         = 'w+';
+    public const CST_EXT_SQL            = 'sql';
 
     /////////////////////////////////////////////////
     // Pagination

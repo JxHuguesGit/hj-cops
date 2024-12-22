@@ -35,16 +35,16 @@ class FilterUtils
 
     public function getFilterBlock(): string
     {
-        $strLabel = $this->selected!='' ? ucwords($this->selected) : $this->label;
+        $strLabel = $this->selected!='' ? ucwords($this->values[$this->selected]) : $this->label;
         $strBtn = HtmlUtils::getButton(
             $strLabel,
             [ConstantConstant::CST_CLASS=>'dropdown-toggle', 'data-bs-toggle'=>'dropdown']
         );
 
         $ulContent = '';
-        foreach($this->values as $value) {
+        foreach($this->values as $key => $value) {
             $aContent = $value=='' ? '-' : ucwords($value);
-            $href = add_query_arg('filter'.$this->field, $value, $this->url);
+            $href = add_query_arg('filter'.$this->field, $key, $this->url);
             $liContent = HtmlUtils::getLink($aContent, $href, 'dropdown-item');
             $ulContent .= HtmlUtils::getBalise('li', $liContent);
        }

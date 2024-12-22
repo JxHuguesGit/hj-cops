@@ -4,7 +4,7 @@ use src\Constant\ConstantConstant;
 use src\Constant\FieldConstant;
 use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
-use src\Controller\HomeController;
+use src\Controller\HomePageController;
 use src\Controller\LibraryController;
 use src\Controller\MailPageController;
 use src\Controller\ProfilePageController;
@@ -37,7 +37,7 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
 
         // Ensuite est-on connecté ?
         if (!SessionUtils::isLogged()) {
-            $controller = new HomeController();
+            $controller = new HomePageController();
         } else {
             /////////////////////////////////////////
             // Analyse de l'url
@@ -60,7 +60,7 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
                         $controller = new MailPageController($arrUri, $slug);
                 break;
                 default :
-                    $controller = new HomeController();
+                    $controller = new HomePageController();
                 break;
             }
             /////////////////////////////////////////

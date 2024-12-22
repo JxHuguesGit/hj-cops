@@ -85,10 +85,10 @@ class UtilitiesController
 
     public static function getAdminController(array $arrUri): mixed
     {
+        $allowedOnglets = ['admin', 'bdd', 'player'];
         $controller = new UtilitiesController($arrUri);
         if (substr($controller->getArrParams(ConstantConstant::CST_ONGLET), 0, 4)=='mail' ||
-            $controller->getArrParams(ConstantConstant::CST_ONGLET)=='admin' ||
-            $controller->getArrParams(ConstantConstant::CST_ONGLET)=='player'
+            in_array($controller->getArrParams(ConstantConstant::CST_ONGLET), $allowedOnglets)
         ) {
             $controller = new PageController($arrUri);
         } else {

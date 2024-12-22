@@ -31,7 +31,7 @@ class BinomeForm extends Form
         return $this;
     }
 
-    public function controlForm():void
+    private function deleteBinome(): void
     {
         $binomeRepository = new BinomeRepository(new BinomeCollection);
 
@@ -46,7 +46,10 @@ class BinomeForm extends Form
             }
         }
         ////////////////////////////////////////////
+    }
 
+    private function insertBinome(): void
+    {
         ////////////////////////////////////////////
         // Création d'un nouveau binôme
         $playerId = $this->player->getField(FieldConstant::ID);
@@ -64,6 +67,15 @@ class BinomeForm extends Form
             $binome->insert();
         }
         ////////////////////////////////////////////
+    }
+
+    public function controlForm():void
+    {
+        $this->deleteBinome();
+        $this->insertBinome();
+
+        $binomeRepository = new BinomeRepository(new BinomeCollection);
+        $playerId = $this->player->getField(FieldConstant::ID);
 
         ////////////////////////////////////////////
         // Récupération des données du formulaire
@@ -78,36 +90,19 @@ class BinomeForm extends Form
             $id = array_shift($ids);
             $binome = $binomeRepository->find($id);
 
-            // Donc on a un _POST qui vient d'être soumis. On vérifie les différents champs et leurs valeurs.
-            // En cas d'erreur, on rajoute des flags d'erreur.
-            $blnErrors = false;
-            // Si aucune erreur, on met à jour les données en base et on les utilise pour l'affichage.
-            $blnUpdate = false;
-
             $postLeaderId = isset($leaderIds[$id]) ? $leaderIds[$id] : $playerId;
-            if ($binome->getField(FieldConstant::LEADERID)!=$postLeaderId) {
-                $blnUpdate = true;
-                $binome->setField(FieldConstant::LEADERID, $postLeaderId);
-            }
-            $postBinomeId = isset($binomeIds[$id]) ? $binomeIds[$id] : $playerId;
-            if ($binome->getField(FieldConstant::BINOMEID)!=$postBinomeId) {
-                $blnUpdate = true;
-                $binome->setField(FieldConstant::BINOMEID, $postBinomeId);
-            }
-            $postStartDate = $startDates[$id];
-            if ($binome->getField(FieldConstant::STARTDATE)!=$postStartDate) {
-                $blnUpdate = true;
-                $binome->setField(FieldConstant::STARTDATE, $postStartDate);
-            }
-            $postEndDate = $endDates[$id];
-            if ($binome->getField(FieldConstant::ENDDATE)!=$postEndDate) {
-                $blnUpdate = true;
-                $binome->setField(FieldConstant::ENDDATE, $postEndDate);
-            }
+            $binome->setField(FieldConstant::LEADERID, $postLeaderId);
 
-            if ($blnUpdate && !$blnErrors) {
-                $this->binome->update();
-            }
+            $postBinomeId = isset($binomeIds[$id]) ? $binomeIds[$id] : $playerId;
+            $binome->setField(FieldConstant::BINOMEID, $postBinomeId);
+
+            $postStartDate = $startDates[$id];
+            $binome->setField(FieldConstant::STARTDATE, $postStartDate);
+
+            $postEndDate = $endDates[$id];
+            $binome->setField(FieldConstant::ENDDATE, $postEndDate);
+
+            $this->binome->update();
         }
     }
 

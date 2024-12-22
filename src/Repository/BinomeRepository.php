@@ -37,6 +37,7 @@ class BinomeRepository extends Repository
         }
 
         return $this->orderBy($orderBy)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }

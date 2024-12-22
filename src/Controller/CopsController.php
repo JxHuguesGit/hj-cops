@@ -41,10 +41,16 @@ class CopsController extends PageController
         $table = new TableUtils();
         $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
         $filterSection = $this->arrParams['filtersection'] ?? '';
+        $sections = SectionEnum::cases();
+        $values = [];
+        while (!empty($sections)) {
+            $section = array_shift($sections);
+            $values[$section->value] = $section->label();
+        }
         $table->setFilter([
             ConstantConstant::CST_LABEL => LabelConstant::LBL_GROUP,
             ConstantConstant::CST_FIELD => FieldConstant::SECTION,
-            ConstantConstant::CST_VALUES => $this->repository->getDistinct(FieldConstant::SECTION),
+            ConstantConstant::CST_VALUES => $values,
             ConstantConstant::CST_COL => 4,
             ConstantConstant::CST_SELECTED => $filterSection,
         ]);
@@ -79,7 +85,8 @@ class CopsController extends PageController
 
     public function addBodyRow(TableUtils &$table, array $arrParams=[]): void
     {
-        if ($arrParams['isAdmin']) {
+        $isAdmin = $arrParams['isAdmin'] ?? false;
+        if ($isAdmin) {
             $matricule = $this->cops->getField(FieldConstant::SERIALNUMBER);
             $aContent = $this->cops->getFullName(true);
             $href = add_query_arg(['action'=>'view', 'id'=>$this->cops->getField(FieldConstant::ID)]);
@@ -97,7 +104,7 @@ class CopsController extends PageController
         $binome = $this->cops->getBinome();
 
         $table->addBodyRow($arrParams);
-        if ($arrParams['isAdmin']) {
+        if ($isAdmin) {
             $table->addBodyCell([ConstantConstant::CST_CONTENT=>'&nbsp;']);
         }
         $table->addBodyCell([ConstantConstant::CST_CONTENT=>$matricule])
@@ -105,7 +112,7 @@ class CopsController extends PageController
             ->addBodyCell([ConstantConstant::CST_CONTENT=>$strRank])
             ->addBodyCell([ConstantConstant::CST_CONTENT=>$strSection])
             ->addBodyCell([ConstantConstant::CST_CONTENT=>$binome==null ? '' : $binome->getFullName(true)]);
-        if ($arrParams['isAdmin']) {
+        if ($isAdmin) {
             $table->addBodyCell([ConstantConstant::CST_CONTENT=>'&nbsp;']);
         }
     }

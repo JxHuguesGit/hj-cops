@@ -70,6 +70,36 @@ class Repository
             ->getDistinctResult($field);
     }
 
+    public function orderBy(array $orderBy=[]): self
+    {
+        if (!empty($orderBy)) {
+            $this->strOrderBy = " ORDER BY ";
+            $first = true;
+            foreach ($orderBy as $key=>$value) {
+                if (!$first) {
+                    $this->strOrderBy .= ', ';
+                }
+                $this->strOrderBy .= $key.' '.$value;
+                $first = false;
+            }
+        }
+        return $this;
+    }
+
+    public function setMaxResults(int $limit=-1): self
+    {
+        if ($limit>0) {
+            $this->strLimit = " LIMIT $limit";
+        }
+        return $this;
+    }
+
+    public function getQuery(): self
+    {
+        $this->query = $this->baseQuery.$this->strWhere.$this->strOrderBy.$this->strLimit;
+        return $this;
+    }
+
     public function getDistinctResult(string $field): array
     {
         global $wpdb;
@@ -91,38 +121,25 @@ class Repository
 
     public function update(Entity $entity): void
     {
-        $this->updateQueryBuilder($entity)
-            ->getQuery()
-            ->execQuery();
-    }
-
-    public function updateQueryBuilder(Entity $obj): self
-    {
         $this->strLimit = '';
         $this->baseQuery = "UPDATE ".$this->table." SET ";
         foreach ($this->field as $field) {
             if ($field==FieldConstant::ID) {
-                $id = $obj->getField($field);
+                $id = $entity->getField($field);
             } else {
                 $this->baseQuery .= "`$field`='%s', ";
-                $this->params['where'][] = $obj->getField($field);
+                $this->params['where'][] = $entity->getField($field);
             }
         }
         $this->baseQuery = substr($this->baseQuery, 0, -2);
         $this->strWhere = " WHERE id=%s";
         $this->params['where'][] = $id;
 
-        return $this;
-    }
-
-    public function insert(Entity $entity): void
-    {
-        $this->insertQueryBuilder($entity)
-            ->getQuery()
+        $this->getQuery()
             ->execQuery();
     }
 
-    public function insertQueryBuilder(Entity $obj): self
+    public function insert(Entity $entity): void
     {
         $this->strLimit = '';
         $this->baseQuery = "INSERT INTO ".$this->table." (";
@@ -131,29 +148,39 @@ class Repository
             if ($field!=FieldConstant::ID) {
                 $this->baseQuery .= "`$field`, ";
                 $this->strWhere  .= "'%s', ";
-                $this->params['where'][] = $obj->getField($field);
+                $this->params['where'][] = $entity->getField($field);
             }
         }
         $this->baseQuery = substr($this->baseQuery, 0, -2).") VALUES ";
         $this->strWhere = substr($this->strWhere, 0, -2).")";
 
-        return $this;
+        $this->getQuery()
+            ->execQuery();
     }
 
     public function delete(Entity $entity): void
     {
-        $this->deleteQueryBuilder($entity)
-            ->getQuery()
+        $this->baseQuery = "DELETE FROM ".$this->table." WHERE id='%s';";
+        foreach ($this->field as $field) {
+            $this->params['where'][] = $entity->getField($field);
+        }
+
+        $this->getQuery()
             ->execQuery();
     }
 
-    public function deleteQueryBuilder(Entity $obj): self
+    public function execQuery(): void
     {
-        $this->baseQuery = "DELETE FROM ".$this->table." WHERE id='%s';";
-        foreach ($this->field as $field) {
-            $this->params['where'][] = $obj->getField($field);
+        global $wpdb;
+        $args = [];
+        if (isset($this->params['where'])) {
+            while (!empty($this->params['where'])) {
+                $constraint = array_shift($this->params['where']);
+                array_push($args, $constraint);
+            }
         }
-        return $this;
+        $query = vsprintf($this->query, $args);
+        $wpdb->query($query);
     }
 
 
@@ -193,35 +220,6 @@ class Repository
         return $this;
     }
 
-    public function orderBy(array $orderBy=[]): self
-    {
-        if (!empty($orderBy)) {
-            $this->strOrderBy = " ORDER BY ";
-            $first = true;
-            foreach ($orderBy as $key=>$value) {
-                if (!$first) {
-                    $this->strOrderBy .= ', ';
-                }
-                $this->strOrderBy .= $key.' '.$value;
-                $first = false;
-            }
-        }
-        return $this;
-    }
-
-    public function setMaxResults(int $limit=-1): self
-    {
-        if ($limit>0) {
-            $this->strLimit = " LIMIT $limit";
-        }
-        return $this;
-    }
-
-    public function getQuery(): self
-    {
-        $this->query = $this->baseQuery.$this->strWhere.$this->strOrderBy.$this->strLimit;
-        return $this;
-    }
 
     public function getOneOrNullResult(): mixed
     {
@@ -229,19 +227,6 @@ class Repository
         return $this->collection->length()==1 ? $this->collection->current() : null;
     }
 
-    public function execQuery(): void
-    {
-        global $wpdb;
-        $args = [];
-        if (isset($this->params['where'])) {
-            while (!empty($this->params['where'])) {
-                $constraint = array_shift($this->params['where']);
-                array_push($args, $constraint);
-            }
-        }
-        $query = vsprintf($this->query, $args);
-        $wpdb->query($query);
-    }
 
     public function getResult(): Collection
     {

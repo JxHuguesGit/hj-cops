@@ -7,6 +7,7 @@ use src\Utils\UrlUtils;
 
 class PageController extends UtilitiesController
 {
+    protected $arrTabs = [];
     protected $menu = [];
     protected $slug = '';
 
@@ -20,6 +21,8 @@ class PageController extends UtilitiesController
     {
         switch ($this->arrParams[ConstantConstant::CST_ONGLET]) {
             case 'admin' :
+            case 'code' :
+            case 'bdd' :
                 $controller = new AdminPageController();
             break;
             case 'mail' :
@@ -54,7 +57,8 @@ class PageController extends UtilitiesController
             if (!empty($arrData[ConstantConstant::CST_ICON])) {
                 $strIcon = HtmlUtils::getIcon($arrData[ConstantConstant::CST_ICON]).' ';
             }
-            $blnActive = $this->getArrParams(ConstantConstant::CST_ONGLET)==$slug;
+            $cstOnglet = $this->getArrParams(ConstantConstant::CST_ONGLET);
+            $blnActive = $cstOnglet==$slug;
             $strLink = HtmlUtils::getLink(
                 $strIcon.$arrData[ConstantConstant::CST_LABEL],
                 UrlUtils::getAdminUrl($urlAttributes),
