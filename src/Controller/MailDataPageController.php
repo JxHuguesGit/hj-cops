@@ -3,6 +3,7 @@ namespace src\Controller;
 
 use src\Collection\MailDataCollection;
 use src\Constant\ConstantConstant;
+use src\Constant\CssConstant;
 use src\Constant\FieldConstant;
 use src\Constant\IconConstant;
 use src\Constant\TemplateConstant;
@@ -24,7 +25,7 @@ class MailDataPageController extends PageController
         // Onglets de navigation
         $this->arrTabs = [
             'mailData'   => [ConstantConstant::CST_LABEL=>'MailData'],
-            'mail'       => [ConstantConstant::CST_LABEL=>'Mail'],
+            FieldConstant::MAIL => [ConstantConstant::CST_LABEL=>'Mail'],
             'mailPlayer' => [ConstantConstant::CST_LABEL=>'MailPlayer'],
             'mailFolder' => [ConstantConstant::CST_LABEL=>'MailFolder'],
         ];
@@ -38,7 +39,7 @@ class MailDataPageController extends PageController
         $mailDatas = $repository->findAll([], [FieldConstant::ID=>ConstantConstant::CST_ASC]);
         // Initialisation de la table
         $table = new TableUtils();
-        $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
+        $table->setTable([ConstantConstant::CST_CLASS=>CssConstant::CSS_TABLE_SM.' '.CssConstant::CSS_TABLE_STRIPED]);
         // Pagination
         $table->setPaginate([
             ConstantConstant::PAGE_OBJS => $mailDatas,

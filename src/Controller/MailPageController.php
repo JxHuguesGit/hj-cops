@@ -4,6 +4,7 @@ namespace src\Controller;
 use src\Collection\MailCollection;
 use src\Collection\MailDataCollection;
 use src\Constant\ConstantConstant;
+use src\Constant\CssConstant;
 use src\Constant\FieldConstant;
 use src\Constant\IconConstant;
 use src\Constant\LabelConstant;
@@ -48,7 +49,7 @@ class MailPageController extends PageController
         // Onglets de navigation
         $this->arrTabs = [
             'mailData'   => [ConstantConstant::CST_LABEL=>'MailData'],
-            'mail'       => [ConstantConstant::CST_LABEL=>'Mail'],
+            FieldConstant::MAIL => [ConstantConstant::CST_LABEL=>'Mail'],
             'mailPlayer' => [ConstantConstant::CST_LABEL=>'MailPlayer'],
             'mailFolder' => [ConstantConstant::CST_LABEL=>'MailFolder'],
         ];
@@ -62,12 +63,12 @@ class MailPageController extends PageController
         $mails = $repository->findAll([], [FieldConstant::ID=>ConstantConstant::CST_ASC]);
         // Initialisation de la table
         $table = new TableUtils();
-        $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
+        $table->setTable([ConstantConstant::CST_CLASS=>CssConstant::CSS_TABLE_SM.' '.CssConstant::CSS_TABLE_STRIPED]);
         // Pagination
         $table->setPaginate([
             ConstantConstant::PAGE_OBJS => $mails,
             ConstantConstant::CST_CURPAGE => $this->arrParams[ConstantConstant::CST_CURPAGE] ?? 1,
-            ConstantConstant::CST_URL => UrlUtils::getAdminUrl([ConstantConstant::CST_ONGLET=>'mail']),
+            ConstantConstant::CST_URL => UrlUtils::getAdminUrl([ConstantConstant::CST_ONGLET=>FieldConstant::MAIL]),
         ]);
         // Définition du header de la table
         $table->addHeaderRow()

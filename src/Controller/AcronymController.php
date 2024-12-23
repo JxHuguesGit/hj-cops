@@ -3,6 +3,7 @@ namespace src\Controller;
 
 use src\Collection\AcronymCollection;
 use src\Constant\ConstantConstant;
+use src\Constant\CssConstant;
 use src\Constant\FieldConstant;
 use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
@@ -29,7 +30,7 @@ class AcronymController extends PageController
         $acronyms = $repository->findAll($orders);
 
         $table = new TableUtils();
-        $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
+        $table->setTable([ConstantConstant::CST_CLASS => CssConstant::CSS_TABLE_SM.' '.CssConstant::CSS_TABLE_STRIPED]);
         $table->setPaginate([
             ConstantConstant::PAGE_OBJS => $acronyms,
             ConstantConstant::CST_CURPAGE => $this->arrParams[ConstantConstant::CST_CURPAGE] ?? 1,

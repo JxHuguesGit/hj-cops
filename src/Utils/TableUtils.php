@@ -126,7 +126,7 @@ class TableUtils
                     $filterBlock = $this->filters[$i]->getFilterBlock();
                     $this->addFootCell([ConstantConstant::CST_CONTENT=>$filterBlock]);
                 } else {
-                    $this->addFootCell([ConstantConstant::CST_CONTENT=>'&nbsp;']);
+                    $this->addFootCell([ConstantConstant::CST_CONTENT=>ConstantConstant::CST_NBSP]);
                 }
             }
         }

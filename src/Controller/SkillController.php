@@ -3,6 +3,7 @@ namespace src\Controller;
 
 use src\Collection\SkillCollection;
 use src\Constant\ConstantConstant;
+use src\Constant\CssConstant;
 use src\Constant\FieldConstant;
 use src\Constant\IconConstant;
 use src\Constant\LabelConstant;
@@ -30,7 +31,7 @@ class SkillController extends UtilitiesController
         $skills = $repository->findBy([FieldConstant::SKILLID=>0], [FieldConstant::NAME=>ConstantConstant::CST_ASC]);
 
         $table = new TableUtils();
-        $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
+        $table->setTable([ConstantConstant::CST_CLASS=>CssConstant::CSS_TABLE_SM.' '.CssConstant::CSS_TABLE_STRIPED]);
         $table->setPaginate([
             ConstantConstant::PAGE_OBJS => $skills,
             ConstantConstant::CST_CURPAGE => $this->arrParams[ConstantConstant::CST_CURPAGE] ?? 1,
@@ -52,7 +53,7 @@ class SkillController extends UtilitiesController
         if (isset($this->arrParams[ConstantConstant::CST_ACTION]) &&
             $this->arrParams[ConstantConstant::CST_ACTION]==ConstantConstant::CST_VIEW) {
             $repository = new SkillRepository(new SkillCollection());
-            $skill = $repository->find($this->arrParams['id']);
+            $skill = $repository->find($this->arrParams[ConstantConstant::CST_ID]);
             if ($skill!=null) {
                 $viewCard = $skill->getController()->getCard();
             }
@@ -73,7 +74,7 @@ class SkillController extends UtilitiesController
                 $this->skill->getField(FieldConstant::NAME),
                 UrlUtils::getPublicUrl(
                     ConstantConstant::CST_PROFILE,
-                    [ConstantConstant::CST_ACTION=>'addskill', 'skillId'=>$this->skill->getField(FieldConstant::ID)]
+                    [ConstantConstant::CST_ACTION=>'addskill', FieldConstant::SKILLID=>$this->skill->getField(FieldConstant::ID)]
                 ),
                 'dropdown-item ajaxAction',
                 [
@@ -119,8 +120,8 @@ class SkillController extends UtilitiesController
                 [ConstantConstant::CST_CLASS=>'py-0 border-0']
             );
             $linkAttributes = [
-                ConstantConstant::CST_ACTION=>'improveskill',
-                'skillId'=>$this->skill->getField(FieldConstant::ID)
+                ConstantConstant::CST_ACTION => 'improveskill',
+                FieldConstant::SKILLID       => $this->skill->getField(FieldConstant::ID)
             ];
             $spanContent = HtmlUtils::getLink(
                 $aContent,
@@ -141,9 +142,9 @@ class SkillController extends UtilitiesController
             UrlUtils::getPublicUrl(
                 ConstantConstant::CST_LIBRARY,
                 [
-                    ConstantConstant::CST_PAGE=>ConstantConstant::CST_SKILLS,
-                    ConstantConstant::CST_ACTION=>ConstantConstant::CST_VIEW,
-                    'id'=>$id
+                    ConstantConstant::CST_PAGE   => ConstantConstant::CST_SKILLS,
+                    ConstantConstant::CST_ACTION => ConstantConstant::CST_VIEW,
+                    ConstantConstant::CST_ID     => $id
                 ]
             )
         );

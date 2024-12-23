@@ -21,11 +21,11 @@ class PageController extends UtilitiesController
     {
         switch ($this->arrParams[ConstantConstant::CST_ONGLET]) {
             case 'admin' :
-            case 'code' :
-            case 'bdd' :
+            case ConstantConstant::CST_CODE :
+            case ConstantConstant::CST_BDD :
                 $controller = new AdminPageController();
             break;
-            case 'mail' :
+            case FieldConstant::MAIL :
                 $controller = new MailPageController();
             break;
             case 'mailPlayer' :

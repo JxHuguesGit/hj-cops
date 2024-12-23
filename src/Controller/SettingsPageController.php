@@ -3,6 +3,7 @@ namespace src\Controller;
 
 use src\Collection\WidgetCollection;
 use src\Constant\ConstantConstant;
+use src\Constant\CssConstant;
 use src\Constant\FieldConstant;
 use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
@@ -26,7 +27,7 @@ class SettingsPageController extends PageController
         $widgets = $repository->findBy([FieldConstant::ACTIVE=>1]);
 
         $table = new TableUtils();
-        $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
+        $table->setTable([ConstantConstant::CST_CLASS=>CssConstant::CSS_TABLE_SM.' '.CssConstant::CSS_TABLE_STRIPED]);
 
         $table->addHeaderRow()
             ->addHeaderCell([ConstantConstant::CST_CONTENT=>'#'])

@@ -38,16 +38,16 @@ class MailDataController extends UtilitiesController
     public function getRow(): string
     {
         $id      = $this->mailData->getField(FieldConstant::ID);
-        $checkId = 'check'.$id;
+        $checkId = IconConstant::I_CHECK.$id;
         $blnRead = $this->mailData->getField(FieldConstant::READ)==1;
         $strTrContent = '';
 
         // Champ Id avec case à cocher
         $strInput = HtmlUtils::getInput([
-            'id'=>$checkId,
-            ConstantConstant::CST_NAME=>$checkId,
-            ConstantConstant::CST_VALUE=>$id,
-            ConstantConstant::CST_TYPE=>'checkbox'
+            ConstantConstant::CST_ID    => $checkId,
+            ConstantConstant::CST_NAME  => $checkId,
+            ConstantConstant::CST_VALUE => $id,
+            ConstantConstant::CST_TYPE  => 'checkbox'
         ]);
         $strInput .= HtmlUtils::getBalise(ConstantConstant::CST_LABEL, '', [ConstantConstant::CST_FOR=>$checkId]);
         $strDiv = HtmlUtils::getDiv($strInput, [ConstantConstant::CST_CLASS=>'icheck-primary']);
@@ -148,7 +148,7 @@ class MailDataController extends UtilitiesController
             [
                 ConstantConstant::CST_CLASS=>'ajaxAction',
                 'data-trigger'=>'click',
-                'data-ajax'=>'trash'
+                'data-ajax'=>ConstantConstant::CST_TRASH
             ]
         );
         ////////////////////////////////////////////:
@@ -160,7 +160,7 @@ class MailDataController extends UtilitiesController
             [
                 ConstantConstant::CST_CLASS=>'ajaxAction',
                 'data-trigger'=>'click',
-                'data-ajax'=>'trash'
+                'data-ajax'=>ConstantConstant::CST_TRASH
             ]
         );
         ////////////////////////////////////////////:

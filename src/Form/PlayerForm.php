@@ -47,7 +47,7 @@ class PlayerForm extends Form
         $this->addSelect(FieldConstant::SECTION, FieldConstant::SECTION, LabelConstant::LBL_SECTION, SectionEnum::cases(), $this->player->getField(FieldConstant::SECTION));
 
         $this->addRow();
-        $this->addHidden('formName', 'formName', 'copsPlayer');
+        $this->addHidden(ConstantConstant::CST_FORMNAME, ConstantConstant::CST_FORMNAME, 'copsPlayer');
     }
 
     public function getFormContent(): string
@@ -65,7 +65,7 @@ class PlayerForm extends Form
             'form',
             $card->display(),
             [
-                'method'=>'post',
+                'method'=>ConstantConstant::WP_POST,
                 ConstantConstant::CST_CLASS=>'col-6'
             ]
         );

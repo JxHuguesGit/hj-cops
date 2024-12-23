@@ -70,7 +70,7 @@ class Form extends UtilitiesController
 
     public function addFileInput(string $id, string $label, $value, array $extraAttributes=[]): void
     {
-        $extraAttributes[ConstantConstant::CST_TYPE] = 'file';
+        $extraAttributes[ConstantConstant::CST_TYPE] = ConstantConstant::CST_FILE;
         $this->addInput($id, $id, $label, $value, $extraAttributes);
     }
 
@@ -88,15 +88,15 @@ class Form extends UtilitiesController
         while (!empty($enumCases)) {
             $element = array_shift($enumCases);
             if (is_array($element)) {
-                $elementValue = $element['value'];
-                $elementLabel = $element['label'];
+                $elementValue = $element[ConstantConstant::CST_VALUE];
+                $elementLabel = $element[ConstantConstant::CST_LABEL];
             } else {
                 $elementValue = $element->value;
                 $elementLabel = $element->label();
             }
             $optAttributes = [ConstantConstant::CST_VALUE=>$elementValue];
             if ($elementValue==$value) {
-                $optAttributes['selected'] = 'selected';
+                $optAttributes[ConstantConstant::CST_SELECTED] = ConstantConstant::CST_SELECTED;
             }
             $content .= HtmlUtils::getBalise('option', $elementLabel, $optAttributes);
         }
@@ -108,7 +108,9 @@ class Form extends UtilitiesController
         $this->formRows[$this->nbRows] .= $this->getSpan($id, $label).$strSelect;
     }
 
-    public function addDataList(string $id, string $label, array $collection, $value, array $extraAttributes=[]): void
+    // TODO : removed attribute - , array $extraAttributes=[]
+    // Check why it was there and why it isn't needed anymore
+    public function addDataList(string $id, string $label, array $collection, $value): void
     {
         $this->formRows[$this->nbRows] .= $this->getSpan($id, $label);
 
@@ -125,7 +127,7 @@ class Form extends UtilitiesController
         $this->formRows[$this->nbRows] .= HtmlUtils::getBalise(
             'datalist',
             $dataListContent,
-            ['id'=>'datalistOptions'.$id]
+            [ConstantConstant::CST_ID=>'datalistOptions'.$id]
         );
     }
 

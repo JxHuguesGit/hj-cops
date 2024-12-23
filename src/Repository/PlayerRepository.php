@@ -34,8 +34,8 @@ class PlayerRepository extends Repository
         $this->baseQuery  = "SELECT * ";
         $this->baseQuery .= "FROM ".$this->table;
         $criteriaComplex = [
-            ['field'=>FieldConstant::RANK, 'operand'=>'<>', 'value'=>''],
-            ['field'=>FieldConstant::STARTDATE, 'operand'=>'<=', 'value'=>DateUtils::getCopsDate('dbDate')]
+            [ConstantConstant::CST_FIELD=>FieldConstant::RANK, 'operand'=>'<>', ConstantConstant::CST_VALUE=>''],
+            [ConstantConstant::CST_FIELD=>FieldConstant::STARTDATE, 'operand'=>'<=', ConstantConstant::CST_VALUE=>DateUtils::getCopsDate('dbDate')]
         ];
 
         return $this->setCriteria($criteria)

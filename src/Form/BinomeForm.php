@@ -37,7 +37,7 @@ class BinomeForm extends Form
 
         ////////////////////////////////////////////
         // Suppression d'un binôme
-        $postedFormName = $_GET['formName'] ?? null;
+        $postedFormName = $_GET[ConstantConstant::CST_FORMNAME] ?? null;
         if ($postedFormName!=null) {
             $id = SessionUtils::fromGet('playerBinomeId');
             $binome = $binomeRepository->find($id);
@@ -114,7 +114,7 @@ class BinomeForm extends Form
         $selectList = [];
         while ($players->valid()) {
             $player = $players->current();
-            $selectList[] = ['value'=>$player->getField(FieldConstant::ID), 'label'=>$player->getFullName()];
+            $selectList[] = [ConstantConstant::CST_VALUE=>$player->getField(FieldConstant::ID), ConstantConstant::CST_LABEL=>$player->getFullName()];
             $players->next();
         }
 
@@ -129,7 +129,7 @@ class BinomeForm extends Form
                 $field = FieldConstant::LEADERID;
             }
 
-            $href = add_query_arg(['formName'=>'copsPlayerBinome', 'playerBinomeId'=>$binomeId]);
+            $href = add_query_arg([ConstantConstant::CST_FORMNAME=>'copsPlayerBinome', 'playerBinomeId'=>$binomeId]);
 
             // binome, startDate, endDate
             $this->addRow();
@@ -149,7 +149,7 @@ class BinomeForm extends Form
         $this->addFiller([ConstantConstant::CST_CLASS=>'col-1']);
 
         $this->addRow();
-        $this->addHidden('formName', 'formName', 'copsPlayerBinome');
+        $this->addHidden(ConstantConstant::CST_FORMNAME, ConstantConstant::CST_FORMNAME, 'copsPlayerBinome');
     }
 
     public function getFormContent(): string
@@ -167,7 +167,7 @@ class BinomeForm extends Form
             'form',
             $card->display(),
             [
-                'method'=>'post',
+                'method'=>ConstantConstant::WP_POST,
                 ConstantConstant::CST_CLASS=>'col-6'
             ]
         );

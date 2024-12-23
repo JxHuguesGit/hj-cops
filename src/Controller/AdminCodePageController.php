@@ -1,12 +1,147 @@
 <?php
 namespace src\Controller;
 
+use src\Constant\ConstantConstant;
+use src\Constant\TemplateConstant;
 class AdminCodePageController extends AdminPageController
 {
+    public string $urlBase = '/wp-content/plugins/hj-cops/';
+    public string $directory = '';
     public int $rootLength = 0;
     public array $arrFilesTemplate = [];
+    public array $arrFiles = [];
+
+    public function __construct($arrUri=[], string $slug='')
+    {
+        parent::__construct($arrUri, $slug);
+        $this->directory = $_SERVER['DOCUMENT_ROOT'].$this->urlBase;
+        $this->rootLength = strlen($this->directory);
+    }
 
     public function getAdminContentPage(): string
+    {
+        ///////////////////////////////////////////////
+        // On analyse les templates
+        //$this->analyseTemplates();
+        ///////////////////////////////////////////////
+
+        ///////////////////////////////////////////////
+        // On analyse les constantes
+        $this->analyseConstants();
+        $this->getConstantsContent();
+        $arr = $this->getFiles($this->directory.TemplateConstant::SRC_PATH);
+        while (!empty($arr)) {
+            $file = array_shift($arr);
+            if (strpos($file, '/Constant/')!==false) {
+                continue;
+            }
+            $this->parseFileForConstants($file);
+        }
+        //var_dump($this->arrFiles);
+        ///////////////////////////////////////////////
+
+        return 'WIP';
+    }
+
+    private function parseFileForConstants(string $file): void
+    {
+        $pattern = "/'([^']*)'/";
+        $firstString = true;
+        $numLigne = 0;
+        $numOcc = 0;
+        $fp = fopen($file, 'r');
+        while (!feof($fp)) {
+            $numLigne++;
+            $line = fgets($fp);
+            if (preg_match_all($pattern, $line, $matches)) {
+                $arr = $matches[1];
+                $nbMatches = count($arr);
+                for ($i=0; $i<$nbMatches; $i++) {
+                    $strConstant = $arr[$i];
+                    if ($strConstant=='') {
+                        continue;
+                    }
+                    if ($firstString) {
+                        echo $file.'<br>';
+                        $firstString = false;
+                    }
+                    $numOcc++;
+                    if (in_array($strConstant, $this->arrFiles['constant'])) {
+                        echo $numLigne . ' : '.$strConstant.'<br>';
+                    } else {
+                        echo $numLigne . ' (TODO) : ' . $strConstant.'<br>';
+                    }
+                }
+            }
+        }
+        if ($numOcc!=0) {
+            echo 'Fin fichier '.$file.'. '.$numOcc.' occurrences à traiter.<br>';
+        }
+
+    }
+
+    /** ///////////////////////////////////////////////
+     * getFiles
+     *  ///////////////////////////////////////////////
+     * Retourne tous les fichiers du répertoire passé en paramètre.
+     * Si $recursive est à true, renvoie aussi les fichiers des sous répertoires.
+     *  ///////////////////////////////////////////////
+     * @param string $subDir     : le répertoire initial à parcourir
+     * @param bool $recursive    : si true, on effectue une recherche dans les sous répertoires
+     *  ///////////////////////////////////////////////
+     * @return array $files      : la liste des fichiers trouvés
+     */
+    private function getFiles(string $subDir='', bool $recursive=true): array
+    {
+        $files = [];
+        $directory = $subDir;
+        $handler = opendir($directory);
+        while ($file = readdir($handler)) {
+            // if file isn't this directory or its parent, add it to the results
+            if ($file != "." && $file != "..") {
+                if (is_dir($directory.$file.'/') && $recursive) {
+                    $files = array_merge($files, $this->getFiles($directory.$file.'/'));
+                } else {
+                    $files[] = $directory.$file;
+                }
+            }
+        }
+        return $files;
+    }
+
+    private function getConstantsContent(): void
+    {
+        $pattern = "/public const ([A-Z_]*) *= (.*);/";
+        foreach ($this->arrFiles['constant'] as $file => $fileContent) {
+            $urlFile = $this->directory.'src/Constant/'.$file.'.php';
+            $fp = fopen($urlFile, 'r');
+            while (!feof($fp)) {
+                $line = fgets($fp);
+                if (preg_match($pattern, $line, $matches) && !in_array(substr($matches[1], 0, 4), ['LBL_', 'TPL_'])) {
+                    $fileContent[$matches[1]] = substr($matches[2], 1, -1);
+                }
+            }
+            $this->arrFiles['constant'] = array_merge($this->arrFiles['constant'], $fileContent);
+        }
+    }
+
+    private function analyseConstants(): void
+    {
+        ///////////////////////////////////////////////
+        // On parcourt le répertoire src/Constant pour récupérer les différents fichiers de Constant.
+        $directory = $this->directory.'src/Constant/';
+        $handler = opendir($directory);
+        // open directory and walk through the filenames
+        while ($file = readdir($handler)) {
+            // if file isn't this directory or its parent, add it to the results
+            if ($file != "." && $file != "..") {
+                $this->arrFiles['constant'][substr($file, 0, -4)] = [];
+            }
+        }
+        ///////////////////////////////////////////////
+    }
+
+    private function analyseTemplates(): void
     {
         ///////////////////////////////////////////////
         // On parcourt le répertoire templates pour récupérer les différents fichiers de template.
@@ -34,8 +169,6 @@ class AdminCodePageController extends AdminPageController
         // On affiche le bilan
         echo $this->getBilanTemplates();
         ///////////////////////////////////////////////
-        
-        return '';
     }
     
     private function analyseControllers($directory): string
@@ -98,15 +231,15 @@ class AdminCodePageController extends AdminPageController
         $strErrConstantes = '';
         $strErrTemplates  = '';
         foreach ($this->arrFilesTemplate as $key => $data) {
-            if ($data['file']=='Bad Constante') {
+            if ($data[ConstantConstant::CST_FILE]=='Bad Constante') {
                 $strErrConstantes .= "Supprimer la constante <strong>$key</strong> "
                     ."car le fichier associé n'existe pas.<br>";
-            } elseif ($data['file']=='Bad Template') {
+            } elseif ($data[ConstantConstant::CST_FILE]=='Bad Template') {
                 $strErrTemplates .= "Supprimer le template <strong>$key</strong> "
                     ."car il n'est pas associé à une constante.<br>";
             } elseif (!$data['used']) {
                 $strErrConstantes .= "Supprimer la constante <strong>$key</strong> car elle n'est jamais utilisée.<br>";
-                $strErrTemplates .= "Supprimer le template <strong>".$data['file']
+                $strErrTemplates .= "Supprimer le template <strong>".$data[ConstantConstant::CST_FILE]
                     ."</strong> car sa constante associée n'est jamais utilisée.<br>";
             }
         }
@@ -132,10 +265,10 @@ class AdminCodePageController extends AdminPageController
                 $strValue = trim(substr($line, $posEqual+3, -4));
                 
                 if (isset($this->arrFilesTemplate[$strValue])) {
-                    $this->arrFilesTemplate[$strCst] = ['file'=>$strValue, 'used'=>false];
+                    $this->arrFilesTemplate[$strCst] = [ConstantConstant::CST_FILE=>$strValue, 'used'=>false];
                     unset($this->arrFilesTemplate[$strValue]);
                 } else {
-                    $this->arrFilesTemplate[$strCst] = ['file'=>'Bad Constante'];
+                    $this->arrFilesTemplate[$strCst] = [ConstantConstant::CST_FILE=>'Bad Constante'];
                 }
             }
         }
@@ -153,7 +286,7 @@ class AdminCodePageController extends AdminPageController
                 if (is_dir($directory.$file.'/')) {
                     $this->analyseDir($directory.$file.'/', $rk+1);
                 } elseif (substr($file, -3)!='php') {
-                    $this->arrFilesTemplate[substr($directory.$file, $this->rootLength)] = ['file'=>'Bad Template'];
+                    $this->arrFilesTemplate[substr($directory.$file, $this->rootLength)] = [ConstantConstant::CST_FILE=>'Bad Template'];
                 }
             }
         }

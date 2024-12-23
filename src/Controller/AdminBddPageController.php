@@ -2,6 +2,7 @@
 namespace src\Controller;
 
 use src\Constant\ConstantConstant;
+use src\Constant\CssConstant;
 use src\Constant\IconConstant;
 use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
@@ -75,12 +76,12 @@ class AdminBddPageController extends AdminPageController
         $repertoire->recupererFichiers();
 
         $table = new TableUtils();
-        $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
+        $table->setTable([ConstantConstant::CST_CLASS=>CssConstant::CSS_TABLE_SM.' '.CssConstant::CSS_TABLE_STRIPED]);
 
         $table->addHeaderRow()
             ->addHeaderCell([ConstantConstant::CST_CONTENT=>'#'])
             ->addHeaderCell([ConstantConstant::CST_CONTENT=>LabelConstant::LBL_NAME])
-            ->addHeaderCell([ConstantConstant::CST_CONTENT=>'&nbsp;']);
+            ->addHeaderCell([ConstantConstant::CST_CONTENT=>ConstantConstant::CST_NBSP]);
 
         $objs = $repertoire->getFiles();
         while ($objs->valid()) {
@@ -93,7 +94,7 @@ class AdminBddPageController extends AdminPageController
             ]);
             $aIcon = HtmlUtils::getIcon(IconConstant::I_PLAY);
             $link  = HtmlUtils::getLink($aIcon, $fileUrl, 'text-white');
-            $actions = HtmlUtils::getButton($link, [ConstantConstant::CST_CLASS=>'bg-secondary']).'&nbsp;';
+            $actions = HtmlUtils::getButton($link, [ConstantConstant::CST_CLASS=>'bg-secondary']).ConstantConstant::CST_NBSP;
 
             $fileUrl = UrlUtils::getAdminUrl([
                 ConstantConstant::CST_ONGLET => ConstantConstant::CST_BDD,

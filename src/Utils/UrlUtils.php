@@ -1,6 +1,8 @@
 <?php
 namespace src\Utils;
 
+use src\Constant\TemplateConstant;
+
 class UrlUtils
 {
 
@@ -37,6 +39,6 @@ class UrlUtils
 
     public static function getAssetUrl(string $dir): string
     {
-        return PLUGINS_COPS.'assets/'.$dir.'/';
+        return PLUGINS_COPS.TemplateConstant::ASSETS_PATH.$dir.'/';
     }
 }

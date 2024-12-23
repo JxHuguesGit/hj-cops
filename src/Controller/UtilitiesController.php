@@ -85,9 +85,9 @@ class UtilitiesController
 
     public static function getAdminController(array $arrUri): mixed
     {
-        $allowedOnglets = ['admin', 'bdd', 'player'];
+        $allowedOnglets = ['admin', ConstantConstant::CST_BDD, 'player', ConstantConstant::CST_CODE];
         $controller = new UtilitiesController($arrUri);
-        if (substr($controller->getArrParams(ConstantConstant::CST_ONGLET), 0, 4)=='mail' ||
+        if (substr($controller->getArrParams(ConstantConstant::CST_ONGLET), 0, 4)==FieldConstant::MAIL ||
             in_array($controller->getArrParams(ConstantConstant::CST_ONGLET), $allowedOnglets)
         ) {
             $controller = new PageController($arrUri);
@@ -146,7 +146,7 @@ class UtilitiesController
                 $strBtn  = HtmlUtils::getButton($strLink, [ConstantConstant::CST_CLASS=>'text-white']);
                 $strNotifIcons .= HtmlUtils::getLi(
                     $strBtn,
-                    [ConstantConstant::CST_CLASS=>'nav-item', 'id'=>'header_notification_bar']
+                    [ConstantConstant::CST_CLASS=>'nav-item', ConstantConstant::CST_ID=>'header_notification_bar']
                 );
                 ////////////////////////////////////////////////////////////////
             }

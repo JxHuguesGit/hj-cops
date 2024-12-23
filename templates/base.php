@@ -4,6 +4,7 @@ use src\Constant\ConstantConstant;
 use src\Constant\FieldConstant;
 use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
+use src\Controller\CentralController;
 use src\Controller\HomePageController;
 use src\Controller\LibraryController;
 use src\Controller\MailPageController;
@@ -20,6 +21,7 @@ if (strpos(PLUGIN_PATH, 'wamp64')!==false) {
     define('COPS_SITE_URL', 'https://cops.jhugues.fr/');
 }
 define('PLUGINS_COPS', COPS_SITE_URL.'wp-content/plugins/hj-cops/');
+define('IGNORE_CDN', true);
 date_default_timezone_set('Europe/Paris');
 
 class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
@@ -55,6 +57,9 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
                 case ConstantConstant::CST_LIBRARY :
                     $controller = new LibraryController($arrUri);
                 break;
+                case ConstantConstant::CST_CENTRAL :
+                    $controller = new CentralController($arrUri);
+                break;
                 case ConstantConstant::CST_NOTIFICATION :
                 case ConstantConstant::CST_TRASH :
                         $controller = new MailPageController($arrUri, $slug);
@@ -66,7 +71,7 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
             /////////////////////////////////////////
         }
 
-        if (COPS_SITE_URL=='http://localhost/') {
+        if (COPS_SITE_URL=='http://localhost/' && IGNORE_CDN) {
             $srcCssFilesTpl = $controller->getRender(TemplateConstant::TPL_LOCAL_CSS, [PLUGINS_COPS]);
             $srcJsFilesTpl = $controller->getRender(TemplateConstant::TPL_LOCAL_JS, [PLUGINS_COPS]);
         } else {

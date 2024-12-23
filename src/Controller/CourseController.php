@@ -4,6 +4,7 @@ namespace src\Controller;
 use src\Collection\CourseCollection;
 use src\Collection\SkillCollection;
 use src\Constant\ConstantConstant;
+use src\Constant\CssConstant;
 use src\Constant\FieldConstant;
 use src\Constant\IconConstant;
 use src\Constant\LabelConstant;
@@ -34,7 +35,7 @@ class CourseController extends UtilitiesController
         $courses = $repository->findAll($orders);
 
         $table = new TableUtils();
-        $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
+        $table->setTable([ConstantConstant::CST_CLASS=>CssConstant::CSS_TABLE_SM.' '.CssConstant::CSS_TABLE_STRIPED]);
         $table->setPaginate([
             ConstantConstant::PAGE_OBJS => $courses,
             ConstantConstant::CST_CURPAGE => $this->arrParams[ConstantConstant::CST_CURPAGE] ?? 1,
@@ -84,13 +85,13 @@ class CourseController extends UtilitiesController
         $linkAttributes = [
             ConstantConstant::CST_PAGE=>ConstantConstant::CST_COURSES,
             ConstantConstant::CST_ACTION=>ConstantConstant::CST_VIEW,
-            'id'=>$id
+            ConstantConstant::CST_ID=>$id
         ];
         if (isset($arrParams[ConstantConstant::CST_CURPAGE])) {
             $linkAttributes[ConstantConstant::CST_CURPAGE] = $arrParams[ConstantConstant::CST_CURPAGE];
         }
         $category = $this->course->getField(FieldConstant::CATEGORY);
-        $linkAttributes[ConstantConstant::CST_TYPE] = 'category';
+        $linkAttributes[ConstantConstant::CST_TYPE] = FieldConstant::CATEGORY;
         $strLinkCateg = HtmlUtils::getLink(
             $category,
             UrlUtils::getPublicUrl(ConstantConstant::CST_LIBRARY, $linkAttributes)
@@ -117,7 +118,7 @@ class CourseController extends UtilitiesController
         $bgColor = 'btn btn-sm disabled btn-';
         $reference = $this->course->getField(FieldConstant::REFERENCE);
         if (
-            strpos($reference, 'post')===false &&
+            strpos($reference, ConstantConstant::WP_POST)===false &&
             strpos($reference, 'ici')===false &&
             strpos($reference, 'inconnu')===false
         ) {
@@ -303,7 +304,7 @@ class CourseController extends UtilitiesController
                 $strReference = 'Pilote p'.substr($reference, 3);
                 break;
             default :
-                if (strpos($reference, 'post')!== false) {
+                if (strpos($reference, ConstantConstant::WP_POST)!== false) {
                     $strReference = 'Central COPS';
                 } elseif (strpos($reference, 'ici')!== false) {
                     $strReference = 'Autre';

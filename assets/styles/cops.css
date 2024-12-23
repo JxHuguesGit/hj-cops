@@ -35,6 +35,9 @@ a { text-decoration: none; color: inherit;}
     color: rgba(33, 37, 41, 0.75);
 }
 
+.has-text-align-right { text-align: right; }
+
+
 /* ----------------------------------------------------- */
 /* --  Gestion du carousel                            -- */
 /* ----------------------------------------------------- */
@@ -498,6 +501,7 @@ border-color: #4b545c;
     height: 360px;
     margin-top: 30px;
     position: relative;
+    touch-action: none;
     -ms-touch-action: none;
     white-space: nowrap;
 }

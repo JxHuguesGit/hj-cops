@@ -13,6 +13,8 @@ interface TemplateConstant
     public const TPL_NEW_PASSWORD_CARD  = 'templates/settings/change-password-card.tpl';
     public const TPL_SETTINGS_DASH      = 'templates/settings/dashboard.tpl';
 
+    public const TPL_CENTRAL_PANEL      = 'templates/central/main-panel.tpl';
+
     public const TPL_ADJ_PANEL          = 'templates/library/adj-panel.tpl';
     public const TPL_LIBRARY_CARD       = 'templates/library/library-card.tpl';
     public const TPL_LIBRARY_PANEL      = 'templates/library/main-panel.tpl';

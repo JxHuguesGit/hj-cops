@@ -8,6 +8,7 @@ interface ConstantConstant
     public const CST_ALERT              = 'alert';
     public const CST_ASC                = 'asc';
     public const CST_BDD                = 'bdd';
+    public const CST_CENTRAL            = 'central';
     public const CST_CHANGEMDP          = 'changeMdp';
     public const CST_CHAT               = 'chat';
     public const CST_CHECKED            = 'checked';
@@ -35,7 +36,7 @@ interface ConstantConstant
     public const CST_HREF               = 'href';
     public const CST_ICON               = 'icon';
     public const CST_ID                 = 'id';
-    public const CST_ID_GUEST           = 64;
+    public const CST_ID_GUEST           = '64';
     public const CST_INBOX              = 'inbox';
     public const CST_LABEL              = 'label';
     public const CST_LIBRARY            = 'library';
@@ -54,6 +55,7 @@ interface ConstantConstant
     public const CST_PROFILE            = 'profile';
     public const CST_READ               = 'read';
     public const CST_READONLY           = 'readonly';
+    public const CST_RESTORE            = 'restore';
     public const CST_SELECTED           = 'selected';
     public const CST_SETTINGS           = 'settings';
     public const CST_SENT               = 'sent';
@@ -80,7 +82,7 @@ interface ConstantConstant
     public const PAGE_OPT_FULL_NMB      = 'full_numbers';
     public const PAGE_OPT_FST_LAST_NMB  = 'first_last_numbers';
     public const PAGE_NBPERPAGE         = 'nbPerPage';
-    public const PAGE_DEFAULT_NBPERPAGE = 10;
+    public const PAGE_DEFAULT_NBPERPAGE = '10';
     public const PAGE_OPTION            = 'option';
     public const PAGE_OBJS              = 'objs';
     public const PAGE_QUERY_ARG         = 'queryArg';

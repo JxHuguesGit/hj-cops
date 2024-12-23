@@ -3,6 +3,7 @@ namespace src\Controller;
 
 use src\Collection\PlayerCollection;
 use src\Constant\ConstantConstant;
+use src\Constant\CssConstant;
 use src\Constant\FieldConstant;
 use src\Constant\IconConstant;
 use src\Constant\LabelConstant;
@@ -39,7 +40,7 @@ class CopsController extends PageController
         $criteria = [];
         $this->arrParams = $arrParams;
         $table = new TableUtils();
-        $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
+        $table->setTable([ConstantConstant::CST_CLASS=>CssConstant::CSS_TABLE_SM.' '.CssConstant::CSS_TABLE_STRIPED]);
         $filterSection = $this->arrParams['filtersection'] ?? '';
         $sections = SectionEnum::cases();
         $values = [];
@@ -89,7 +90,9 @@ class CopsController extends PageController
         if ($isAdmin) {
             $matricule = $this->cops->getField(FieldConstant::SERIALNUMBER);
             $aContent = $this->cops->getFullName(true);
-            $href = add_query_arg(['action'=>'view', 'id'=>$this->cops->getField(FieldConstant::ID)]);
+            $href = add_query_arg([
+                ConstantConstant::CST_ACTION => ConstantConstant::CST_VIEW,
+                ConstantConstant::CST_ID     => $this->cops->getField(FieldConstant::ID)]);
             $strName = HtmlUtils::getLink($aContent, $href);
         } else {
             $matricule = substr($this->cops->getField(FieldConstant::SERIALNUMBER), -3);
@@ -105,7 +108,7 @@ class CopsController extends PageController
 
         $table->addBodyRow($arrParams);
         if ($isAdmin) {
-            $table->addBodyCell([ConstantConstant::CST_CONTENT=>'&nbsp;']);
+            $table->addBodyCell([ConstantConstant::CST_CONTENT=>ConstantConstant::CST_NBSP]);
         }
         $table->addBodyCell([ConstantConstant::CST_CONTENT=>$matricule])
             ->addBodyCell([ConstantConstant::CST_CONTENT=>$strName])
@@ -113,15 +116,15 @@ class CopsController extends PageController
             ->addBodyCell([ConstantConstant::CST_CONTENT=>$strSection])
             ->addBodyCell([ConstantConstant::CST_CONTENT=>$binome==null ? '' : $binome->getFullName(true)]);
         if ($isAdmin) {
-            $table->addBodyCell([ConstantConstant::CST_CONTENT=>'&nbsp;']);
+            $table->addBodyCell([ConstantConstant::CST_CONTENT=>ConstantConstant::CST_NBSP]);
         }
     }
 
     public function getAdminContentPage(): string
     {
-        $action = $this->arrParams['action'] ?? 'list';
-        if ($action=='view') {
-            $id = $this->arrParams['id'] ?? 0;
+        $action = $this->arrParams[ConstantConstant::CST_ACTION] ?? 'list';
+        if ($action==ConstantConstant::CST_VIEW) {
+            $id = $this->arrParams[ConstantConstant::CST_ID] ?? 0;
             $cops = $this->repository->find($id);
             if ($cops!=null) {
                 return $cops->getController()->getAdminEditContentPage();
@@ -142,7 +145,7 @@ class CopsController extends PageController
         $this->initRepositories();
         // Initialisation de la table
         $table = new TableUtils();
-        $table->setTable([ConstantConstant::CST_CLASS=>'table-sm table-striped']);
+        $table->setTable([ConstantConstant::CST_CLASS=>CssConstant::CSS_TABLE_SM.' '.CssConstant::CSS_TABLE_STRIPED]);
         $players = $this->repository->findAllCopsBy();
         // Pagination
         $table->setPaginate([
@@ -189,9 +192,9 @@ class CopsController extends PageController
 
     public function getAdminEditContentPage(): string
     {
-        $postedFormName = $_POST['formName'] ?? null;
+        $postedFormName = $_POST[ConstantConstant::CST_FORMNAME] ?? null;
         if ($postedFormName==null) {
-            $postedFormName = $_GET['formName'] ?? null;
+            $postedFormName = $_GET[ConstantConstant::CST_FORMNAME] ?? null;
         }
 
         $formPlayer = new PlayerForm($this->cops);

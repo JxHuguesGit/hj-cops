@@ -32,6 +32,7 @@ interface LabelConstant
     public const LBL_BINOME             = 'Partenaire';
     public const LBL_FIRSTNAME          = 'Prénom';
     public const LBL_PROFILE            = 'Profil';
+    public const LBL_CENTRAL_LAPD       = 'Quartier Général LAPD';
     public const LBL_SECTION            = 'Section';
     public const LBL_SUBMIT             = 'Soumettre';
     public const LBL_SOURCE             = 'Source';
