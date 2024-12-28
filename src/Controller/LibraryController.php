@@ -58,7 +58,7 @@ class LibraryController extends UtilitiesController
             $cpt = 0;
             foreach ($arrCards as $key => $data) {
                     if ($cpt%4==0 && $cpt!=0) {
-                            $cardBody .= HtmlUtils::getDiv($cardRow, [ConstantConstant::CST_CLASS=>'row mb-3']);
+                            $cardBody .= HtmlUtils::getDiv($cardRow, [ConstantConstant::CST_CLASS=>'row']);
                             $cardRow = '';
                     }
                     $cpt++;

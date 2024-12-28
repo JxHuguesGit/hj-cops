@@ -307,10 +307,8 @@ function displayToast(value) {
 // Fonction d'entrée pour rediriger vers le bon contrôle
 function controlerFormulaire(formId) {
   let blnOk = false;
-  switch (formId) {
-    case '#creerNewEvent' :
-      blnOk = controlerFormulaireCreerNewEvent();
-    break;
+  if (formId=='#creerNewEvent') {
+    blnOk = controlerFormulaireCreerNewEvent();
   }
   return blnOk;
 }
@@ -323,18 +321,6 @@ function controlerFormulaireCreerNewEvent() {
     blnOk = false;
     console.log('Le libellé doit être saisi.');
   }
-  /*
-  if (!estDateValide('#dateDebut')) {
-    $('#dateDebut').addClass('border-danger');
-    blnOk = false;
-    console.log('La date de début doit être saisie.');
-  }
-  if (!estDateValide('#dateFin')) {
-    $('#dateFin').addClass('border-danger');
-    blnOk = false;
-    console.log('La date de fin doit être saisie.');
-  }
-  */
   if (blnOk && estDateSuperieure('#dateDebut', '#dateFin')) {
     $('#dateDebut').addClass('border-danger');
     $('#dateFin').addClass('border-danger');
@@ -370,9 +356,6 @@ function estDateValide(target) {
     let datas = $(target).val().trim().split('/');
     if (datas.length!=3) {
       blnOk = false;
-    } else {
-//      let d = new Date(datas[2], datas[1], datas[0]);
-//      blnOk = (d.getDate()==datas[0]*1 && d.getMonth()==datas[1]*1);
     }
   }
   return blnOk;
@@ -529,7 +512,6 @@ function enableMailboxControls() {
 function skillCreation(obj, e) {
     let speclevel = obj.data('speclevel');
     let skillid = obj.data('skillid');
-    let parentid = obj.data('parentid');
     let score = obj.data('score');
 
     if (score==-1 || score!=speclevel+1) {

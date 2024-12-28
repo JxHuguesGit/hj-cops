@@ -1,6 +1,6 @@
-<div class="col-3 mb-1">
+<div class="col-12 col-sm-6 col-md-3 mb-1">
     <div class="card border-left-dark shadow h-100 py-2">
-        <div class="card-body">
+        <div class="card-body py-0 py-sm-3">
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-dark text-uppercase mb-1">

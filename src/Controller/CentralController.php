@@ -131,7 +131,7 @@ class CentralController extends UtilitiesController
 
         $card = new CardUtils(['style'=>'height:80%;']);
         $card
-            ->addClass('col-8 offset-2')
+            ->addClass('col-12 col-sm-8 offset-sm-2')
             ->setHeader([ConstantConstant::CST_CONTENT=>$post->post_title])
             ->setBody([ConstantConstant::CST_CLASS=>' overflow-auto',ConstantConstant::CST_CONTENT=>$post->post_content])
             ->setFooter([ConstantConstant::CST_CONTENT=>$footerContent]);

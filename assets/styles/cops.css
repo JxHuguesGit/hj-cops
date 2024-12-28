@@ -579,7 +579,6 @@ border-color: #4b545c;
   .accordion-button i.fa-chevron-down { display: block; }
   .accordion-button.collapsed i.fa-chevron-down { display: none; }
   .accordion-button.collapsed i.fa-chevron-up { display: block; }
-/*  .accordion-item { float:right; display: none; }*/
   .accordion-button.collapsed + .accordion-item { float:right; display: block; }
 
 .form-floating {

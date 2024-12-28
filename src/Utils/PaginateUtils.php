@@ -48,7 +48,7 @@ class PaginateUtils
 
     public function getPaginationBlock(): string
     {
-        $strClass = 'pagination pagination-sm justify-content-start mb-0 col-6';
+        $strClass = 'pagination pagination-sm justify-content-start mb-0 col-12 col-sm-6';
         $firstElement = ($this->curPage-1)*$this->nbPerPage*1+1;
         $lastElement  = min($this->nbElements, $this->curPage*$this->nbPerPage);
         $divContent = "Entrées $firstElement à $lastElement sur ".$this->nbElements;

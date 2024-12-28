@@ -1,4 +1,4 @@
-<section class="wrapper pt-3 col-8 offset-2">
+<section class="wrapper pt-3 col-12 col-sm-8 offset-sm-2">
     <div class="card mb-3">
         <div class="card-header">Quartier Général LAPD</div>
         <div class="card-body">
