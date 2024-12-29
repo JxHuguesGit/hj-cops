@@ -17,8 +17,10 @@ interface FieldConstant
     public const ATTRREFLEXES           = 'attrReflexes';
     public const ATTRSANGFROID          = 'attrSangfroid';
     public const BINOMEID               = 'binomeId';
+    public const BIRTHDAY               = 'birthday';
     public const BONUS                  = 'bonus';
     public const CATEGORY               = 'category';
+    public const CITY                   = 'city';
     public const CODE                   = 'code';
     public const COLOR                  = 'color';
     public const CONTENT                = 'content';
@@ -26,10 +28,13 @@ interface FieldConstant
     public const CUMUL                  = 'cumul';
     public const DEFAULTABILITY         = 'defaultAbility';
     public const DESCRIPTION            = 'description';
-    public const FIRSTNAME              = 'firstname';
     public const ENDDATE                = 'endDate';
+    public const FIRSTNAME              = 'firstname';
     public const FOLDERID               = 'folderId';
     public const FROMID                 = 'fromId';
+    public const GAL_RESUME             = 'galResume';
+    public const GENDER                 = 'gender';
+    public const HEIGHT                 = 'height';
     public const HPCUR                  = 'hpCur';
     public const HPMAX                  = 'hpMax';
     public const ICON                   = 'icon';
@@ -41,8 +46,11 @@ interface FieldConstant
     public const MAIL                   = 'mail';
     public const MAILID                 = 'mailId';
     public const NAME                   = 'name';
+    public const NAMESET                = 'nameset';
+    public const OCCUPATIONID           = 'occupationId';
     public const PADUSABLE              = 'padUsable';
     public const PASSWORD               = 'password';
+    public const PD_CONTENT             = 'pdContent';
     public const PLAYERID               = 'playerId';
     public const POS                    = 'pos';
     public const PREREQUISITE           = 'prerequisite';
@@ -51,6 +59,8 @@ interface FieldConstant
     public const READ                   = 'read';
     public const REFERENCE              = 'reference';
     public const SCORE                  = 'score';
+    public const SDC_CLUES              = 'sdcClues';
+    public const SDC_DESCRIPTION        = 'sdcDescription';
     public const SECTION                = 'section';
     public const SENTDATE               = 'sentDate';
     public const SERIALNUMBER           = 'serialnumber';
@@ -59,14 +69,17 @@ interface FieldConstant
     public const SPECLEVEL              = 'specLevel';
     public const STARTDATE              = 'startDate';
     public const STATUS                 = 'status';
+    public const STREETADDRESS          = 'streetaddress';
     public const SUBJECT                = 'subject';
     public const SURNAME                = 'surname';
     public const TOID                   = 'toId';
     public const USER                   = 'user';
     public const USES                   = 'uses';
+    public const WEIGHT                 = 'weight';
     public const WIDGETID               = 'widgetId';
     public const WIDTH                  = 'width';
     public const XPCUMUL                = 'xpCumul';
     public const XPCUR                  = 'xpCur';
+    public const ZIPCODE                = 'zipcode';
         
 }

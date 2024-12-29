@@ -22,6 +22,24 @@ class Entity
         return substr($str, 0, -3).'<br>';
     }
 
+    public function initAttributes(): self
+    {
+        $reflectionClass = new \ReflectionClass(Investigation::class);
+        foreach ($reflectionClass->getProperties() as $property) {
+            $name = $property->getName();
+            $type = $property->getType();
+            if ($type=='int') {
+                $this->{$name} = 0;
+            } elseif ($type=='string') {
+                $this->{$name} = '';
+            } else {
+                echo "Un type d'attribut (".$type.") n'est pas prévu dans le processus d'initialisation.<br>";
+            }
+        }
+    
+        return $this;
+    }
+
     public function initRepository($repositories=[])
     {
         while (!empty($repositories)) {

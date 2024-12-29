@@ -95,4 +95,9 @@ class HtmlUtils
         );
         return static::getBalise('input', '', $attributes);
     }
+
+    public static function getTextarea(string $value, array $extraAttributes=[]): string
+    {
+        return static::getBalise('textarea', $value, $extraAttributes);
+    }
 }

@@ -23,6 +23,7 @@ class BinomeForm extends Form
     public function __construct(Binome $binome=null)
     {
         $this->binome = $binome ?? new Binome();
+        $this->contentHeader = 'Historique des binômes';
     }
 
     public function setPlayer(Player $player): self
@@ -152,24 +153,4 @@ class BinomeForm extends Form
         $this->addHidden(ConstantConstant::CST_FORMNAME, ConstantConstant::CST_FORMNAME, 'copsPlayerBinome');
     }
 
-    public function getFormContent(): string
-    {
-        $formContent = parent::getFormContent();
-        $btnSubmit = HtmlUtils::getButton(LabelConstant::LBL_SUBMIT, [ConstantConstant::CST_TYPE=>'submit']);
-
-        $card = new CardUtils([ConstantConstant::CST_STYLE=>'max-width:initial']);
-        $card->addClass('p-0')
-            ->setHeader([ConstantConstant::CST_CONTENT=>'Historique des binômes'])
-            ->setBody([ConstantConstant::CST_CONTENT=>$formContent])
-            ->setFooter([ConstantConstant::CST_CONTENT=>$btnSubmit]);
-
-        return HtmlUtils::getBalise(
-            'form',
-            $card->display(),
-            [
-                'method'=>ConstantConstant::WP_POST,
-                ConstantConstant::CST_CLASS=>'col-6'
-            ]
-        );
-    }
 }

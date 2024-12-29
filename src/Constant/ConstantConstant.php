@@ -21,6 +21,7 @@ interface ConstantConstant
     public const CST_COPSDATE           = 'copsDate';
     public const CST_COURSE             = 'course';
     public const CST_COURSES            = 'courses';
+    public const CST_CREATE             = 'create';
     public const CST_CURDATE            = 'curdate';
     public const CST_CURPAGE            = 'curpage';
     public const CST_DESC               = 'desc';
@@ -38,6 +39,7 @@ interface ConstantConstant
     public const CST_ID                 = 'id';
     public const CST_ID_GUEST           = '64';
     public const CST_INBOX              = 'inbox';
+    public const CST_INVESTIGATION      = 'investigation';
     public const CST_LABEL              = 'label';
     public const CST_LIBRARY            = 'library';
     public const CST_LOGOUT             = 'logout';
@@ -53,6 +55,7 @@ interface ConstantConstant
     public const CST_PAGE               = 'page';
     public const CST_PLAYERAID          = 'playerAid';
     public const CST_PROFILE            = 'profile';
+    public const CST_RANDOMGUY          = 'randomGuy';
     public const CST_READ               = 'read';
     public const CST_READONLY           = 'readonly';
     public const CST_RESTORE            = 'restore';

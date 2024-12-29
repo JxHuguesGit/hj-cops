@@ -12,7 +12,7 @@
                 <ul id="avia-menu-center" class="menu av-main-nav nav notify-row justify-content-end" role="menu">%5$s</ul>
                 <ul id="avia-menu-right" class="menu av-main-nav nav justify-content-end" role="menu">
                     <li class="nav-item dropdown">
-                        <img class="d-none d-md-block img-xs rounded-circle mask" src="%1$smasks/%3$s.jpg" alt="Masque de %2$s">
+                        <img class="d-none d-md-inline img-xs rounded-circle mask" src="%1$smasks/%3$s.jpg" alt="Masque de %2$s">
                         <button class="btn text-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">%2$s</button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item %4$s" href="/settings"><i class="fa-solid fa-gear"></i> Settings</a></li>

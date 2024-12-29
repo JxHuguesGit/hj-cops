@@ -12,6 +12,9 @@ class AdminPageController extends PageController
     public function getAdminContentPage(): string
     {
         switch ($this->arrParams[ConstantConstant::CST_ONGLET]) {
+            case ConstantConstant::CST_RANDOMGUY :
+                $controller = new AdminRandomGuyPageController();
+            break;
             case ConstantConstant::CST_CODE :
                 $controller = new AdminCodePageController();
             break;

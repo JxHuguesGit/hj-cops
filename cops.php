@@ -79,10 +79,11 @@ function copsiteMenu()
         add_menu_page($pluginName, $pluginName, $uploadFiles, $urlRoot, '', $urlIcon);
         if (function_exists('add_submenu_page')) {
             $arrUrlSubMenu = array(
-                'home'     => 'Accueil',
-                'admin'    => 'Admin',
-                'player'   => 'COPS',
-                'mailData' => 'Mails',
+                'home'      => 'Accueil',
+                'admin'     => 'Admin',
+                'player'    => 'COPS',
+                'randomGuy' => 'Individus',
+                'mailData'  => 'Mails',
             );
             foreach ($arrUrlSubMenu as $key => $value) {
                 $urlSubMenu = $urlRoot.'&amp;onglet='.$key;

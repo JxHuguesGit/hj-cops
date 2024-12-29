@@ -18,6 +18,7 @@ class PlayerForm extends Form
     public function __construct(Player $player=null)
     {
         $this->player = $player ?? new Player();
+        $this->contentHeader = 'Informations Cops';
     }
 
     public function buildForm(): void
@@ -48,27 +49,6 @@ class PlayerForm extends Form
 
         $this->addRow();
         $this->addHidden(ConstantConstant::CST_FORMNAME, ConstantConstant::CST_FORMNAME, 'copsPlayer');
-    }
-
-    public function getFormContent(): string
-    {
-        $formContent = parent::getFormContent();
-        $btnSubmit = HtmlUtils::getButton(LabelConstant::LBL_SUBMIT, [ConstantConstant::CST_TYPE=>'submit']);
-
-        $card = new CardUtils([ConstantConstant::CST_STYLE=>'max-width:initial']);
-        $card->addClass('p-0')
-            ->setHeader([ConstantConstant::CST_CONTENT=>'Informations Cops'])
-            ->setBody([ConstantConstant::CST_CONTENT=>$formContent])
-            ->setFooter([ConstantConstant::CST_CONTENT=>$btnSubmit]);
-
-        return HtmlUtils::getBalise(
-            'form',
-            $card->display(),
-            [
-                'method'=>ConstantConstant::WP_POST,
-                ConstantConstant::CST_CLASS=>'col-6'
-            ]
-        );
     }
 
     public function controlForm(): void

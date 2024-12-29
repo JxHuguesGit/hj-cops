@@ -21,6 +21,7 @@ class PageController extends UtilitiesController
     {
         switch ($this->arrParams[ConstantConstant::CST_ONGLET]) {
             case 'admin' :
+            case ConstantConstant::CST_RANDOMGUY :
             case ConstantConstant::CST_CODE :
             case ConstantConstant::CST_BDD :
                 $controller = new AdminPageController();
