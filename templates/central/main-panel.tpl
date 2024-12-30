@@ -9,38 +9,9 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>34</td>
-                        <td>TERDIV</td>
-                        <td>&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td>33</td>
-                        <td>ORGDIV</td>
-                        <td>&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td>32</td>
-                        <td>NADIV</td>
-                        <td>&nbsp;</td>
-                    </tr>
-                    <tr>
                         <td>30</td>
                         <td>FSB, HRB, ICB, OHB & COP</td>
                         <td>Chefs de services</td>
-                    </tr>
-                    <tr>
-                        <td>29</td>
-                        <td rowspan="2">Services administratifs</td>
-                        <td>Comptabilité, Relations presse, Mutations, Recrutements...</td>
-                    </tr>
-                    <tr>
-                        <td>28</td>
-                        <td>&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td>27</td>
-                        <td>CMOC</td>
-                        <td>&nbsp;</td>
                     </tr>
                     <tr>
                         <td>26</td>

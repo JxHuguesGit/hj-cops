@@ -42,7 +42,12 @@ class CentralController extends UtilitiesController
     {
         $etages = [
             '35' => ['row'=>1, 'data'=>['services'=>['COPS'], 'titles'=>[''], 'urls'=>[''], 'descriptions'=>['Description à mettre']]],
+            '34' => ['row'=>1, 'data'=>['services'=>['TERDIV'], 'titles'=>[''], 'urls'=>[''], 'descriptions'=>[ConstantConstant::CST_NBSP]]],
+            '33' => ['row'=>1, 'data'=>['services'=>['ORGDIV'], 'titles'=>[''], 'urls'=>[''], 'descriptions'=>[ConstantConstant::CST_NBSP]]],
+            '32' => ['row'=>1, 'data'=>['services'=>['NADIV'], 'titles'=>[''], 'urls'=>[''], 'descriptions'=>[ConstantConstant::CST_NBSP]]],
             '31' => ['row'=>1, 'data'=>['services'=>['SAD'], 'titles'=>['Special Affairs Division'], 'urls'=>['wp-sad'], 'descriptions'=>['Description à mettre']]],
+            '29' => ['row'=>2, 'data'=>['services'=>['Services Administratifs'], 'titles'=>[''], 'urls'=>[''], 'descriptions'=>['Comptabilité, Relations presse, Mutations, Recrutements...', ConstantConstant::CST_NBSP]]],
+            '27' => ['row'=>1, 'data'=>['services'=>['CMOC'], 'titles'=>['Community & Media Oriented Communication'], 'urls'=>[''], 'descriptions'=>[ConstantConstant::CST_NBSP]]],
             '25' => ['row'=>2, 'data'=>['services'=>['ASD'], 'titles'=>['Air Support Division'], 'urls'=>['wp-asd'], 'descriptions'=>['Partie administration et bureaux des détectives', 'Hangars et ateliers mécaniques']]],
         ];
 

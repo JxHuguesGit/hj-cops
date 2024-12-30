@@ -27,7 +27,8 @@ class IndividuController extends UtilitiesController
         $this->individu = $individu ?? new Individu();
     }
 
-    public function addBodyRow(TableUtils &$table, array $arrParams=[]): void
+    // Note : suppression du paramètre array $arrParams=[] qui n'était pas utilisé.
+    public function addBodyRow(TableUtils &$table): void
     {
         $id = $this->individu->getField(FieldConstant::ID);
         $linkAttributes = [
