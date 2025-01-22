@@ -30,6 +30,14 @@ $(document).ready(function() {
         });
     }
 
+    $('.nav-tabs a.nav-link').on('click', function(e) {
+        e.preventDefault();
+        $('.nav-link').removeClass('active');
+        $('.tab-pane').removeClass('show active');
+        $(this).addClass('active');
+        $($(this).attr('href')).addClass('show active')
+    });
+
     //////////////////////////////////////////////////////////////////////////////
     // Fin Nouvelle implémentation 27/01/2024
     //////////////////////////////////////////////////////////////////////////////
@@ -419,15 +427,22 @@ function ajaxActionClick(obj, e) {
 	let actions = obj.data('ajax').split(',');
 	for (let oneAction of actions) {
 	    switch (oneAction) {
-            case 'selectAll' :
-                selectAll(obj);
-                break;
+            case 'openConfirmModal' : {
+                let title = obj.data('title');
+                let message = obj.data('message');
+                let hrefConfirm = obj.data('href');
+                openConfirmModal(title, message, hrefConfirm);
+            }
+            break;
             case 'refresh' :
                 window.location.reload();
-                break;
+            break;
+            case 'selectAll' :
+                selectAll(obj);
+            break;
             case 'trash' :
                 confirmTrash(obj);
-                break;
+            break;
             /*
 			case 'csvExport' :
 				csvExport(obj);

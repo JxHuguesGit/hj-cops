@@ -4,6 +4,7 @@ namespace src\Entity;
 use src\Collection\IndividuCollection;
 use src\Constant\FieldConstant;
 use src\Controller\IndividuController;
+use src\Enum\OccupationEnum;
 use src\Form\IndividuForm;
 use src\Repository\IndividuRepository;
 
@@ -84,5 +85,14 @@ class Individu extends Entity
     public function getForm(): IndividuForm
     {
         return new IndividuForm($this);
+    }
+
+    public function getNameAndOccupation(bool $andOccupation=true): string
+    {
+        $str = $this->lastname.' '.$this->firstname;
+        if ($andOccupation) {
+            $str .= ' ('.OccupationEnum::fromDb($this->occupationId).')';
+        }
+        return $str;
     }
 }

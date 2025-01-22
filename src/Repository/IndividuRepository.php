@@ -24,4 +24,18 @@ class IndividuRepository extends Repository
     {
         return $this->findBy([], $orderBy);
     }
+
+    public function findSpecificOccupation(
+        array $criteria,
+        array $orderBy=[FieldConstant::LASTNAME=>ConstantConstant::CST_ASC]
+    ): IndividuCollection
+    {
+        $this->baseQuery  = "SELECT `".implode('`, `', $this->field)."` ";
+        $this->baseQuery .= "FROM ".$this->table." ";
+        $this->baseQuery .= "WHERE occupationId IN (".implode(', ', $criteria).") ";
+
+        return $this->orderBy($orderBy)
+            ->getQuery()
+            ->getResult();
+    }
 }

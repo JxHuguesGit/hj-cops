@@ -91,18 +91,104 @@ class DateUtils
         return static::getStrDate($strFormat, [$d, $m, $y, $h, $i, $s]);
     }
 
-    public static function getStrDate(string $strFormat, $when): string
+    public static function getStrDate(string $strFormat, $when): mixed
     {
         [$d, $m, $y, $h, $i, $s] = $when;
+        $strFormatted = '';
 
-        if ($strFormat=='ts') {
-            $strFormatted = mktime($h, $i, $s, $m, $d, $y);
-        } elseif ($strFormat=='dbDate') {
-            $strFormatted = date('Y-m-d', mktime($h, $i, $s, $m, $d, $y));
-        } else {
-            $strFormatted = 'Error';
+        switch ($strFormat) {
+            case 'ts' :
+                $strFormatted = mktime($h, $i, $s, $m, $d, $y);
+            break;
+            case 'dbDate' :
+                $strFormatted = date('Y-m-d', mktime($h, $i, $s, $m, $d, $y));
+            break;
+            case 'd M y' :
+                $strFormatted = $d;
+                // no break. It's intentional
+            case 'M y' :
+                $strFormatted .= ' '.static::$arrShortMonths[$m*1].' '.$y;
+            break;
+            default :
+                $strFormatted = 'Error';
+            break;
         }
         return $strFormatted;
+    }
+
+    public static function parseDate(string $strDate, string &$msgProcessError=''): array
+    {
+        $h = '00';
+        $i = '00';
+        $s = '00';
+        $m = '00';
+        $d = '00';
+        $y = '00';
+        $len = strlen($strDate);
+
+        // On attend un des formats ci-dessous
+        // DD/MM/YYYY : 10
+        // DD/MM/YY   :  8
+        // MM/YYYY    :  7
+        // MM/YY      :  5
+        // YYYY-MM-DD : 10
+        // YY-MM-DD   :  8
+        // YYYY-MM    : 7
+        // YY-MM      : 5
+        // HH:ii:ss   : 8
+        // HH:ii      : 5
+        // YYYY-MM-DD HH:II:SS : non traité. A envisager ?
+
+        // Présence de /, - ou :
+        if (strpos($strDate, '/')!==false) {
+            switch ($len) {
+                case 10 :
+                case 8  :
+                    list($d, $m, $y) = explode('/', $strDate);
+                break;
+                case 7  :
+                case 5  :
+                    list($m, $y) = explode('/', $strDate);
+                break;
+                default :
+                    $msgProcessError .= "Chronologie : la date ne correspond à aucun format attendu.<br>";
+                break;
+            }
+        } elseif (strpos($strDate, '-')!==false) {
+            switch ($len) {
+                case 10 :
+                case 8  :
+                    list($y, $m, $d) = explode('-', $strDate);
+                break;
+                case 7  :
+                case 5  :
+                    list($y, $m) = explode('-', $strDate);
+                break;
+                default :
+                    $msgProcessError .= "Chronologie : la date ne correspond à aucun format attendu.<br>";
+                break;
+            }
+        } elseif (strpos($strDate, ':')!==false) {
+            if ($len==8) {
+                list($h, $i, $s) = explode(':', $strDate);
+            } elseif ($len==5) {
+                list($h, $i) = explode(':', $strDate);
+            } else {
+                $msgProcessError .= "Chronologie : l'heure ne correspond à aucun format attendu.<br>";
+            }
+        } else {
+            $msgProcessError .= "Chronologie : la chaîne ($strDate) ne correspond à aucun format attendu.<br>";
+        }
+
+        if ($y<40) {
+            $y = '20'.str_pad($y, 2, '0', STR_PAD_LEFT);
+        } elseif ($y<100) {
+            $y = '19'.str_pad($y, 2, '0', STR_PAD_LEFT);
+        } else {
+            // Juste pour Sonar.
+        }
+
+        return [$d, $m, $y, $h, $i, $s];
     }
 
     /**

@@ -7,10 +7,17 @@ class Entity
     {
         if (!empty($attributes)) {
             foreach ($attributes as $key=>$value) {
-                $this->{$key} = $value;
+                if (property_exists($this, $key)) {
+                    $this->{$key} = $value;
+                }
             }
         }
     }
+    public static function getFields(): array
+    {
+        return [];
+    }
+
 
     public function __toString(): string
     {
@@ -55,10 +62,21 @@ class Entity
 
     public function setField(string $field, $value): void
     {
-        if ($value==null) {
-            $value = ' ';
+        if (property_exists($this, $field)) {
+            if ($value==null) {
+                $value = ' ';
+            }
+            $this->{$field} = $value;
         }
-        $this->{$field} = $value;
+    }
+
+    public function setFields(array $fields): void
+    {
+        if (!empty($fields)) {
+            foreach ($fields as $field => $value) {
+                $this->setField($field, $value);
+            }
+        }
     }
 
 }

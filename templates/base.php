@@ -6,6 +6,7 @@ use src\Constant\LabelConstant;
 use src\Constant\TemplateConstant;
 use src\Controller\CentralController;
 use src\Controller\HomePageController;
+use src\Controller\InvestigationController;
 use src\Controller\LibraryController;
 use src\Controller\MailPageController;
 use src\Controller\ProfilePageController;
@@ -59,6 +60,9 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
                 break;
                 case ConstantConstant::CST_CENTRAL :
                     $controller = new CentralController($arrUri);
+                break;
+                case ConstantConstant::CST_INVESTIGATION :
+                    $controller = new InvestigationController($arrUri);
                 break;
                 case ConstantConstant::CST_NOTIFICATION :
                 case ConstantConstant::CST_TRASH :
@@ -131,6 +135,8 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
 
         } elseif ($formName=='dashboardSettings') {
             WidgetController::processForm();
+        } elseif ($formName=='updateInvestigation') {
+            // Effectuer dorénavant dans InvestivationController
         } else {
             $logname = SessionUtils::fromPost(FieldConstant::LOGNAME);
             $password = SessionUtils::fromPost(FieldConstant::PASSWORD);
@@ -151,7 +157,7 @@ class CopsiteBase implements ConstantConstant, LabelConstant, TemplateConstant
             } else {
                 $msgProcessError = LabelConstant::LBL_ERR_LOGIN;
             }
-    }
+        }
     }
 
 }

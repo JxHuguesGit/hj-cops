@@ -160,11 +160,10 @@ class Repository
 
     public function delete(Entity $entity): void
     {
-        $this->baseQuery = "DELETE FROM ".$this->table." WHERE id='%s';";
+        $this->baseQuery = "DELETE FROM ".$this->table." ";
         foreach ($this->field as $field) {
             $this->params['where'][] = $entity->getField($field);
         }
-
         $this->getQuery()
             ->execQuery();
     }
@@ -246,5 +245,10 @@ class Repository
             $this->collection->addItem($this->convertElement($row));
         }
         return $this->collection;
+    }
+
+    public function convertElement(array $row): mixed
+    {
+        return $row;
     }
 }

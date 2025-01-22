@@ -4,17 +4,21 @@ namespace src\Constant;
 interface ConstantConstant
 {
     public const CST_ACTION             = 'action';
+    public const CST_ACTIVE_TAB         = 'activeTab';
     public const CST_ACRONYMS           = 'acronymes';
     public const CST_ALERT              = 'alert';
     public const CST_ASC                = 'asc';
+    public const CST_ATTRIBUTES         = 'attributes';
     public const CST_BDD                = 'bdd';
     public const CST_CENTRAL            = 'central';
     public const CST_CHANGEMDP          = 'changeMdp';
     public const CST_CHAT               = 'chat';
     public const CST_CHECKED            = 'checked';
+    public const CST_CHRONO_ID          = 'chronoId';
     public const CST_CLASS              = 'class';
     public const CST_CODE               = 'code';
     public const CST_COL                = 'col';
+    public const CST_CONFIRM            = 'confirm';
     public const CST_CONFIRMMDP         = 'confirmMdp';
     public const CST_CONTENT            = 'content';
     public const CST_COPS               = 'cops';
@@ -24,10 +28,12 @@ interface ConstantConstant
     public const CST_CREATE             = 'create';
     public const CST_CURDATE            = 'curdate';
     public const CST_CURPAGE            = 'curpage';
+    public const CST_DELETE             = 'delete';
     public const CST_DESC               = 'desc';
     public const CST_DESCRIPTION        = 'description';
     public const CST_DISABLED           = 'disabled';
     public const CST_DRAFT              = 'draft';
+    public const CST_EDIT               = 'edit';
     public const CST_EVENT              = 'event';
     public const CST_FIELD              = 'field';
     public const CST_FILE               = 'file';
@@ -37,6 +43,7 @@ interface ConstantConstant
     public const CST_HREF               = 'href';
     public const CST_ICON               = 'icon';
     public const CST_ID                 = 'id';
+    public const CST_INFOS              = 'infos';
     public const CST_ID_GUEST           = '64';
     public const CST_INBOX              = 'inbox';
     public const CST_INVESTIGATION      = 'investigation';
@@ -59,6 +66,7 @@ interface ConstantConstant
     public const CST_READ               = 'read';
     public const CST_READONLY           = 'readonly';
     public const CST_RESTORE            = 'restore';
+    public const CST_ROLE               = 'role';
     public const CST_SELECTED           = 'selected';
     public const CST_SETTINGS           = 'settings';
     public const CST_SENT               = 'sent';
@@ -67,6 +75,7 @@ interface ConstantConstant
     public const CST_SKILLS             = 'skills';
     public const CST_STYLE              = 'style';
     public const CST_TRASH              = 'trash';
+    public const CST_TITLE              = 'title';
     public const CST_TYPE               = 'type';
     public const CST_URL                = 'url';
     public const CST_VALUE              = 'value';

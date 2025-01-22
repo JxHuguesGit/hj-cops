@@ -3,6 +3,7 @@
                     <ul class="nav justify-content-center">
                         <li class="nav-item"><a href="/library" class="nav-link"><i class="fa-solid fa-book"></i></a></li>
                         <li class="nav-item"><a href="/central" class="nav-link"><i class="fa-solid fa-building"></i></a></li>
+                        <li class="nav-item"><a href="/investigation" class="nav-link"><i class="fa-solid fa-box-archive"></i></a></li>
                     </ul>
                 </nav>
             </div>
